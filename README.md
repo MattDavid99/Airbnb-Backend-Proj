@@ -475,7 +475,7 @@ Create and return a new image for a spot specified by id.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: POST
-  * URL: /spots/:spotId/?owner=current_user
+  * URL: /spots/:spotId
   * Headers:
     * Content-Type: application/json
   * Body:
