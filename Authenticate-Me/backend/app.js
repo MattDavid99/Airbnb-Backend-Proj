@@ -11,6 +11,7 @@ const routes = require('./routes')
 /*
 Create a variable called isProduction that will be true if the environment is in production or not by checking the environment key in the configuration file (backend/config/index.js):
 ⬇️⬇️⬇️
+hello
 */
 const { ValidationError } = require('sequelize');
 const { environment } = require('./config');
@@ -49,8 +50,9 @@ app.use(
     })
 );
 
-app.use(routes)
+app.use(routes) // ✅✅✅
 
+// ⬇️⬇️⬇️⬇️ all this must be before this ⬆⬆
 
 // Catch unhandled requests and forward to error handler.
 app.use((_req, _res, next) => {
