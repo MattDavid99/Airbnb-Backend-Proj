@@ -86,8 +86,8 @@ app.use((err, _req, res, _next) => {
 });
 
 
-app.get('/', (req, res, next) => {
-    res.json({ message: 'Landing Page' })
+app.get('/', async (req, res, next) => {
+    res.json({ home: 'page' })
 })
 
 
