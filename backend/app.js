@@ -86,4 +86,9 @@ app.use((err, _req, res, _next) => {
 });
 
 
+app.get('/', (req, res, next) => {
+    res.json({ message: 'Landing Page' })
+})
+
+
 module.exports = app;
