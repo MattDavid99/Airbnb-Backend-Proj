@@ -70,6 +70,10 @@ router.get(
     }
 );
 
+// --------------------------------------------- 1. Get current user
+// router.get('/', async (req, res, next) => {
+//     const user = await User.findOne()
+// })
 
 
 
