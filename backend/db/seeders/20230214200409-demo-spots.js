@@ -1,11 +1,11 @@
 'use strict';
+/** @type {import('sequelize-cli').Migration} */
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     options.tableName = 'Spots';
@@ -17,8 +17,8 @@ module.exports = {
         city: 'San Francisco',
         state: 'California',
         country: 'USA',
-        lat: 37.7749,
-        lng: 22.4194,
+        lat: 37.79,
+        lng: 22.94,
         name: 'Golden Gate Park',
         description: 'A beautiful park in the heart of San Francisco',
         price: 10.00,
@@ -29,8 +29,8 @@ module.exports = {
         city: 'San Francisco',
         state: 'California',
         country: 'USA',
-        lat: 37.7912,
-        lng: 22.3971,
+        lat: 37.12,
+        lng: 22.71,
         name: 'Ferry Building',
         description: 'A historic building with shops and restaurants',
         price: 15.00,
@@ -41,11 +41,11 @@ module.exports = {
         city: 'Naples',
         state: 'Florida',
         country: 'USA',
-        lat: 26.2349,
-        lng: 81.7715,
+        lat: 26.49,
+        lng: 81.15,
         name: 'House',
         description: 'A house',
-        price: 125.00,
+        price: 25.00,
       }
 
     ], {});
@@ -56,7 +56,7 @@ module.exports = {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      address: { [Op.in]: ['20'] }
+      ownerId: { [Op.in]: ['20'] }
     }, {});
   }
 };
