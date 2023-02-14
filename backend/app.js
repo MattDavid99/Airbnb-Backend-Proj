@@ -21,7 +21,7 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
 
-app.use(routes)
+// app.use(routes)
 
 
 
@@ -49,7 +49,7 @@ app.use(
     })
 );
 
-// app.use(routes) // <<------------------------------ (Big mistake putting your app.use(routes) here)
+app.use(routes) // <<------------------------------ (Big mistake putting your app.use(routes) here)
 
 
 app.get('/', async (req, res, next) => {
