@@ -12,7 +12,7 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
 
       {
-        ownerId: 25,
+        ownerId: 20,
         address: '123 Main St',
         city: 'San Francisco',
         state: 'California',
@@ -24,7 +24,7 @@ module.exports = {
         price: 10.00,
       },
       {
-        ownerId: 25,
+        ownerId: 20,
         address: '456 Market St',
         city: 'San Francisco',
         state: 'California',
@@ -36,7 +36,7 @@ module.exports = {
         price: 15.00,
       },
       {
-        ownerId: 25,
+        ownerId: 20,
         address: '1943 Timberline Dr',
         city: 'Naples',
         state: 'Florida',
@@ -56,7 +56,7 @@ module.exports = {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      ownerId: { [Op.in]: ['25'] }
+      address: { [Op.in]: ['123 Main St', '456 Market St', '1943 Timberline Dr'] }
     }, {});
   }
 };
