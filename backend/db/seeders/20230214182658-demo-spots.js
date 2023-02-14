@@ -18,31 +18,31 @@ module.exports = {
         state: 'California',
         country: 'USA',
         lat: 37.7749,
-        lng: -122.4194,
+        lng: 22.4194,
         name: 'Golden Gate Park',
         description: 'A beautiful park in the heart of San Francisco',
         price: 10.00,
       },
       {
-        owner_id: 21,
+        owner_id: 20,
         address: '456 Market St',
         city: 'San Francisco',
         state: 'California',
         country: 'USA',
         lat: 37.7912,
-        lng: -122.3971,
+        lng: 22.3971,
         name: 'Ferry Building',
         description: 'A historic building with shops and restaurants',
         price: 15.00,
       },
       {
-        owner_id: 22,
+        owner_id: 20,
         address: '1943 Timberline Dr',
         city: 'Naples',
         state: 'Florida',
         country: 'USA',
         lat: 26.23439,
-        lng: -81.77915,
+        lng: 81.77915,
         name: 'House',
         description: 'A house',
         price: 125.00,
@@ -56,7 +56,7 @@ module.exports = {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      address: { [Op.in]: ['123 Main St', '456 Market St', '1943 Timberline Dr'] }
+      address: { [Op.in]: ['20'] }
     }, {});
   }
 };
