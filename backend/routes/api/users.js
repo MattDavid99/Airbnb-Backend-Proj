@@ -47,6 +47,7 @@ const router = express.Router();
 //     });
 // }
 // );
+// ---------------------------------------------------------------------------(POST: Sign Up) ❌❌❌ (last error)
 router.post(
     '/',
     validateSignup,

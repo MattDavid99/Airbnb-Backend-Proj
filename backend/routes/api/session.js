@@ -13,40 +13,63 @@ const validateLogin = [
     check('credential')
         .exists({ checkFalsy: true })
         .notEmpty()
-        .withMessage('Please provide a valid email or username.'),
+        .withMessage('Email or username is required'),
     check('password')
         .exists({ checkFalsy: true })
-        .withMessage('Please provide a password.'),
+        .withMessage('Password is required'),
     handleValidationErrors
 ];
 
 
-// Log in
-router.post(
-    '/',
-    validateLogin,
-    async (req, res, next) => {
-        const { credential, password } = req.body;
+// ---------------------------------------------------------------------(POST: Log in) ✅✅✅ (errors)
+router.post('/', validateLogin, async (req, res, next) => {
 
-        const user = await User.login({ credential, password });
 
-        if (!user) {
-            const err = new Error('Login failed');
-            err.status = 401;
-            err.title = 'Login failed';
-            err.errors = ['The provided credentials were invalid.'];
-            return next(err);
-        }
+    const { credential, password } = req.body;
 
-        await setTokenCookie(res, user);
+    const user = await User.login({ credential, password });
 
-        return res.json({
-            user
-        });
+    // if (!user.credential || !user.password) {
+    //     const err = new Error('Validation error')
+    //     res.json(err.errors = {
+    //         message: "Validation error",
+    //         statusCode: 400,
+    //         errors: {
+    //             credential: "Email or username is required",
+    //             password: "Password is required"
+    //         }
+    //     })
+    //     return next(err)
+    // }
+
+    if (!user) {
+        const err = new Error('Login failed');
+        res.json(err.errors = {
+            message: 'Invalid credentials',
+            statusCode: 401
+        })
+        // err.title = 'Login failed';
+        return next(err);
     }
+
+
+
+
+    await setTokenCookie(res, user);
+
+    const { id, firstName, lastName, email, username } = user
+    return res.json({
+        user: { id, firstName, lastName, email, username }
+    });
+
+}
 );
 
-// Log out
+
+
+
+
+// ------------------------------------------------------------------------(Log out)
 router.delete(
     '/',
     (_req, res) => {
