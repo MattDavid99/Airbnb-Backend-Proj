@@ -10,11 +10,23 @@ const validateSignup = [
     check('email')
         .exists({ checkFalsy: true })
         .isEmail()
-        .withMessage('Please provide a valid email.'),
+        .withMessage('Invalid email.'), // <<-- changed
+    check('firstName') // <<-- changed
+        .exists({ checkFalsy: true })
+        // .isEmpty()
+        .withMessage('First Name is required'),
+    check('lastName') // <<-- changed
+        .exists({ checkFalsy: true })
+        // .isEmpty()
+        .withMessage('Last Name is required'),
     check('username')
         .exists({ checkFalsy: true })
         .isLength({ min: 4 })
         .withMessage('Please provide a username with at least 4 characters.'),
+    check('username') // <<-- changed
+        .exists({ checkFalsy: true })
+        // .isEmpty()
+        .withMessage('Username is required'),
     check('username')
         .not()
         .isEmail()
@@ -47,7 +59,7 @@ const router = express.Router();
 //     });
 // }
 // );
-// ---------------------------------------------------------------------------(POST: Sign Up) ❌❌❌ (last error)
+// ---------------------------------------------------------------------------(POST: Sign Up) ✅✅✅ (last error)
 router.post(
     '/',
     validateSignup,
