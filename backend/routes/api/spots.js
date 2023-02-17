@@ -155,6 +155,79 @@ router.post('/', validateSignup, async (req, res, next) => {
 });
 
 
+// Add an Image to a Spot based on the Spot's id   ✅✅❌ (need to get rid of "createdAt", "updatedAt" and spotId is NULL in db)
+router.post('/:spotId/images', requireAuth, async (req, res, next) => {
+
+
+    const spot = await Spot.findOne({
+        where: { id: req.params.spotId }
+    })
+
+    const { url, preview } = req.body
+
+    if (spot) {
+        const newImage = await SpotImage.create({ id: spot.id, url, preview }, {
+            attributes: ['id', 'url', 'preview']
+        })
+
+        if (newImage) {
+            res.status(200).json(newImage)
+        }
+
+    } else {
+        return res.json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        })
+    }
+})
+
+
+
+
+// Edit a Spot ✅✅✅
+router.put('/:spotId', requireAuth, validateSignup, async (req, res, next) => {
+    const spot = await Spot.findByPk(req.params.spotId)
+
+    if (!spot) {
+        return res.json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        })
+    }
+
+    const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body
+
+    await spot.update({
+        ownerId, address, city, state, country, lat, lng, name, description, price
+    })
+
+    return res.status(200).json(spot)
+})
+
+
+// Delete a Spot ✅✅✅✅
+router.delete('/:spotId', requireAuth, async (req, res, next) => {
+
+    const spot = await Spot.findByPk(req.params.spotId)
+
+    if (!spot) {
+        res.json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        })
+    }
+
+    await spot.destroy()
+
+    res.status(200).json({
+        message: "Successfully deleted",
+        statusCode: 200
+    })
+
+
+})
+
 
 
 module.exports = router;
