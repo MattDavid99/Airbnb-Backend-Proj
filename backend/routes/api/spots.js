@@ -2,9 +2,10 @@
 const express = require('express');
 
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
+const { Sequelize } = require('sequelize');
 const { check } = require('express-validator');
 const { json } = require('sequelize');
-const { User, Spot, SpotImage } = require('../../db/models');
+const { User, Spot, SpotImage, Review, Booking } = require('../../db/models');
 const app = require('../../app');
 
 
@@ -42,6 +43,19 @@ const validateSignup = [
     check('price')
         .exists({ checkFalsy: true })
         .withMessage('Price per day is required'),
+    handleValidationErrors
+];
+
+
+const validateReview = [ // <<--------------------------- MIght need to add contrants for stars
+
+    check('review')
+        .exists({ checkFalsy: true })
+        .withMessage('Review text is required'),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isInt({ min: 1, max: 5 })
+        .withMessage('Stars must be an integer from 1 to 5'),
     handleValidationErrors
 ];
 
@@ -93,6 +107,40 @@ router.get('/:spotId', requireAuth, async (req, res, next) => {
         ]
     })
 
+    // ⬇️⬇️⬇️⬇️⬇️⬇️⬇️ ADD THIS ONCE YOU FINISH REVIEWS
+
+    // const spot = await Spot.findOne({
+    //     where: { id: req.params.spotId },
+    //     attributes: {
+    //         include: [
+    //             [
+    //                 Sequelize.fn('COUNT', Sequelize.col('Reviews.id')),
+    //                 'numReviews'
+    //             ],
+    //             [
+    //                 Sequelize.fn('AVG', Sequelize.col('Reviews.rating')),
+    //                 'avgStarRating'
+    //             ]
+    //         ]
+    //     },
+    //     include: [
+    //         {
+    //             model: SpotImage,
+    //             attributes: ['id', 'url', 'preview']
+    //         },
+    //         {
+    //             model: User,
+    //             attributes: ['id', 'firstName', 'lastName']
+    //         },
+    //         {
+    //             model: Review,
+    //             attributes: []
+    //         }
+    //     ]
+    // })
+
+
+
     console.log(spot);
 
     // if (spot) {
@@ -113,8 +161,8 @@ router.get('/:spotId', requireAuth, async (req, res, next) => {
             price: spot.price,
             createdAt: spot.createdAt,
             updatedAt: spot.updatedAt,
-            // numReviews: spot.numReviews, <<-- NEED TO ADD THIS ❌❌❌❌
-            // avgStarRating: spot.avgStarRating, <<-- NEED TO ADD THIS ❌❌❌
+            // numReviews: spot.numReviews, // <<-- NEED TO ADD THIS ❌❌❌❌
+            // avgStarRating: spot.avgStarRating, // <<-- NEED TO ADD THIS ❌❌❌
             SpotImages: spot.SpotImages,
             Owner: spot.User,
         })
@@ -148,14 +196,16 @@ router.post('/', validateSignup, async (req, res, next) => {
             })
 
 
-            if (newSpot) return res.status(200).json(newSpot)
+            if (newSpot) return res.status(201).json(newSpot)
         }
     }
 
 });
 
 
-// Add an Image to a Spot based on the Spot's id   ✅✅❌ (need to get rid of "createdAt", "updatedAt" and spotId is NULL in db)
+// Add an Image to a Spot based on the Spot's id   ✅✅✅
+
+//--------------------------
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
 
@@ -166,8 +216,10 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     const { url, preview } = req.body
 
     if (spot) {
-        const newImage = await SpotImage.create({ id: spot.id, url, preview }, {
-            attributes: ['id', 'url', 'preview']
+        const newImage = await SpotImage.create({
+            spotId: parseInt(req.params.spotId),
+            url,
+            preview
         })
 
         if (newImage) {
@@ -181,7 +233,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         })
     }
 })
-
+//----------------------------------------
 
 
 
@@ -196,10 +248,10 @@ router.put('/:spotId', requireAuth, validateSignup, async (req, res, next) => {
         })
     }
 
-    const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body
+    const { address, city, state, country, lat, lng, name, description, price } = req.body
 
     await spot.update({
-        ownerId, address, city, state, country, lat, lng, name, description, price
+        address, city, state, country, lat, lng, name, description, price
     })
 
     return res.status(200).json(spot)
@@ -227,6 +279,57 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 
 
 })
+
+
+// Create a Review for a Spot based on the Spot's id ✅✅✅✅✅
+router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, next) => {
+
+
+    const { review, stars } = req.body
+    const spotId = parseInt(req.params.spotId)
+    const userId = req.user.id
+
+
+    const spot = await Spot.findOne({ where: { id: spotId } })
+
+    if (!spot) {
+        return res.status(404).json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        })
+    }
+
+
+    const existingReview = await Review.findOne({ where: { userId, spotId } })
+
+    if (existingReview) {
+        return res.status(403).json({
+            message: "User already has a review for this spot",
+            statusCode: 403
+        })
+    }
+
+
+    const newReview = await Review.create({ userId, spotId, review, stars })
+
+    if (newReview) {
+        return res.status(200).json({
+            id: newReview.id,
+            userId: newReview.userId,
+            spotId: newReview.spotId,
+            review: newReview.review,
+            stars: newReview.stars,
+        })
+    }
+
+})
+
+
+
+
+
+
+
 
 
 
