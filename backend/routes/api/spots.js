@@ -67,7 +67,7 @@ const validateReview = [ // <<--------------------------- MIght need to add cont
 const router = express.Router();
 
 
-// Get all Spots ❌❌ (need to add "avgRating and previewImage")
+// Get all Spots ❌❌❌❌❌❌ (need to add "avgRating and previewImage")
 router.get('/', async (req, res, next) => {
     const Spots = await Spot.findAll()
     if (Spots) {
@@ -77,7 +77,7 @@ router.get('/', async (req, res, next) => {
 });
 
 
-// Get all Spots owned by the Current User   ❌❌ (need to add "avgRating and previewImage")
+// Get all Spots owned by the Current User   ❌❌❌❌❌❌ (need to add "avgRating and previewImage")
 router.get('/current', requireAuth, async (req, res, next) => {
 
     const Spots = await Spot.findAll({
@@ -169,7 +169,7 @@ router.get('/:spotId', requireAuth, async (req, res, next) => {
     }
 
     if (!spot) {
-        return res.json({
+        return res.status(404).json({
             message: "Spot couldn't be found",
             statusCode: 404
         })
@@ -238,7 +238,7 @@ router.put('/:spotId', requireAuth, validateSignup, async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId)
 
     if (!spot) {
-        return res.json({
+        return res.status(404).json({
             message: "Spot couldn't be found",
             statusCode: 404
         })
@@ -260,7 +260,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId)
 
     if (!spot) {
-        res.json({
+        res.status(404).json({
             message: "Spot couldn't be found",
             statusCode: 404
         })

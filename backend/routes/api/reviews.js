@@ -10,16 +10,18 @@ const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router();
 
 
-const validateLogin = [
-    check('credential')
+const validateReview = [ // <<--------------------------- MIght need to add contrants for stars
+
+    check('review')
         .exists({ checkFalsy: true })
-        .notEmpty()
-        .withMessage('Email or username is required'),
-    check('password')
+        .withMessage('Review text is required'),
+    check('stars')
         .exists({ checkFalsy: true })
-        .withMessage('Password is required'),
+        .isInt({ min: 1, max: 5 })
+        .withMessage('Stars must be an integer from 1 to 5'),
     handleValidationErrors
 ];
+
 
 
 
@@ -141,6 +143,31 @@ router.get('/current', requireAuth, async (req, res, next) => {
     })
 
 })
+
+
+// Edit a Review✅✅✅✅
+router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
+
+    const reviews = await Review.findByPk(req.params.reviewId)
+
+    if (!reviews) {
+        return res.status(404).json({
+            message: "Review couldn't be found",
+            statusCode: 404
+        })
+    }
+
+    const { review, stars } = req.body
+
+    await reviews.update({
+        review, stars
+    })
+
+    return res.status(200).json(reviews)
+
+
+})
+
 
 
 
