@@ -5,7 +5,7 @@ const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth')
 const { Sequelize } = require('sequelize');
 const { check } = require('express-validator');
 const { json } = require('sequelize');
-const { User, Spot, SpotImage, Review, Booking } = require('../../db/models');
+const { User, Spot, SpotImage, Review, Booking, ReviewImage } = require('../../db/models');
 const app = require('../../app');
 
 
@@ -191,9 +191,7 @@ router.post('/', validateSignup, async (req, res, next) => {
             //get owner id from current user
             const ownerId = req.user.id
 
-            const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price }, {
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
-            })
+            const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price })
 
 
             if (newSpot) return res.status(201).json(newSpot)
@@ -203,20 +201,18 @@ router.post('/', validateSignup, async (req, res, next) => {
 });
 
 
-// Add an Image to a Spot based on the Spot's id   ✅✅✅
-
-//--------------------------
+// Add an Image to a Spot based on the Spot's id   ✅✅✅❌❌ (something is off here)
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
-
-
-    const spot = await Spot.findOne({
-        where: { id: req.params.spotId }
-    })
 
     const { url, preview } = req.body
 
+
+    const spot = await Spot.findAll({
+        where: { id: req.params.spotId }
+    })
     if (spot) {
-        const newImage = await SpotImage.create({
+
+        newImage = await SpotImage.create({
             spotId: parseInt(req.params.spotId),
             url,
             preview
@@ -227,7 +223,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         }
 
     } else {
-        return res.json({
+        return res.status(404).json({
             message: "Spot couldn't be found",
             statusCode: 404
         })
@@ -281,7 +277,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 })
 
 
-// Create a Review for a Spot based on the Spot's id ✅✅✅✅✅
+// Create a Review for a Spot based on the Spot's id ✅✅❌❌ (Need to at "createdAt updatedAt")
 router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, next) => {
 
 
@@ -325,99 +321,62 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
 })
 
 
+// Get all Reviews by a Spot's id
+router.get('/:spotId/reviews', async (req, res, next) => {
 
 
 
+    try {
+        const reviews = await Review.findAll({
+            where: { spotId: req.params.spotId },
+            include: [
+                {
+                    model: User,
+                    attributes: ['id', 'firstName', 'lastName']
+                },
+                {
+                    model: ReviewImage,
+                    attributes: ['id', 'url']
+                }
+            ]
+        });
+
+        const spot = await Spot.findOne({ where: { id: req.params.spotId } })
+
+        if (!spot) {
+            return res.status(404).json({
+                message: "Couldn't find a Spot with the specified id",
+                statusCode: 404
+            })
+        }
 
 
+        // if (reviews.length === 0) {
+        //     return res.status(404).json({
+        //         message: "Couldn't find a Spot with the specified id",
+        //         statusCode: 404
+        //     });
+        // }
+
+        return res.status(200).json({
+            Reviews: reviews.map(review => ({
+                id: review.id,
+                userId: review.userId,
+                spotId: review.spotId,
+                review: review.review,
+                stars: review.stars,
+                createdAt: review.createdAt,
+                updatedAt: review.updatedAt,
+                User: review.User,
+                ReviewImages: review.ReviewImages
+            }))
+        });
+    } catch (error) {
+        next(error);
+    }
+
+})
 
 
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-// // backend/routes/api/users.js
-// const express = require('express')
-
-// const { setTokenCookie, requireAuth } = require('../../utils/auth');
-// const { User } = require('../../db/models');
-
-
-
-
-// const router = express.Router();
-
-// // ----------------------------------------------------------------⬇️
-// // Sign up
-// // router.post('/', validateSignup, async (req, res) => {
-// //     const { email, password, username, firstName, lastName } = req.body;
-// //     const user = await User.signup({ email, username, password, firstName, lastName });
-
-// //     const token = await setTokenCookie(res, user);
-
-
-// //     return res.json({
-// //         id: user.id,
-// //         firstName: user.firstName,
-// //         lastName: user.lastName,
-// //         email: user.email,
-// //         username: user.email,
-// //         token
-// //     });
-// // }
-// // );
-// router.post(
-//     '/',
-//     validateSignup,
-//     async (req, res) => {
-//         const { email, password, username, firstName, lastName } = req.body;
-
-//         try {
-//             const user = await User.signup({ email, username, password, firstName, lastName });
-//             const token = await setTokenCookie(res, user);
-
-//             return res.json({
-//                 id: user.id,
-//                 firstName: user.firstName,
-//                 lastName: user.lastName,
-//                 email: user.email,
-//                 username: user.username,
-//                 token
-//             });
-
-//         } catch (error) {
-//             // return res.json(error)
-//             const dynamicError = error.errors.map((ele) => {
-//                 if (ele.path == "username") {
-//                     return res.json({
-//                         message: "User already exists",
-//                         statusCode: 403,
-//                         errors: {
-//                             username: `User with ${ele.value} already exists`
-//                         }
-//                     })
-//                 }
-//             })
-
-//         }
-//     }
-// );
-
-
-
-
-
-
-
-
-
-// module.exports = router;
