@@ -169,6 +169,32 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
 })
 
 
+// Delete a Review
+// Delete a Spot ✅✅✅✅
+router.delete('/:reviewId', requireAuth, async (req, res, next) => {
+
+    const review = await Review.findByPk(req.params.reviewId)
+
+    if (!review) {
+        res.status(404).json({
+            message: "Review couldn't be found",
+            statusCode: 404
+        })
+    }
+
+    await review.destroy()
+
+    res.status(200).json({
+        message: "Successfully deleted",
+        statusCode: 200
+    })
+
+
+})
+
+
+
+
 
 
 
