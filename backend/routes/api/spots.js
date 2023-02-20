@@ -82,11 +82,9 @@ const validateBooking = [
 ];
 
 
-
-
-
-
 const router = express.Router();
+
+
 
 
 // Get all Spots ❌❌❌❌❌❌ (need to add "avgRating and previewImage")
@@ -343,7 +341,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
 })
 
 
-// Get all Reviews by a Spot's id
+// Get all Reviews by a Spot's id ✅✅✅✅
 router.get('/:spotId/reviews', async (req, res, next) => {
 
 
@@ -367,7 +365,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 
         if (!spot) {
             return res.status(404).json({
-                message: "Couldn't find a Spot with the specified id",
+                message: "Spot couldn't be found",
                 statusCode: 404
             })
         }
@@ -400,7 +398,8 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 })
 
 
-// Create a Booking from a Spot based on the Spot's id  ✅✅✅✅🟨(looks okay, weird tho)
+// Create a Booking from a Spot based on the Spot's id  ✅✅✅✅🟨🟨🟨❓ (Double check this one for sure)
+
 router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, next) => {
 
     const spotId = parseInt(req.params.spotId);
