@@ -79,45 +79,6 @@ router.get('/current', requireAuth, async (req, res, next) => {
             userId: req.user.id
         },
         // ---------------------------
-        // include: [
-        //     {
-        //         model: User,
-        //         attributes: ['id', 'firstName', 'lastName']
-        //     },
-        //     {
-        //         model: Spot,
-        //         attributes: [
-        //             'id',
-        //             'ownerId',
-        //             'address',
-        //             'city',
-        //             'state',
-        //             'country',
-        //             'lat',
-        //             'lng',
-        //             'name',
-        //             'price',
-        //             [Sequelize.fn('MAX', Sequelize.col('SpotImages.url')), 'previewImage']
-        //         ],
-        //         include: [
-        //             {
-        //                 model: SpotImage,
-        //                 attributes: []
-        //             }
-        //         ]
-        //     },
-        //     {
-        //         model: ReviewImage,
-        //         attributes: ['id', 'url']
-        //     },
-        //     {
-        //         model: SpotImage,
-        //         attributes: []
-        //     }
-        // ],
-        // group: ['Review.id', 'User.id', 'Spot.id', 'SpotImages.id'], // <<--  just added this
-        // --------------------------
-
         include: [
             {
                 model: User,
@@ -136,15 +97,28 @@ router.get('/current', requireAuth, async (req, res, next) => {
                     'lng',
                     'name',
                     'price',
-                    [Sequelize.literal('(SELECT MAX("SpotImages"."url") FROM "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id")'), 'previewImage']
+                    [Sequelize.fn('MAX', Sequelize.col('SpotImages.url')), 'previewImage']
+                ],
+                include: [
+                    {
+                        model: SpotImage,
+                        attributes: []
+                    }
                 ]
             },
             {
                 model: ReviewImage,
                 attributes: ['id', 'url']
+            },
+            {
+                model: SpotImage,
+                attributes: []
             }
         ],
-        group: ['Review.id', 'User.id', 'Spot.id'],
+        group: ['Review.id', 'User.id', 'Spot.id', 'SpotImages.id'], // <<--  just added this
+        // --------------------------
+
+
     });
     if (specificUserReviews) {
         return res.status(200).json({
