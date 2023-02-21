@@ -258,7 +258,7 @@ router.post('/', validateSignup, requireAuth, async (req, res, next) => {
 });
 
 
-// Add an Image to a Spot based on the Spot's id   ✅✅✅❌❌ (something is off here)
+// Add an Image to a Spot based on the Spot's id   ✅✅✅❌❌ (something is off here) ERROR MSG IS WRONG
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
     const { url, preview } = req.body
