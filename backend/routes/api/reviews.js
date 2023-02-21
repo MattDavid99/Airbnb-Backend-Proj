@@ -46,7 +46,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
         })
     }
 
-    if (review.ReviewImages && review.ReviewImages.length > 10) {
+    if (review.ReviewImages && review.ReviewImages.length >= 10) {
         return res.status(403).json({
             message: 'Maximum number of images for this resource was reached',
             statusCode: 403
@@ -78,6 +78,46 @@ router.get('/current', requireAuth, async (req, res, next) => {
         where: {
             userId: req.user.id
         },
+        // ---------------------------
+        // include: [
+        //     {
+        //         model: User,
+        //         attributes: ['id', 'firstName', 'lastName']
+        //     },
+        //     {
+        //         model: Spot,
+        //         attributes: [
+        //             'id',
+        //             'ownerId',
+        //             'address',
+        //             'city',
+        //             'state',
+        //             'country',
+        //             'lat',
+        //             'lng',
+        //             'name',
+        //             'price',
+        //             [Sequelize.fn('MAX', Sequelize.col('SpotImages.url')), 'previewImage']
+        //         ],
+        //         include: [
+        //             {
+        //                 model: SpotImage,
+        //                 attributes: []
+        //             }
+        //         ]
+        //     },
+        //     {
+        //         model: ReviewImage,
+        //         attributes: ['id', 'url']
+        //     },
+        //     {
+        //         model: SpotImage,
+        //         attributes: []
+        //     }
+        // ],
+        // group: ['Review.id', 'User.id', 'Spot.id', 'SpotImages.id'], // <<--  just added this
+        // --------------------------
+
         include: [
             {
                 model: User,
@@ -96,25 +136,15 @@ router.get('/current', requireAuth, async (req, res, next) => {
                     'lng',
                     'name',
                     'price',
-                    [Sequelize.fn('MAX', Sequelize.col('SpotImages.url')), 'previewImage']
-                ],
-                include: [
-                    {
-                        model: SpotImage,
-                        attributes: []
-                    }
+                    [Sequelize.literal('(SELECT MAX("SpotImages"."url") FROM "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id")'), 'previewImage']
                 ]
             },
             {
                 model: ReviewImage,
                 attributes: ['id', 'url']
-            },
-            {
-                model: SpotImage,
-                attributes: []
             }
         ],
-        group: ['Review.id', 'User.id', 'Spot.id', 'SpotImages.id'], // <<--  just added this
+        group: ['Review.id', 'User.id', 'Spot.id'],
     });
     if (specificUserReviews) {
         return res.status(200).json({
