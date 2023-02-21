@@ -96,7 +96,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
                     'lng',
                     'name',
                     'price',
-                    [Sequelize.fn('MAX', Sequelize.col('SpotImages.url')), 'previewImage'] // <<-- gotta check that one live
+                    [Sequelize.fn('MAX', Sequelize.col('SpotImages.url')), 'previewImage']
                 ],
                 include: [
                     {
@@ -108,9 +108,13 @@ router.get('/current', requireAuth, async (req, res, next) => {
             {
                 model: ReviewImage,
                 attributes: ['id', 'url']
+            },
+            {
+                model: SpotImage,
+                attributes: []
             }
         ],
-        group: ['Review.id', 'User.id', 'Spot.id', 'Spot->SpotImages.id'], // <<--  just added this
+        group: ['Review.id', 'User.id', 'Spot.id', 'SpotImages.id'], // <<--  just added this
     });
     if (specificUserReviews) {
         return res.status(200).json({
