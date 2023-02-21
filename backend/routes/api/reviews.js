@@ -6,6 +6,7 @@ const { Review, User, Spot, SpotImage, ReviewImage, Booking } = require('../../d
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { Op } = require('sequelize')
+const { literal } = require('sequelize')
 const Sequelize = require('sequelize')
 
 
@@ -74,11 +75,68 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
 // // Get all Reviews of the Current User✅✅✅✅✅✅🟨🟨🟨❌❌❌(change the literal)
 router.get('/current', requireAuth, async (req, res, next) => {
+    // const specificUserReviews = await Review.findAll({
+    //     where: {
+    //         userId: req.user.id
+    //     },
+    //     // ---------------------------
+    //     include: [
+    //         {
+    //             model: User,
+    //             attributes: ['id', 'firstName', 'lastName']
+    //         },
+    //         {
+    //             model: Spot,
+    //             attributes: [
+    //                 'id',
+    //                 'ownerId',
+    //                 'address',
+    //                 'city',
+    //                 'state',
+    //                 'country',
+    //                 'lat',
+    //                 'lng',
+    //                 'name',
+    //                 'price',
+    //                 [Sequelize.fn('MAX', Sequelize.col('SpotImages.url')), 'previewImage']
+    //             ],
+    //             include: [
+    //                 {
+    //                     model: SpotImage,
+    //                     attributes: []
+    //                 }
+    //             ]
+    //         },
+    //         {
+    //             model: ReviewImage,
+    //             attributes: ['id', 'url']
+    //         },
+    //         {
+    //             model: SpotImage,
+    //             attributes: []
+    //         }
+    //     ],
+    //     group: ['Review.id', 'User.id', 'Spot.id', 'SpotImages.id'],
+    //     // --------------------------
+
+
+    // });
+    // if (specificUserReviews) {
+    //     return res.status(200).json({
+    //         Reviews: specificUserReviews
+    //     })
+    // }
+
+    // return res.status(404).json({
+    //     message: "Review couldn't be found",
+    //     statusCode: 404
+    // })
+    //-------------------------------------------------------------------------------------------------------------
+
     const specificUserReviews = await Review.findAll({
         where: {
             userId: req.user.id
         },
-        // ---------------------------
         include: [
             {
                 model: User,
@@ -97,39 +155,63 @@ router.get('/current', requireAuth, async (req, res, next) => {
                     'lng',
                     'name',
                     'price',
-                    [Sequelize.fn('MAX', Sequelize.col('SpotImages.url')), 'previewImage']
-                ],
-                include: [
-                    {
-                        model: SpotImage,
-                        attributes: []
-                    }
+                    [Sequelize.literal('(SELECT MAX("SpotImages"."url") FROM "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id")'), 'previewImage']
                 ]
             },
             {
                 model: ReviewImage,
                 attributes: ['id', 'url']
-            },
-            {
-                model: SpotImage,
-                attributes: []
             }
         ],
-        group: ['Review.id', 'User.id', 'Spot.id', 'SpotImages.id'], // <<--  just added this
-        // --------------------------
-
-
+        group: ['Review.id', 'User.id', 'Spot.id'],
     });
+
     if (specificUserReviews) {
+        const reviews = specificUserReviews.map((review) => {
+            const reviewImages = review.ReviewImages.map((image) => {
+                return {
+                    id: image.id,
+                    url: image.url
+                }
+            });
+            return {
+                id: review.id,
+                userId: review.userId,
+                spotId: review.spotId,
+                review: review.review,
+                stars: review.stars,
+                createdAt: review.createdAt,
+                updatedAt: review.updatedAt,
+                User: {
+                    id: review.User.id,
+                    firstName: review.User.firstName,
+                    lastName: review.User.lastName
+                },
+                Spot: {
+                    id: review.Spot.id,
+                    ownerId: review.Spot.ownerId,
+                    address: review.Spot.address,
+                    city: review.Spot.city,
+                    state: review.Spot.state,
+                    country: review.Spot.country,
+                    lat: review.Spot.lat,
+                    lng: review.Spot.lng,
+                    name: review.Spot.name,
+                    price: review.Spot.price,
+                    previewImage: review.Spot.previewImage
+                },
+                ReviewImages: reviewImages
+            };
+        });
         return res.status(200).json({
-            Reviews: specificUserReviews
-        })
+            Reviews: reviews
+        });
     }
 
     return res.status(404).json({
         message: "Review couldn't be found",
         statusCode: 404
-    })
+    });
 
 });
 
