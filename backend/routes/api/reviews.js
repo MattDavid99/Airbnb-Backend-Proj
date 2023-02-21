@@ -110,7 +110,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
                 attributes: ['id', 'url']
             }
         ],
-        group: ['Spot.id', 'SpotImages.id', 'User.id', 'Reviews.spotId'], // <<--  just added this
+        group: ['Review.id', 'User.id', 'Spot.id', 'Spot->SpotImages.id'], // <<--  just added this
     });
     if (specificUserReviews) {
         return res.status(200).json({
