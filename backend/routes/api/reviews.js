@@ -72,8 +72,8 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
 
 
-
-// // Get all Reviews of the Current User✅✅✅✅✅✅🟨🟨🟨❌❌❌(change the literal)
+// ---------------------------------------------------------------------------------------------------------------
+// // Get all Reviews of the Current User✅✅✅✅✅✅🟨🟨🟨❌❌❌(change the literal) BROKEN
 router.get('/current', requireAuth, async (req, res, next) => {
     // const specificUserReviews = await Review.findAll({
     //     where: {
@@ -100,23 +100,15 @@ router.get('/current', requireAuth, async (req, res, next) => {
     //                 'price',
     //                 [Sequelize.fn('MAX', Sequelize.col('SpotImages.url')), 'previewImage']
     //             ],
-    //             include: [
-    //                 {
-    //                     model: SpotImage,
-    //                     attributes: []
-    //                 }
-    //             ]
+
     //         },
     //         {
     //             model: ReviewImage,
     //             attributes: ['id', 'url']
     //         },
-    //         {
-    //             model: SpotImage,
-    //             attributes: []
-    //         }
+
     //     ],
-    //     group: ['Review.id', 'User.id', 'Spot.id', 'SpotImages.id'],
+    //     group: ['Review.id', 'User.id', 'Spot.id'],
     //     // --------------------------
 
 
@@ -133,17 +125,43 @@ router.get('/current', requireAuth, async (req, res, next) => {
     // })
     //-------------------------------------------------------------------------------------------------------------
 
-    const specificUserReviews = await Review.findAll({
+    const user = User.findOne({
         where: {
-            userId: req.user.id
-        },
-        include: [
-            {
-                model: User,
+            id: req.user.id
+        }
+    })
+
+    const arrayReviews = []
+
+    if (user) {
+        const reviews = await Review.findAll({
+            where: {
+                userId: req.user.id
+            }
+        })
+
+        for (let i of reviews) {
+            const {
+                id,
+                spotId,
+                userId,
+                review,
+                stars,
+                createdAt,
+                updatedAt
+            } = i
+
+            const user = await User.findOne({
+                where: {
+                    id: i.userId
+                },
                 attributes: ['id', 'firstName', 'lastName']
-            },
-            {
-                model: Spot,
+            })
+
+            const spot = await Spot.findOne({
+                where: {
+                    id: i.spotId
+                },
                 attributes: [
                     'id',
                     'ownerId',
@@ -155,68 +173,46 @@ router.get('/current', requireAuth, async (req, res, next) => {
                     'lng',
                     'name',
                     'price',
-                    [Sequelize.literal('(SELECT MAX("SpotImages"."url") FROM "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id")'), 'previewImage']
+                    [Sequelize.literal(`(
+                    SELECT url FROM SpotImages
+                    WHERE SpotImages.spotId = Spot.id
+                    ORDER BY createdAt DESC
+                    LIMIT 1
+                  )`), 'previewImage'] // Added previewImage column
                 ]
-            },
-            {
-                model: ReviewImage,
-                attributes: ['id', 'url']
-            }
-        ],
-        group: ['Review.id', 'User.id', 'Spot.id'],
-    });
-
-    if (specificUserReviews) {
-        const reviews = specificUserReviews.map((review) => {
-            const reviewImages = review.ReviewImages.map((image) => {
-                return {
-                    id: image.id,
-                    url: image.url
-                }
             });
-            return {
-                id: review.id,
-                userId: review.userId,
-                spotId: review.spotId,
-                review: review.review,
-                stars: review.stars,
-                createdAt: review.createdAt,
-                updatedAt: review.updatedAt,
-                User: {
-                    id: review.User.id,
-                    firstName: review.User.firstName,
-                    lastName: review.User.lastName
+
+            const reviewImage = await ReviewImage.findAll({
+                where: {
+                    reviewId: id
                 },
-                Spot: {
-                    id: review.Spot.id,
-                    ownerId: review.Spot.ownerId,
-                    address: review.Spot.address,
-                    city: review.Spot.city,
-                    state: review.Spot.state,
-                    country: review.Spot.country,
-                    lat: review.Spot.lat,
-                    lng: review.Spot.lng,
-                    name: review.Spot.name,
-                    price: review.Spot.price,
-                    previewImage: review.Spot.previewImage
-                },
-                ReviewImages: reviewImages
-            };
-        });
-        return res.status(200).json({
-            Reviews: reviews
-        });
+                attributes: ['id', 'url']
+            })
+
+            const finalReview = {
+                id,
+                spotId,
+                userId,
+                review,
+                stars,
+                createdAt,
+                updatedAt,
+                User: user,
+                Spot: spot,
+                ReviewImages: reviewImage
+            }
+            arrayReviews.push(finalReview)
+        }
+
+        return res.status(200).json({ Reviews: arrayReviews })
+
     }
 
-    return res.status(404).json({
-        message: "Review couldn't be found",
-        statusCode: 404
-    });
 
-});
 
 
 
+});
 // ----------------------------------------------------------------------------------------------------------------
 
 

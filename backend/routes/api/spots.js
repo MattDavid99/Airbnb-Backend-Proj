@@ -37,7 +37,7 @@ const validateSignup = [
         .isLength({ min: 4 })
         .withMessage('Longitude is not valid'),
     check('name')
-        .isLength({ max: 50 })
+        .isLength({ max: 49 })
         .withMessage('Name must be less than 50 characters'),
     check('description')
         .exists({ checkFalsy: true })
@@ -279,7 +279,9 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
             res.status(200).json(newImage)
         }
 
-    } else {
+    }
+
+    if (!spot) {
         return res.status(404).json({
             message: "Spot couldn't be found",
             statusCode: 404
@@ -505,6 +507,54 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
 })
 
 
+// Get all Bookings for a Spot based on the Spot's id  🟨🟨🟨🟨🟨🟨
+router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
+
+    const spotId = req.params.spotId;
+    const userId = req.user.id;
+
+    try {
+
+        // ----------------------------------------------------------
+        const spot = await Spot.findByPk(spotId)
+
+        if (!spot) {
+            return res.status(404).json({
+                message: "Spot couldn't be found",
+                statusCode: 404
+            })
+        }
+        // ----------------------------------------------------------
+
+
+        const bookings = await Booking.findAll({
+            where: { spotId },
+            include: {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName'],
+            },
+        });
+
+        if (userId === bookings[0]?.User?.id) {
+            // If the user is the owner of the spot
+            res.status(200).json({ Bookings: bookings });
+        } else {
+            // If the user is not the owner of the spot
+            const filteredBookings = bookings.map((booking) => {
+                return {
+                    spotId: booking.spotId,
+                    startDate: booking.startDate,
+                    endDate: booking.endDate,
+                };
+            });
+            res.status(200).json({ Bookings: filteredBookings });
+        }
+    } catch (error) {
+        next(error);
+    }
+
+
+})
 
 
 

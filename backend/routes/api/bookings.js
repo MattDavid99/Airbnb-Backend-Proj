@@ -1,4 +1,4 @@
-// / backend/routes / api / spots.js
+// / backend/routes / api / bookings.js
 const express = require('express');
 
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
@@ -14,7 +14,7 @@ const router = express.Router(); // <<-- Don't forget this guy
 
 
 
-
+// -----------------------------------------------------------------------------------------------------
 // Get all of the Current User's Bookings
 router.get('/current', requireAuth, async (req, res, next) => {
 
@@ -89,9 +89,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     });
 
 })
-
-
-
+// -----------------------------------------------------------------------------
 
 
 
