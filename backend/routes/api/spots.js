@@ -91,45 +91,70 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
 
 
+
     // -----------------------------------------------------------------------------------
-    const Spots = await Spot.findAll({
+    // const Spots = await Spot.findAll({
 
-        attributes: [
-            'id',
-            'ownerId',
-            'address',
-            'city',
-            'state',
-            'country',
-            'lat',
-            'lng',
-            'name',
-            'description',
-            'price',
-            'createdAt',
-            'updatedAt',
-            [Sequelize.fn('ROUND', Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 2), 'avgRating'],
-            [Sequelize.fn('MAX', Sequelize.col('SpotImages.url')), 'previewImage']
-        ],
+    //     attributes: [
+    //         'id',
+    //         'ownerId',
+    //         'address',
+    //         'city',
+    //         'state',
+    //         'country',
+    //         'lat',
+    //         'lng',
+    //         'name',
+    //         'description',
+    //         'price',
+    //         'createdAt',
+    //         'updatedAt',
+    //         [Sequelize.fn('ROUND', Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 2), 'avgRating'],
+    //         [Sequelize.fn('MAX', Sequelize.col('SpotImages.url')), 'previewImage']
+    //     ],
 
-        include: [
-            {
-                model: Review,
-                attributes: []
-            },
-            {
-                model: SpotImage,
-                attributes: []
-            }
-        ],
-        group: ['Spot.id', 'SpotImages.id', 'Reviews.spotId'],
+    //     include: [
+    //         {
+    //             model: Review,
+    //             attributes: []
+    //         },
+    //         {
+    //             model: SpotImage,
+    //             attributes: []
+    //         }
+    //     ],
+    //     group: ['Spot.id', 'SpotImages.id', 'Reviews.spotId'],
+
+    // })
+
+    // console.log('-----------------------------', Spots);
+
+    // if (Spots) {
+    //     return res.status(200).json({ Spots })
+    // }
+    // res.status(400).json({ message: "Could not find Spots" })
+    // --------------------------------------------------------------------------------------
+
+    const page = parseInt(req.query.page) || 1; // get the page number from the query parameter or set it to 1
+    const limit = 5; // set the number of spots per page
+    const offset = (page - 1) * limit; // calculate the number of records to skip
+
+
+    const spots = await Spot.scope({ method: ['getAllSpots'] }).findAll({
+        limit: limit,
+        offset: offset,
     })
 
-
-    if (Spots) {
-        return res.status(200).json({ Spots })
+    if (!spots) {
+        return res.status(404).json({
+            message: "Request Denied",
+            statusCode: 404
+        })
     }
-    res.status(400).json({ message: "Could not find Spots" })
+
+    if (spots) {
+        return res.status(200).json({ Spots: spots })
+    }
 
 });
 
@@ -258,34 +283,30 @@ router.post('/', validateSignup, requireAuth, async (req, res, next) => {
 });
 
 
-// Add an Image to a Spot based on the Spot's id   ✅✅✅❌❌ (something is off here) ERROR MSG IS WRONG
+// Add an Image to a Spot based on the Spot's id   ✅✅✅✅✅✅
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
     const { url, preview } = req.body
 
-
-    const spot = await Spot.findAll({
+    const spot = await Spot.findOne({
         where: { id: req.params.spotId }
     })
-    if (spot) {
-
-        newImage = await SpotImage.create({
-            spotId: parseInt(req.params.spotId),
-            url,
-            preview
-        })
-
-        if (newImage) {
-            res.status(200).json(newImage)
-        }
-
-    }
 
     if (!spot) {
         return res.status(404).json({
             message: "Spot couldn't be found",
             statusCode: 404
         })
+    }
+
+    newImage = await SpotImage.create({
+        spotId: parseInt(req.params.spotId),
+        url,
+        preview
+    })
+
+    if (newImage) {
+        res.status(200).json(newImage)
     }
 })
 //----------------------------------------

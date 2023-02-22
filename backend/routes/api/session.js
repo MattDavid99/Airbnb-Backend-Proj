@@ -103,6 +103,14 @@ router.get(
 // })
 
 
+// If you want to use literals in PostGres :
+/*
+
+ [Sequelize.literal((SELECT url FROM ${schema ? "${schema}"."SpotImages" : 'SpotImages'} WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)),'previewImage',],
+
+
+*/
+
 
 
 

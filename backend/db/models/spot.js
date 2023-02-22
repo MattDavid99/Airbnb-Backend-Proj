@@ -1,7 +1,13 @@
 'use strict';
 const {
-  Model
+  Model, Sequelize
 } = require('sequelize');
+
+let schema;
+if (process.env.NODE_ENV === 'production') {
+  schema = process.env.SCHEMA; // define your schema in options object
+}
+
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     /**
@@ -61,6 +67,43 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Spot',
+
+    scopes: {
+      getAllSpots() {
+        // const {User,Spot,Booking,SpotImage,Review,ReviewImage,} = require('../models');
+        return {
+          attributes: [
+            'id',
+            'ownerId',
+            'address',
+            'city',
+            'state',
+            'country',
+            'lat',
+            'lng',
+            'name',
+            'description',
+            'price',
+            'createdAt',
+            'updatedAt',
+            [
+              Sequelize.literal(
+                `(SELECT ROUND(AVG(stars), 1) FROM ${schema ? `"${schema}"."Reviews"` : 'Reviews'
+                } WHERE "Reviews"."spotId" = "Spot"."id")`
+              ),
+              'avgRating',
+            ],
+            [
+              Sequelize.literal(
+                `(SELECT url FROM ${schema ? `"${schema}"."SpotImages"` : 'SpotImages'
+                } WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
+              ),
+              'previewImage',
+            ],
+          ],
+        };
+      },
+    }
   });
   return Spot;
 };
