@@ -125,95 +125,167 @@ router.get('/current', requireAuth, async (req, res, next) => {
     // })
     //-------------------------------------------------------------------------------------------------------------
 
-    const user = User.findOne({
-        where: {
-            id: req.user.id
-        }
-    })
+    // const user = User.findOne({
+    //     where: {
+    //         id: req.user.id
+    //     }
+    // })
 
-    const arrayReviews = []
+    // const arrayReviews = []
 
-    if (user) {
-        const reviews = await Review.findAll({
-            where: {
-                userId: req.user.id
-            }
-        })
+    // if (user) {
+    //     const reviews = await Review.findAll({
+    //         where: {
+    //             userId: req.user.id
+    //         }
+    //     })
 
-        for (let i of reviews) {
+    //     for (let i of reviews) {
+    //         const {
+    //             id,
+    //             spotId,
+    //             userId,
+    //             review,
+    //             stars,
+    //             createdAt,
+    //             updatedAt
+    //         } = i
+
+    //         const user = await User.findOne({
+    //             where: {
+    //                 id: i.userId
+    //             },
+    //             attributes: ['id', 'firstName', 'lastName']
+    //         })
+
+    //         const spot = await Spot.findOne({
+    //             where: {
+    //                 id: i.spotId
+    //             },
+    //             attributes: [
+    //                 'id',
+    //                 'ownerId',
+    //                 'address',
+    //                 'city',
+    //                 'state',
+    //                 'country',
+    //                 'lat',
+    //                 'lng',
+    //                 'name',
+    //                 'price',
+    //                 [Sequelize.literal(`(
+    //                 SELECT url FROM SpotImages
+    //                 WHERE SpotImages.spotId = Spot.id
+    //                 ORDER BY createdAt DESC
+    //                 LIMIT 1
+    //               )`), 'previewImage'] // Added previewImage column
+    //             ]
+    //         });
+
+    //         const reviewImage = await ReviewImage.findAll({
+    //             where: {
+    //                 reviewId: id
+    //             },
+    //             attributes: ['id', 'url']
+    //         })
+
+    //         const finalReview = {
+    //             id,
+    //             spotId,
+    //             userId,
+    //             review,
+    //             stars,
+    //             createdAt,
+    //             updatedAt,
+    //             User: user,
+    //             Spot: spot,
+    //             ReviewImages: reviewImage
+    //         }
+    //         arrayReviews.push(finalReview)
+    //     }
+
+    //     return res.status(200).json({ Reviews: arrayReviews })
+
+    // }
+    // ----------------------------------------------------------------------------------------------------------------
+
+    const currentUsersReviews = await Review.findAll({
+        where: { userId: req.user.id },
+        include: [
+            {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName'],
+            },
+            {
+                model: Spot,
+                attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
+                include: [
+                    {
+                        model: SpotImage,
+                        attributes: ['url'],
+                        where: { preview: true },
+                        required: false,
+                    },
+                ],
+            },
+            { model: ReviewImage, attributes: ['id', 'url'] },
+        ],
+        attributes: ['id', 'userId', 'spotId', 'review', 'stars', 'createdAt', 'updatedAt'],
+    });
+
+    if (currentUsersReviews) {
+        const reviewsData = currentUsersReviews.map((review) => {
             const {
                 id,
-                spotId,
                 userId,
-                review,
-                stars,
-                createdAt,
-                updatedAt
-            } = i
-
-            const user = await User.findOne({
-                where: {
-                    id: i.userId
-                },
-                attributes: ['id', 'firstName', 'lastName']
-            })
-
-            const spot = await Spot.findOne({
-                where: {
-                    id: i.spotId
-                },
-                attributes: [
-                    'id',
-                    'ownerId',
-                    'address',
-                    'city',
-                    'state',
-                    'country',
-                    'lat',
-                    'lng',
-                    'name',
-                    'price',
-                    [Sequelize.literal(`(
-                    SELECT url FROM SpotImages
-                    WHERE SpotImages.spotId = Spot.id
-                    ORDER BY createdAt DESC
-                    LIMIT 1
-                  )`), 'previewImage'] // Added previewImage column
-                ]
-            });
-
-            const reviewImage = await ReviewImage.findAll({
-                where: {
-                    reviewId: id
-                },
-                attributes: ['id', 'url']
-            })
-
-            const finalReview = {
-                id,
                 spotId,
-                userId,
-                review,
+                review: reviewText,
                 stars,
                 createdAt,
                 updatedAt,
-                User: user,
-                Spot: spot,
-                ReviewImages: reviewImage
-            }
-            arrayReviews.push(finalReview)
-        }
+                User,
+                Spot,
+                ReviewImages,
+            } = review.toJSON();
 
-        return res.status(200).json({ Reviews: arrayReviews })
+            const previewImage = Spot.SpotImages.length > 0 ? Spot.SpotImages[0].url : null;
 
+            return {
+                id,
+                userId,
+                spotId,
+                review: reviewText,
+                stars,
+                createdAt,
+                updatedAt,
+                User,
+                Spot: {
+                    id: Spot.id,
+                    ownerId: Spot.ownerId,
+                    address: Spot.address,
+                    city: Spot.city,
+                    state: Spot.state,
+                    country: Spot.country,
+                    lat: Spot.lat,
+                    lng: Spot.lng,
+                    name: Spot.name,
+                    price: Spot.price,
+                    previewImage,
+                },
+                ReviewImages,
+            };
+        });
+
+        return res.status(200).json({ Reviews: reviewsData });
     }
 
-
+    const err = new Error("Reviews couldn't be found");
+    err.statusCode = 404;
+    return next(err);
 
 
 
 });
-// ----------------------------------------------------------------------------------------------------------------
 
 
 
