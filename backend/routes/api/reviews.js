@@ -73,7 +73,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
 
 // ---------------------------------------------------------------------------------------------------------------
-// // Get all Reviews of the Current User✅✅✅✅✅✅🟨🟨🟨❌❌❌(change the literal) BROKEN
+// // Get all Reviews of the Current User✅✅✅✅✅✅
 router.get('/current', requireAuth, async (req, res, next) => {
     // const specificUserReviews = await Review.findAll({
     //     where: {

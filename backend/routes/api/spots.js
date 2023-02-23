@@ -431,9 +431,6 @@ router.get('/:spotId/reviews', async (req, res, next) => {
             })
         }
 
-
-
-
         return res.status(200).json({
             Reviews: reviews.map(review => ({
                 id: review.id,
