@@ -127,7 +127,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
     const booking = await Booking.findOne({
         where: {
             id: bookingId,
-            userId: req.user.id
+            // userId: req.user.id
         }
     });
 
