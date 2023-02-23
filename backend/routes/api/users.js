@@ -84,7 +84,7 @@ router.post(
             error.errors.map((ele) => {
 
                 if (ele.path == "username") {
-                    return res.json({
+                    return res.status(403).json({
                         message: "User already exists",
                         statusCode: 403,
                         errors: {
@@ -94,7 +94,7 @@ router.post(
                 }
 
                 if (ele.path == "email") {
-                    return res.json({
+                    return res.status(403).json({
                         message: "User already exists",
                         statusCode: 403,
                         errors: {
