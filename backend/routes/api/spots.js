@@ -61,7 +61,7 @@ const validateSignup = [
 ];
 
 
-const validateReview = [ // <<--------------------------- MIght need to add contrants for stars
+const validateReview = [ // <<--------------------------- Might need to add contrants for stars
 
     check('review')
         .exists({ checkFalsy: true })
@@ -527,14 +527,14 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
             res.status(200).json({ Bookings: bookings });
         } else {
             // If the user is not the owner of the spot
-            const filteredBookings = bookings.map((booking) => {
+            const mappedBookings = bookings.map((booking) => {
                 return {
                     spotId: booking.spotId,
                     startDate: booking.startDate,
                     endDate: booking.endDate,
                 };
             });
-            res.status(200).json({ Bookings: filteredBookings });
+            res.status(200).json({ Bookings: mappedBookings });
         }
     } catch (error) {
         next(error);

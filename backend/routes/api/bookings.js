@@ -131,6 +131,8 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
         }
     });
 
+    console.log(booking);
+
     if (!booking) {
         return res.status(404).json({
             message: "Booking couldn't be found",
