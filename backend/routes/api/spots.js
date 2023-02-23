@@ -438,7 +438,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
     }
 
     // Check Conflict
-    const conflictingBooking = await Booking.findOne({
+    const conflictingBooking = await Booking.findAll({ // <<-- ❓❓❓❓❓❓❓❓
         where: {
             spotId,
             [Op.or]: [
