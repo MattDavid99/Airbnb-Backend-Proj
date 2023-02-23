@@ -102,54 +102,11 @@ const router = express.Router();
 // Get all Spots  ✅✅✅✅✅
 router.get('/', async (req, res, next) => {
 
+    const page = req.query.page
+    const size = req.query.size
+    let limit = size || 5
+    let offset = (limit * (page - 1) || 0)
 
-
-    // -----------------------------------------------------------------------------------
-    // const Spots = await Spot.findAll({
-
-    //     attributes: [
-    //         'id',
-    //         'ownerId',
-    //         'address',
-    //         'city',
-    //         'state',
-    //         'country',
-    //         'lat',
-    //         'lng',
-    //         'name',
-    //         'description',
-    //         'price',
-    //         'createdAt',
-    //         'updatedAt',
-    //         [Sequelize.fn('ROUND', Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 2), 'avgRating'],
-    //         [Sequelize.fn('MAX', Sequelize.col('SpotImages.url')), 'previewImage']
-    //     ],
-
-    //     include: [
-    //         {
-    //             model: Review,
-    //             attributes: []
-    //         },
-    //         {
-    //             model: SpotImage,
-    //             attributes: []
-    //         }
-    //     ],
-    //     group: ['Spot.id', 'SpotImages.id', 'Reviews.spotId'],
-
-    // })
-
-    // console.log('-----------------------------', Spots);
-
-    // if (Spots) {
-    //     return res.status(200).json({ Spots })
-    // }
-    // res.status(400).json({ message: "Could not find Spots" })
-    // --------------------------------------------------------------------------------------
-
-    const page = parseInt(req.query.page) || 1; // get the page number from the query parameter or set it to 1
-    const limit = 5; // set the number of spots per page
-    const offset = (page - 1) * limit; // calculate the number of records to skip
 
 
     const spots = await Spot.scope({ method: ['getAllSpots'] }).findAll({
