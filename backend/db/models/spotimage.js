@@ -20,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     spotId: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      onDelete: 'CASCADE'
     },
     preview: {
       type: DataTypes.BOOLEAN
