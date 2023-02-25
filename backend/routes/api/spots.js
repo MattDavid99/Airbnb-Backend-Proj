@@ -94,13 +94,69 @@ const validateBooking = [
 ];
 
 
+const validateQueryParameters = [
+
+    check('page')
+        .optional()
+        .isInt({ min: 1, max: 10 })
+        .withMessage('Value must be an integer from 1 to 10')
+        .exists({ checkFalsy: false })
+        .withMessage(''),
+
+    check('size')
+        .optional()
+        .isInt({ min: 1, max: 20 })
+        .withMessage('Value must be an integer from 1 to 20')
+        .exists({ checkFalsy: false })
+        .withMessage(''),
+
+    check('minLat')
+        .optional()
+        .isInt()
+        .withMessage('Minimum latitude is invalid'),
+
+    check('maxLat')
+        .optional()
+        .isInt()
+        .withMessage('Maximum latitude is invalid'),
+
+    check('minLng')
+        .optional()
+        .isInt()
+        .withMessage('Minimum longitude is invalid'),
+
+    check('maxLng')
+        .optional()
+        .isInt()
+        .withMessage('Maximum longitude is invalid'),
+
+    check('minPrice')
+        .optional()
+        .isInt({ min: 0 })
+        .withMessage('Minimum price must be greater than or equal to 0'),
+
+    check('maxPrice')
+        .optional()
+        .isInt({ min: 0 })
+        .withMessage('Maximum price must be greater than or equal to 0'),
+    handleValidationErrors
+]
+
+
+
+
+
+
+
 const router = express.Router();
 
 
 
 
 // Get all Spots  ✅✅✅✅✅
-router.get('/', async (req, res, next) => {
+router.get('/', validateQueryParameters, async (req, res, next) => {
+
+    let where = {}
 
     const page = req.query.page
     const size = req.query.size
@@ -108,11 +164,39 @@ router.get('/', async (req, res, next) => {
     let offset = (limit * (page - 1) || 0)
 
 
+    if (req.query.minLat) {
+        where.lat = { [Op.gte]: req.query.minLat }
+    }
 
-    const spots = await Spot.scope({ method: ['getAllSpots'] }).findAll({
+    if (req.query.maxLat) {
+        where.lat = { [Op.lte]: req.query.maxLat }
+    }
+
+    if (req.query.minLat && req.query.maxLat) {
+        where.price = { [Op.between]: [req.query.minLat, req.query.maxLat] }
+    }
+
+    if (req.query.minPrice) {
+        where.price = { [Op.gte]: req.query.minPrice }
+    }
+
+    if (req.query.maxPrice) {
+        where.price = { [Op.lte]: req.query.maxPrice }
+    }
+
+    if (req.query.minPrice && req.query.maxPrice) {
+        where.price = { [Op.between]: [req.query.minPrice, req.query.maxPrice] }
+    }
+
+
+    let options = {
+        where,
         limit: limit,
         offset: offset,
-    })
+    }
+
+
+    const spots = await Spot.scope({ method: ['getAllSpots'] }).findAll(options)
 
     if (!spots) {
         return res.status(404).json({
@@ -437,40 +521,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
         });
     }
 
-    // -----------------------------------------------------------------------------------------
-    // // Check Conflict
-    // const conflictingBooking = await Booking.findOne({ // <<-- ❓❓❓❓❓❓❓❓
-    //     where: {
-    //         spotId,
-    //         [Op.or]: [
-    //             {
-    //                 startDate: { [Op.lte]: startDate },
-    //                 endDate: { [Op.gte]: startDate },
-    //             },
-    //             {
-    //                 startDate: { [Op.lte]: endDate },
-    //                 endDate: { [Op.gte]: endDate },
-    //             },
-    //             {
-    //                 startDate: { [Op.gte]: startDate },
-    //                 endDate: { [Op.lte]: endDate },
-    //             },
-    //         ],
-    //     },
-    // });
 
-    // if (conflictingBooking) {
-    //     return res.status(403).json({
-    //         message: "Sorry, this spot is already booked for the specified dates",
-    //         statusCode: 403,
-    //         errors: {
-    //             startDate: "Start date conflicts with an existing booking",
-    //             endDate: "End date conflicts with an existing booking",
-    //         },
-    //     })
-    // }
-    // ------------------------------------------------------------------------------
-    // ⬇️⬇️⬇️⬇️⬇️⬇️⬇️
     const conflictingBooking = await Booking.findAll({
         attributes: [[Sequelize.fn('date', Sequelize.col('startDate')), 'startDate'],
         [Sequelize.fn('date', Sequelize.col('endDate')), 'endDate']],
@@ -577,3 +628,42 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
 
 
 module.exports = router;
+
+
+
+
+// -----------------------------------------------------------------------------------------
+    // router.post('/:spotId/bookings')
+    // // Check Conflict
+    // const conflictingBooking = await Booking.findOne({ // <<-- ❓❓❓❓❓❓❓❓
+    //     where: {
+    //         spotId,
+    //         [Op.or]: [
+    //             {
+    //                 startDate: { [Op.lte]: startDate },
+    //                 endDate: { [Op.gte]: startDate },
+    //             },
+    //             {
+    //                 startDate: { [Op.lte]: endDate },
+    //                 endDate: { [Op.gte]: endDate },
+    //             },
+    //             {
+    //                 startDate: { [Op.gte]: startDate },
+    //                 endDate: { [Op.lte]: endDate },
+    //             },
+    //         ],
+    //     },
+    // });
+
+    // if (conflictingBooking) {
+    //     return res.status(403).json({
+    //         message: "Sorry, this spot is already booked for the specified dates",
+    //         statusCode: 403,
+    //         errors: {
+    //             startDate: "Start date conflicts with an existing booking",
+    //             endDate: "End date conflicts with an existing booking",
+    //         },
+    //     })
+    // }
+    // ------------------------------------------------------------------------------
+    // ⬇️⬇️⬇️⬇️⬇️⬇️⬇️

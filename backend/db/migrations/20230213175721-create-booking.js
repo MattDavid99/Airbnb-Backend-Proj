@@ -25,10 +25,12 @@ module.exports = {
         references: { model: 'Users' }
       },
       startDate: {
-        type: Sequelize.STRING
+        type: Sequelize.DATEONLY,
+        allowNull: false
       },
       endDate: {
-        type: Sequelize.STRING
+        type: Sequelize.DATEONLY,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
