@@ -120,88 +120,213 @@ router.get('/current', requireAuth, async (req, res, next) => {
 // Edit a Booking
 router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) => {
 
-    const booking = await Booking.findByPk(req.params.bookingId, {
-        include: [{
-            model: User,
-            attributes: []
-        }]
-    });
+    // ------------------------------------------------------------------------------------
+    // const booking = await Booking.findByPk(req.params.bookingId, {
+    //     include: [{
+    //         model: User,
+    //         attributes: []
+    //     }]
+    // });
 
-    if (!booking) {
-        return res.status(404).json({
-            message: "Booking couldn't be found",
-            statusCode: 404
-        });
-    }
+    // if (!booking) {
+    //     return res.status(404).json({
+    //         message: "Booking couldn't be found",
+    //         statusCode: 404
+    //     });
+    // }
 
-    if (booking.userId !== req.user.id) {
-        return res.status(401).json({
-            message: 'Unauthorized',
-            statusCode: 401
-        });
-    }
-
-
-    if (new Date(req.body.endDate) < new Date()) {
-        return res.status(403).json({
-            message: "Past bookings can't be modified",
-            statusCode: 403
-        });
-    }
+    // if (booking.userId !== req.user.id) {
+    //     return res.status(401).json({
+    //         message: 'Unauthorized',
+    //         statusCode: 401
+    //     });
+    // }
 
 
-    const conflictingBookings = await Booking.findAll({
-        where: {
-            spotId: booking.spotId,
-            endDate: {
-                [Op.gte]: req.body.startDate
-            },
-            startDate: {
-                [Op.lte]: req.body.endDate
-            },
-            id: {
-                [Op.not]: booking.id
-            }
+    // if (new Date(req.body.endDate) < new Date()) {
+    //     return res.status(403).json({
+    //         message: "Past bookings can't be modified",
+    //         statusCode: 403
+    //     });
+    // }
+
+
+    // const conflictingBookings = await Booking.findAll({
+    //     where: {
+    //         spotId: booking.spotId,
+    //         endDate: {
+    //             [Op.gte]: req.body.startDate
+    //         },
+    //         startDate: {
+    //             [Op.lte]: req.body.endDate
+    //         },
+    //         id: {
+    //             [Op.not]: booking.id
+    //         }
+    //     }
+    // });
+    // if (conflictingBookings.length > 0) {
+    //     return res.status(403).json({
+    //         message: "Sorry, this spot is already booked for the specified dates",
+    //         statusCode: 403,
+    //         errors: [
+    //             "Start date conflicts with an existing booking",
+    //             "End date conflicts with an existing booking"
+    //         ]
+    //     });
+    // }
+
+
+    // await booking.update({
+    //     startDate: req.body.startDate,
+    //     endDate: req.body.endDate
+    // });
+    // res.status(200).json(booking)
+    // ------------------------------------------------------------------------------------------
+
+    // const { startDate, endDate } = req.body
+    // const booking = await Booking.findByPk(req.params.bookingId)
+    // const isUserCheck = +booking.id == +req.user.id
+
+
+    // if (!isUserCheck) {
+    //     return res.status(403).json({
+    //         message: "Must be a user",
+    //         statusCode: 403
+    //     })
+    // }
+
+    // if (!booking) {
+    //     return res.status(404).json({
+    //         message: "Booking not found",
+    //         statusCode: 404
+    //     })
+    // }
+
+    // if (new Date() > booking.endDate) {
+    //     return res.status(403).json({
+    //         message: "Past bookings cannot be modified",
+    //         statusCode: 403
+    //     })
+    // }
+
+    // const currentBookings = await Booking.findAll({ where: { spotId: booking.spotId } })
+
+    // for (let booking of currentBookings) {
+
+    //     let start = booking.startDate
+    //     let end = booking.endDate
+    //     const startTime = new Date(startDate)
+    //     const endTime = new Date(endDate)
+
+    //     if (startTime >= start && startTime <= end && +booking.id != +req.params.bookingId) {
+    //         return res.status(403).json({
+    //             message: "Sorry this booking is already booked for the specific dates",
+    //             statusCode: 403,
+    //             errors: {
+    //                 startDate: "Start date conflicts with an existing booking",
+    //                 endDate: "End date conflicts with an existing booking"
+    //             }
+    //         })
+    //     }
+
+    //     if (endTime >= start && endTime <= end && +booking.id != req.params.bookingId) {
+    //         return res.status(403).json({
+    //             message: "Sorry this booking is already booked for the specific dates",
+    //             statusCode: 403,
+    //             errors: {
+    //                 startDate: "Start date conflicts with an existing booking",
+    //                 endDate: "End date conflicts with an existing booking"
+    //             }
+    //         })
+    //     }
+
+    // }
+
+    // const updatedBooking = await booking.update({
+    //     startDate: req.body.startDate,
+    //     endDate: req.body.endDate
+    // });
+
+
+    // res.status(200).json(updatedBooking)
+
+    // ------------------------------------------------------------------------------------------------------------
+
+    try {
+        const { startDate, endDate } = req.body;
+
+        const booking = await Booking.findByPk(req.params.bookingId);
+        if (!booking) {
+            return res.status(404).json({
+                message: "Booking couldn't be found",
+                statusCode: 404
+            });
         }
-    });
-    if (conflictingBookings.length > 0) {
-        return res.status(403).json({
-            message: "Sorry, this spot is already booked for the specified dates",
-            statusCode: 403,
-            errors: [
-                "Start date conflicts with an existing booking",
-                "End date conflicts with an existing booking"
-            ]
+
+        if (booking.userId !== req.user.id) {
+            return res.status(403).json({
+                message: "Must be a user",
+                statusCode: 403
+            });
+        }
+
+        if (new Date() > booking.endDate) {
+            return res.status(403).json({
+                message: "Past bookings can't be modified",
+                statusCode: 403
+            });
+        }
+
+        const conflictingBookings = await Booking.findAll({
+            where: {
+                spotId: booking.spotId,
+                id: { [Op.ne]: booking.id },
+                [Op.or]: [
+                    {
+                        startDate: { [Op.between]: [startDate, endDate] },
+                    },
+                    {
+                        endDate: { [Op.between]: [startDate, endDate] },
+                    },
+                    {
+                        startDate: { [Op.lt]: startDate },
+                        endDate: { [Op.gt]: endDate },
+                    },
+                ],
+            },
         });
+        if (conflictingBookings.length > 0) {
+            return res.status(403).json({
+                message: "Sorry, this spot is already booked for the specified dates",
+                statusCode: 403,
+                errors: {
+                    startDate: "Start date conflicts with an existing booking",
+                    endDate: "End date conflicts with an existing booking"
+                }
+            });
+        }
+
+        booking.startDate = startDate;
+        booking.endDate = endDate;
+        const updatedBooking = await booking.save();
+
+        res.status(200).json(updatedBooking);
+    } catch (error) {
+        next(error);
     }
 
+});
 
-    await booking.update({
-        startDate: req.body.startDate,
-        endDate: req.body.endDate
-    });
-    res.status(200).json(booking)
-
-})
 
 
 // Delete a Booking
 router.delete('/:bookingId', requireAuth, async (req, res, next) => {
 
-    const bookingId = req.params.bookingId;
+    const todaysDate = new Date()
 
-    // Check if the booking exists and belongs to the current user or the spot belongs to the current user
-    const booking = await Booking.findOne({
-        where: {
-            id: bookingId
-        },
-        include: {
-            model: Spot,
-            where: {
-                ownerId: req.user.id
-            }
-        }
-    });
+    const booking = await Booking.findByPk(req.params.bookingId)
+
 
     if (!booking) {
         return res.status(404).json({
@@ -210,23 +335,80 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
         });
     }
 
-    // Check if the booking has already started
-    const now = new Date();
-    const bookingStart = new Date(booking.startDate);
-    if (bookingStart < now) {
+    const spot = await Spot.findOne({
+        where: {
+            id: booking.spotId
+        }
+    })
+
+
+    if (!+booking.userId == +req.user.id && +spot.ownerId == +req.user.id) {
+        return res.status(403).json({
+            message: "Unauthorized",
+            statusCode: 403
+        })
+    }
+
+    if (booking.startDate <= todaysDate) {
         return res.status(403).json({
             message: "Bookings that have been started can't be deleted",
             statusCode: 403
         });
     }
 
-    await booking.destroy();
 
-    // Return success response
-    res.status(200).json({
+
+    await booking.destroy()
+
+    return res.status(200).json({
         message: "Successfully deleted",
         statusCode: 200
-    });
+    })
+
+
+
+    //_-----------------------------------------------------------------------------------------------------
+    // const bookingId = req.params.bookingId;
+
+    // // Check if the booking exists and belongs to the current user or the spot belongs to the current user
+    // const booking = await Booking.findOne({
+    //     where: {
+    //         id: bookingId
+    //     },
+    //     include: {
+    //         model: Spot,
+    //         where: {
+    //             ownerId: req.user.id
+    //         }
+    //     }
+    // });
+
+    // if (!booking) {
+    //     return res.status(404).json({
+    //         message: "Booking couldn't be found",
+    //         statusCode: 404
+    //     });
+    // }
+
+    // // Check if the booking has already started
+    // const now = new Date();
+    // const bookingStart = new Date(booking.startDate);
+    // if (bookingStart < now) {
+    //     return res.status(403).json({
+    //         message: "Bookings that have been started can't be deleted",
+    //         statusCode: 403
+    //     });
+    // }
+
+    // await booking.destroy();
+
+    // // Return success response
+    // res.status(200).json({
+    //     message: "Successfully deleted",
+    //     statusCode: 200
+    // });
+
+    // ----------------------------------------------------------------------------------------
 })
 
 
