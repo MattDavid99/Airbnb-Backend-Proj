@@ -33,6 +33,53 @@ const validateBooking = [
 ];
 
 
+const validateSignup = [
+    check('address')
+        .exists({ checkFalsy: true })
+        .withMessage('Street address is required'), // <<-- changed
+    check('city') // <<-- changed
+        .exists({ checkFalsy: true })
+        .withMessage('City is required'),
+    check('state') // <<-- changed
+        .exists({ checkFalsy: true })
+        .withMessage('State is required'),
+    check('country')
+        .exists({ checkFalsy: true })
+        // .isLength({ min: 4 })
+        .withMessage('Country is required'),
+    check('lat')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .custom((lat) => {
+            if (isNaN(parseFloat(lat))) {
+                throw new Error('Latitude is not valid')
+            }
+            return true;
+        })
+        .withMessage('Latitude is not valid'),
+    check('lng')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .custom((lng) => {
+            if (isNaN(parseFloat(lng))) {
+                throw new Error('Longitude is not valid')
+            }
+            return true;
+        })
+        .withMessage('Longitude is not valid'),
+    check('name')
+        .exists({ checkFalsy: true })
+        .isLength({ max: 49 })
+        .withMessage('Name must be less than 50 characters'),
+    check('description')
+        .exists({ checkFalsy: true })
+        .withMessage('Description is required'),
+    check('price')
+        .exists({ checkFalsy: true })
+        .withMessage('Price per day is required'),
+    handleValidationErrors
+];
+
 
 
 
@@ -118,7 +165,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 // -----------------------------------------------------------------------------
 
 // Edit a Booking
-router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) => {
+router.put('/:bookingId', requireAuth, validateSignup, validateBooking, async (req, res, next) => {
 
     // ------------------------------------------------------------------------------------
     // const booking = await Booking.findByPk(req.params.bookingId, {
@@ -271,7 +318,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
             });
         }
 
-        if (new Date() > booking.endDate) {
+        if (new Date() > new Date(booking.endDate)) { // <<-- changed this line
             return res.status(403).json({
                 message: "Past bookings can't be modified",
                 statusCode: 403
