@@ -245,7 +245,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
         group: ['Spot.id', 'SpotImages.id', 'Reviews.spotId'],
     })
     if (userSpots) {
-        return res.status(200).json(userSpots)
+        return res.status(200).json({ Spots: userSpots })
     }
     res.status(400).json({ "message": "userSpots not found" })
 });
@@ -522,12 +522,12 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
     }
 
 
-    if (+spot.ownerId === +req.user.id) {
-        return res.status(403).json({
-            message: "Spot must not belong to the current user",
-            statusCode: 403
-        })
-    }
+    // if (+spot.ownerId === +req.user.id) {
+    //     return res.status(403).json({
+    //         message: "Spot must not belong to the current user",
+    //         statusCode: 403
+    //     })
+    // }
 
 
     // const conflictingBooking = await Booking.findAll({
