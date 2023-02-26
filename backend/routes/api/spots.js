@@ -145,9 +145,6 @@ const validateQueryParameters = [
 
 
 
-
-
-
 const router = express.Router();
 
 
@@ -160,7 +157,7 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
 
     const page = req.query.page
     const size = req.query.size
-    let limit = size || 5
+    let limit = size || 10
     let offset = (limit * (page - 1) || 0)
 
 
@@ -206,7 +203,7 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
     }
 
     if (spots) {
-        return res.status(200).json({ Spots: spots })
+        return res.status(200).json({ Spots: spots, page, size })
     }
 
 });
@@ -410,7 +407,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 })
 
 
-// Create a Review for a Spot based on the Spot's id ✅✅❌❌ (Need to at "createdAt updatedAt")
+// Create a Review for a Spot based on the Spot's id ✅✅✅✅
 router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, next) => {
 
 
@@ -448,6 +445,8 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
             spotId: newReview.spotId,
             review: newReview.review,
             stars: newReview.stars,
+            createdAt: newReview.createdAt,
+            updatedAt: newReview.updatedAt
         })
     }
 

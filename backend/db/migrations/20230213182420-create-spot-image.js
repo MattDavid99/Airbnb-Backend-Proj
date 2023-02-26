@@ -20,7 +20,8 @@ module.exports = {
       },
       spotId: {
         type: Sequelize.INTEGER,
-        references: { model: 'Spots' }
+        references: { model: 'Spots' },
+        allowNull: false
       },
       preview: {
         type: Sequelize.BOOLEAN
