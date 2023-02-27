@@ -620,7 +620,10 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
             });
             res.status(200).json({ Bookings: mappedBookings });
         }
-    } catch (error) {
+    }
+
+
+    catch (error) {
         next(error);
     }
 
