@@ -390,6 +390,16 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
         })
     }
 
+    const userSpot = await Spot.findOne({ where: { ownerId: req.user.id, id: req.params.spotId } })
+
+    if (!userSpot) {
+        return res.status(403).json({
+            message: "Forbidden, you cannot delete a spot that you do not own",
+            statusCode: 403
+        })
+    }
+
+
     await spot.destroy()
 
     res.status(200).json({
