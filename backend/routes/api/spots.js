@@ -525,6 +525,16 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
         });
     }
 
+
+    if (spot.ownerId === userId) {
+        return res.status(403).json({
+            message: "Forbidden, you cannot book a spot that you own",
+            statusCode: 403
+        })
+    }
+
+
+
     const conflictingBooking = await Booking.findAll({
         where: {
             spotId: spotId,
