@@ -175,6 +175,14 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
         })
     }
 
+    if (+review.userId != +req.user.id) {
+        return res.status(403).json({
+            message: "Forbidden, you cannot edit a review that you do not own",
+            statusCode: 403
+        })
+    }
+
+
     const { review, stars } = req.body
 
     await reviews.update({
@@ -202,6 +210,13 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
             message: "Review couldn't be found",
             statusCode: 404
 
+        })
+    }
+
+    if (+review.userId != +req.user.id) {
+        return res.status(403).json({
+            message: "Forbidden, you cannot delete a review that you do not own",
+            statusCode: 403
         })
     }
 
