@@ -23,6 +23,16 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
             });
         }
 
+        const spot = await Spot.findByPk(spotImage.spotId)
+
+
+        if (spot.ownerId != req.user.id) {
+            return res.status(403).json({
+                message: "Forbidden, you cannot delete an image that you do not own",
+                statusCode: 403
+            })
+        }
+
 
 
         await spotImage.destroy();
