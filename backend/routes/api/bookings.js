@@ -165,7 +165,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 // -----------------------------------------------------------------------------
 
 // Edit a Booking
-router.put('/:bookingId', requireAuth, validateSignup, validateBooking, async (req, res, next) => {
+router.put('/:bookingId', requireAuth, validateSignup, async (req, res, next) => {
 
     try {
         const { startDate, endDate } = req.body;
