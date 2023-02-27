@@ -259,7 +259,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
 
     if (+booking.userId != +req.user.id) {
         return res.status(403).json({
-            message: "Forbidden",
+            message: "Forbidden, you cannot delete a booking that you do not own",
             statusCode: 403
         })
     }
