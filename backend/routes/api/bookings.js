@@ -165,7 +165,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 // -----------------------------------------------------------------------------
 
 // Edit a Booking
-router.put('/:bookingId', requireAuth, async (req, res, next) => {
+router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) => {
 
     try {
         const { startDate, endDate } = req.body;
@@ -180,7 +180,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
 
         if (booking.userId !== req.user.id) {
             return res.status(403).json({
-                message: "Must be a user",
+                message: "You cannot edit a booking that you don't own",
                 statusCode: 403
             });
         }
@@ -256,14 +256,15 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     })
 
 
-    if (!+booking.userId == +req.user.id && +spot.ownerId == +req.user.id) {
+
+    if (+booking.userId != +req.user.id) {
         return res.status(403).json({
-            message: "Unauthorized",
+            message: "Forbidden",
             statusCode: 403
         })
     }
 
-    if (booking.startDate <= todaysDate) {
+    if (new Date(booking.startDate) <= todaysDate) {
         return res.status(403).json({
             message: "Bookings that have been started can't be deleted",
             statusCode: 403

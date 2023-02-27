@@ -158,37 +158,27 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
 
     const page = req.query.page
     const size = req.query.size
-    let limit = size || 10
+    let limit = size || 20
     let offset = (limit * (page - 1) || 0)
 
 
     if (req.query.minLat) where.lat = { [Op.gte]: req.query.minLat }
 
-
     if (req.query.maxLat) where.lat = { [Op.lte]: req.query.maxLat }
-
 
     if (req.query.minLat && req.query.maxLat) where.lat = { [Op.between]: [req.query.minLat, req.query.maxLat] }
 
-
     if (req.query.minLng) where.lng = { [Op.gte]: req.query.minLng }
-
 
     if (req.query.maxLng) where.lng = { [Op.lte]: req.query.maxLng }
 
-
     if (req.query.minLng && req.query.maxLng) where.lng = { [Op.between]: [req.query.minLng, req.query.maxLng] }
-
 
     if (req.query.minPrice) where.price = { [Op.gte]: req.query.minPrice }
 
-
     if (req.query.maxPrice) where.price = { [Op.lte]: req.query.maxPrice }
 
-
     if (req.query.minPrice && req.query.maxPrice) where.price = { [Op.between]: [req.query.minPrice, req.query.maxPrice] }
-
-
 
     let options = {
         where,
