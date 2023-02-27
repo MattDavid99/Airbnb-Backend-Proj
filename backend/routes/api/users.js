@@ -40,26 +40,8 @@ const validateSignup = [
 
 const router = express.Router();
 
-// ----------------------------------------------------------------⬇️
-// Sign up
-// router.post('/', validateSignup, async (req, res) => {
-//     const { email, password, username, firstName, lastName } = req.body;
-//     const user = await User.signup({ email, username, password, firstName, lastName });
-
-//     const token = await setTokenCookie(res, user);
 
 
-//     return res.json({
-//         id: user.id,
-//         firstName: user.firstName,
-//         lastName: user.lastName,
-//         email: user.email,
-//         username: user.email,
-//         token
-//     });
-// }
-// );
-// ---------------------------------------------------------------------------(POST: Sign Up) ✅✅✅ (last error)
 router.post(
     '/',
     validateSignup,
@@ -80,7 +62,7 @@ router.post(
             });
 
         } catch (error) {
-            // return res.json(error)
+
             error.errors.map((ele) => {
 
                 if (ele.path == "username") {

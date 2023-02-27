@@ -162,29 +162,32 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
     let offset = (limit * (page - 1) || 0)
 
 
-    if (req.query.minLat) {
-        where.lat = { [Op.gte]: req.query.minLat }
-    }
+    if (req.query.minLat) where.lat = { [Op.gte]: req.query.minLat }
 
-    if (req.query.maxLat) {
-        where.lat = { [Op.lte]: req.query.maxLat }
-    }
 
-    if (req.query.minLat && req.query.maxLat) {
-        where.price = { [Op.between]: [req.query.minLat, req.query.maxLat] }
-    }
+    if (req.query.maxLat) where.lat = { [Op.lte]: req.query.maxLat }
 
-    if (req.query.minPrice) {
-        where.price = { [Op.gte]: req.query.minPrice }
-    }
 
-    if (req.query.maxPrice) {
-        where.price = { [Op.lte]: req.query.maxPrice }
-    }
+    if (req.query.minLat && req.query.maxLat) where.lat = { [Op.between]: [req.query.minLat, req.query.maxLat] }
 
-    if (req.query.minPrice && req.query.maxPrice) {
-        where.price = { [Op.between]: [req.query.minPrice, req.query.maxPrice] }
-    }
+
+    if (req.query.minLng) where.lng = { [Op.gte]: req.query.minLng }
+
+
+    if (req.query.maxLng) where.lng = { [Op.lte]: req.query.maxLng }
+
+
+    if (req.query.minLng && req.query.maxLng) where.lng = { [Op.between]: [req.query.minLng, req.query.maxLng] }
+
+
+    if (req.query.minPrice) where.price = { [Op.gte]: req.query.minPrice }
+
+
+    if (req.query.maxPrice) where.price = { [Op.lte]: req.query.maxPrice }
+
+
+    if (req.query.minPrice && req.query.maxPrice) where.price = { [Op.between]: [req.query.minPrice, req.query.maxPrice] }
+
 
 
     let options = {
@@ -522,27 +525,6 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
         });
     }
 
-
-    // if (+spot.ownerId === +req.user.id) {
-    //     return res.status(403).json({
-    //         message: "Spot must not belong to the current user",
-    //         statusCode: 403
-    //     })
-    // }
-
-
-    // const conflictingBooking = await Booking.findAll({
-    //     attributes: [[Sequelize.fn('date', Sequelize.col('startDate')), 'startDate'],
-    //     [Sequelize.fn('date', Sequelize.col('endDate')), 'endDate']],
-    //     where: {
-    //         spotId,
-    //         [Op.or]: [
-    //             { startDate: { [Op.between]: [startDate, endDate] } },
-    //             { endDate: { [Op.between]: [startDate, endDate] } },
-    //             { startDate: { [Op.lte]: startDate }, endDate: { [Op.gte]: endDate } }
-    //         ]
-    //     }
-    // })
     const conflictingBooking = await Booking.findAll({
         where: {
             spotId: spotId,
@@ -650,44 +632,4 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
 
 
 
-
 module.exports = router;
-
-
-
-
-// -----------------------------------------------------------------------------------------
-    // router.post('/:spotId/bookings')
-    // // Check Conflict
-    // const conflictingBooking = await Booking.findOne({ // <<-- ❓❓❓❓❓❓❓❓
-    //     where: {
-    //         spotId,
-    //         [Op.or]: [
-    //             {
-    //                 startDate: { [Op.lte]: startDate },
-    //                 endDate: { [Op.gte]: startDate },
-    //             },
-    //             {
-    //                 startDate: { [Op.lte]: endDate },
-    //                 endDate: { [Op.gte]: endDate },
-    //             },
-    //             {
-    //                 startDate: { [Op.gte]: startDate },
-    //                 endDate: { [Op.lte]: endDate },
-    //             },
-    //         ],
-    //     },
-    // });
-
-    // if (conflictingBooking) {
-    //     return res.status(403).json({
-    //         message: "Sorry, this spot is already booked for the specified dates",
-    //         statusCode: 403,
-    //         errors: {
-    //             startDate: "Start date conflicts with an existing booking",
-    //             endDate: "End date conflicts with an existing booking",
-    //         },
-    //     })
-    // }
-    // ------------------------------------------------------------------------------
-    // ⬇️⬇️⬇️⬇️⬇️⬇️⬇️

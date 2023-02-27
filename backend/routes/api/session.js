@@ -29,18 +29,6 @@ router.post('/', validateLogin, async (req, res, next) => {
 
     const user = await User.login({ credential, password });
 
-    // if (!user.credential || !user.password) {
-    //     const err = new Error('Validation error')
-    //     res.json(err.errors = {
-    //         message: "Validation error",
-    //         statusCode: 400,
-    //         errors: {
-    //             credential: "Email or username is required",
-    //             password: "Password is required"
-    //         }
-    //     })
-    //     return next(err)
-    // }
 
     if (!user) {
         const err = new Error('Login failed');
@@ -93,11 +81,6 @@ router.get(
         } else return res.json({});
     }
 );
-
-// --------------------------------------------- 1. Get current user
-// router.get('/', async (req, res, next) => {
-//     const user = await User.findOne()
-// })
 
 
 // If you want to use literals in PostGres :
