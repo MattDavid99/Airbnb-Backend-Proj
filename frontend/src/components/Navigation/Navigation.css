@@ -1,0 +1,49 @@
+ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  background-color: #eb9393;
+}
+
+li {
+  display: flex;
+  align-items: center;
+}
+
+li>* {
+  margin-right: 10px;
+}
+
+li:last-child>* {
+  margin-right: 0;
+}
+
+nav a,
+nav button {
+  display: inline-block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+nav a:hover,
+nav button:hover {
+  background-color: #555;
+  color: white;
+}
+
+nav a.active {
+  background-color: #007bff;
+  color: white;
+}
+
+nav button {
+  background: transparent;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
