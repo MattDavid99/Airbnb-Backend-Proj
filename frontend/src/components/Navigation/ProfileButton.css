@@ -3,7 +3,13 @@
   z-index: 100;
   background-color: white;
   list-style-type: none;
+  bottom: 150px;
+  left: 615px;
   padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   margin-top: 10px;
@@ -15,8 +21,10 @@
 }
 
 .profile-dropdown li {
+  display: block;
   padding: 8px 0;
   text-align: center;
+  margin: 4px 0;
 }
 
 .profile-dropdown li:not(:last-child) {
@@ -24,6 +32,8 @@
 }
 
 .profile-dropdown button {
+  display: block;
+  width: 100%;
   background: transparent;
   border: none;
   color: #007bff;
