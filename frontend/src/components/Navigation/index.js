@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import * as sessionActions from '../../store/session';
+import logo from "../../images/logo.png"
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {
@@ -18,14 +19,15 @@ function Navigation({ isLoaded }) {
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <li>
-        <ProfileButton user={sessionUser} />
+      <li className='logged_in_icon'>
+        <NavLink to="/" className="create_spot_link">Create a New Spot</NavLink>
         <button onClick={logout}>Log Out</button>
+        <ProfileButton user={sessionUser} />
       </li>
     );
   } else {
     sessionLinks = (
-      <li>
+      <li className='not_logged_in'>
         <NavLink to="/login">Log In</NavLink>
         <NavLink to="/signup">Sign Up</NavLink>
       </li>
@@ -34,12 +36,15 @@ function Navigation({ isLoaded }) {
 
 
   return (
-    <ul>
-      <li>
-        <NavLink exact to="/">Home</NavLink>
-      </li>
-      {isLoaded && sessionLinks}
-    </ul>
+    <div className='nav-container'>
+      <ul>
+        <li>
+          <NavLink exact to="/"><img src={logo} alt="logo" className='logo' /></NavLink>
+        </li>
+        {isLoaded && sessionLinks}
+      </ul>
+
+    </div>
   );
 }
 

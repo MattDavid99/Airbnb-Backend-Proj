@@ -2,6 +2,7 @@
 // frontend/src/components/Navigation/ProfileButton.js
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import * as sessionActions from '../../store/session';
 import './ProfileButton.css'
 
@@ -42,9 +43,10 @@ function ProfileButton({ user }) {
         <i className="fas fa-user-circle" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
-        <li>{user.username}</li>
-        <li>{user.firstName} {user.lastName}</li>
+        <li>Hello, {user.username}</li>
+        {/* <li>{user.firstName} {user.lastName}</li> */}
         <li>{user.email}</li>
+        <Link>Manage Spots</Link>
         <li>
           <button onClick={logout}>Log Out</button>
         </li>

@@ -3,17 +3,18 @@
   z-index: 100;
   background-color: white;
   list-style-type: none;
-  bottom: 150px;
-  left: 615px;
+  top: 50px;
+  right: 125px;
   padding: 10px;
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
   flex-direction: column;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   margin-top: 10px;
-  min-width: 200px;
+  max-width: 220px;
+  /* overflow: auto; */
 }
 
 .profile-dropdown.hidden {
@@ -25,6 +26,8 @@
   padding: 8px 0;
   text-align: center;
   margin: 4px 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .profile-dropdown li:not(:last-child) {
@@ -35,14 +38,17 @@
   display: block;
   width: 100%;
   background: transparent;
+  border-radius: 5px;
   border: none;
-  color: #007bff;
+  background-color: #f97f74;
+  color: #fff;
+  padding: 5px 8px;
   font-weight: bold;
   cursor: pointer;
 }
 
 .profile-dropdown button:hover {
-  color: #0056b3;
+  background-color: #e46e63;
 }
 
 .fas.fa-user-circle {

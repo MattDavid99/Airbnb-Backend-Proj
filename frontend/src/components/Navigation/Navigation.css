@@ -1,16 +1,22 @@
 ul {
   display: flex;
+  /* position: fixed;
+  top: 0; */
   justify-content: space-between;
   align-items: center;
   list-style-type: none;
   padding: 0;
   margin: 0;
   background-color: #eb9393;
+  width: 100%;
 }
+
+
 
 li {
   display: flex;
   align-items: center;
+  padding-right: 80px;
 }
 
 li>* {
@@ -20,6 +26,7 @@ li>* {
 li:last-child>* {
   margin-right: 0;
 }
+
 
 nav a,
 nav button {
@@ -46,4 +53,26 @@ nav button {
   border: none;
   font-weight: bold;
   cursor: pointer;
+}
+
+.logo {
+  height: 60px;
+  width: 50px;
+  padding-left: 70px;
+}
+
+.nav-container {
+  display: flex;
+  width: 100vw;
+  margin: 0 auto;
+  left: 0;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+}
+
+.create_spot_link {
+  text-decoration: none;
+  padding-right: 10px;
 }
