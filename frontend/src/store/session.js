@@ -3,6 +3,7 @@ import { csrfFetch } from './csrf';
 
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
+const RETRIVE_SPOTS = "session/getSpots"
 
 const setUser = (user) => {
   return {
@@ -16,6 +17,13 @@ const removeUser = () => {
     type: REMOVE_USER,
   };
 };
+
+const retriveSpots = (spots) => {
+  return {
+    type: RETRIVE_SPOTS,
+    payload: spots
+  }
+}
 
 export const login = (user) => async (dispatch) => {
   const { credential, password } = user;
@@ -66,9 +74,17 @@ export const logout = () => async (dispatch) => {
 };
 
 
+export const getImages = () => async (dispatch) => {
+  const response = await csrfFetch('/api/spots')
+  const data = await response.json()
+  console.log(data.Spots);
+  dispatch(retriveSpots(data.Spots))
+  return response
+}
 
 
-const initialState = { user: null };
+
+const initialState = { user: null, spots: [] };
 
 const sessionReducer = (state = initialState, action) => {
   let newState;
@@ -81,6 +97,12 @@ const sessionReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       newState.user = null;
       return newState;
+
+    case RETRIVE_SPOTS:
+      newState = Object.assign({}, state);
+      newState.spots = action.payload;
+      return newState;
+
     default:
       return state;
   }

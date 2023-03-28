@@ -1,14 +1,4 @@
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #f0f0f0;
-}
-
-form {
+.signup-form {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
@@ -16,12 +6,12 @@ form {
   width: 400px;
 }
 
-form label {
+.signup-form label {
   display: block;
   margin-bottom: 10px;
 }
 
-form input {
+.signup-form input {
   width: 100%;
   padding: 5px;
   margin-bottom: 15px;
@@ -30,7 +20,7 @@ form input {
   border-radius: 4px;
 }
 
-form button {
+.signup-form__submit-btn {
   background-color: #007bff;
   color: white;
   border: none;
@@ -42,7 +32,7 @@ form button {
   width: 100%;
 }
 
-form button:hover {
+.signup-form__submit-btn:hover {
   background-color: #0056b3;
 }
 
