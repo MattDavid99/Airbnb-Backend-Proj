@@ -11,15 +11,15 @@ module.exports = {
     options.tableName = 'ReviewImages';
     return queryInterface.bulkInsert(options, [
       {
-        url: 'xxxxxxxxxxxx.com',
+        url: 'https://i2-prod.mirror.co.uk/incoming/article20396272.ece/ALTERNATES/s615/1_cl_HMB_02102019house_24JPG.jpg',
         reviewId: 1,
       },
       {
-        url: 'yyyyyyyyyyyy.net',
+        url: 'https://www.hollywoodreporter.com/wp-content/uploads/2013/07/trailer_park_boys_l.jpg',
         reviewId: 2,
       },
       {
-        url: 'zzzzzzzzzzzz.org',
+        url: 'https://spotlightnews.com/wp-content/uploads/2022/06/trailer-park-web-5029.jpg',
         reviewId: 3,
       }
     ], {});

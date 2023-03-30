@@ -10,6 +10,7 @@
   background-color: #fafafa;
   width: 100%;
   border-bottom: 1px solid #000;
+  height: 80px;
 }
 
 
@@ -72,6 +73,9 @@ nav button {
   justify-content: center;
   align-items: center;
   top: 0;
+  z-index: 100;
+  background-color: #fafafa;
+  height: 80px;
 }
 
 .create_spot_link {
