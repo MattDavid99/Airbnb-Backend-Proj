@@ -1,33 +1,35 @@
-ul {
+.nav-ul {
   display: flex;
   /* position: fixed;
   top: 0; */
   justify-content: space-between;
   align-items: center;
   list-style-type: none;
-  padding: 0;
-  margin: 0;
-  background-color: #eb9393;
+  padding-right: 5px;
+  /* margin-bottom: 5px; */
+  background-color: #fafafa;
   width: 100%;
+  border-bottom: 1px solid #000;
 }
 
 
 
-li {
+.nav-li {
   display: flex;
   align-items: center;
-  padding-right: 80px;
-}
-
-li>* {
+  /* justify-content: center; */
   margin-right: 10px;
 }
 
-li:last-child>* {
-  margin-right: 0;
+/* .nav-li>* {
+  margin-right: 10px;
 }
 
+l.nav-li:last-child>* {
+  margin-right: 0;
+} */
 
+/*
 nav a,
 nav button {
   display: inline-block;
@@ -53,7 +55,7 @@ nav button {
   border: none;
   font-weight: bold;
   cursor: pointer;
-}
+} */
 
 .logo {
   height: 60px;
@@ -63,7 +65,7 @@ nav button {
 
 .nav-container {
   display: flex;
-  width: 100vw;
+  width: 100%;
   margin: 0 auto;
   left: 0;
   position: fixed;
@@ -75,4 +77,12 @@ nav button {
 .create_spot_link {
   text-decoration: none;
   padding-right: 10px;
+}
+
+.logged_in_icon {
+  padding-right: 70px;
+}
+
+.not_logged_in {
+  padding-right: 80px;
 }

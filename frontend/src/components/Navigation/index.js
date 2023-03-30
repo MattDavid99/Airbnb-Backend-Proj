@@ -21,15 +21,15 @@ function Navigation({ isLoaded }) {
     sessionLinks = (
       <li className='logged_in_icon'>
         <NavLink to="/" className="create_spot_link">Create a New Spot</NavLink>
-        <button onClick={logout}>Log Out</button>
+        {/* <button onClick={logout}>Log Out</button> */}
         <ProfileButton user={sessionUser} />
       </li>
     );
   } else {
     sessionLinks = (
       <li className='not_logged_in'>
-        <NavLink to="/login">Log In</NavLink>
-        <NavLink to="/signup">Sign Up</NavLink>
+        <NavLink to="/login" className="sign-log-in-link">Log In</NavLink>
+        <NavLink to="/signup" className="sign-log-in-link">Sign Up</NavLink>
       </li>
     );
   }
@@ -37,8 +37,8 @@ function Navigation({ isLoaded }) {
 
   return (
     <div className='nav-container'>
-      <ul>
-        <li>
+      <ul className='nav-ul'>
+        <li className='nav-li'>
           <NavLink exact to="/"><img src={logo} alt="logo" className='logo' /></NavLink>
         </li>
         {isLoaded && sessionLinks}

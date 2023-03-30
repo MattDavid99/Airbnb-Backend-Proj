@@ -3,8 +3,8 @@
   z-index: 100;
   background-color: white;
   list-style-type: none;
-  top: 50px;
-  right: 125px;
+  top: 60px;
+  right: 120px;
   padding: 10px;
   /* display: flex;
   justify-content: center;
@@ -21,20 +21,21 @@
   display: none;
 }
 
-.profile-dropdown li {
+.profile-dropdown .profile-li:not(:last-child) {
   display: block;
-  padding: 8px 0;
+  padding: 10px 0;
   text-align: center;
   margin: 4px 0;
   display: flex;
   flex-wrap: wrap;
-}
-
-.profile-dropdown li:not(:last-child) {
   border-bottom: 1px solid #ccc;
 }
 
-.profile-dropdown button {
+/* .profile-dropdown .profile-link {
+  padding-bottom: 5px;
+} */
+
+.profile-dropdown .profile-button {
   display: block;
   width: 100%;
   background: transparent;
@@ -45,13 +46,15 @@
   padding: 5px 8px;
   font-weight: bold;
   cursor: pointer;
+  margin-top: 10px;
 }
 
-.profile-dropdown button:hover {
+.profile-dropdown .profile-button:hover {
   background-color: #e46e63;
 }
 
 .fas.fa-user-circle {
   font-size: 1.5em;
   cursor: pointer;
+  /* margin-right: 70px; */
 }

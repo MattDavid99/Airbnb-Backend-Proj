@@ -41,7 +41,7 @@ function SpotImagesPage() {
     //   </ul>
     // </div>
 
-    // WHEN YOU GET BACK FIX THIS ⬇️⬇️⬇️⬇️⬇️⬇️⬇️ Change all of the styled (<li> <ul> etc.) tags to classNames
+    // WHEN YOU GET BACK FIX THIS ⬇️⬇️⬇️⬇️⬇️⬇️⬇️ Change all of the styled (<li> <ul> etc.) tags to classNames in the other components
     <div className="spot-image-container">
       <ul className="spot-image-ul">
         {spots &&
