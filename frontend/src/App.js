@@ -7,7 +7,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import "./index.css"
-import SpotImagesPage from "./components/SpotImagesPage.js";
+import SpotImagesPage from "./components/SpotImagesPage";
 import CreateNewSpot from "./components/CreateNewSpot";
 
 function App() {
