@@ -20,7 +20,7 @@ function Navigation({ isLoaded }) {
   if (sessionUser) {
     sessionLinks = (
       <li className='logged_in_icon'>
-        <NavLink to="/" className="create_spot_link">Create a New Spot</NavLink>
+        <button className='create-spot-button'><NavLink to="/" className="create_spot_link">Create a New Spot</NavLink></button>
         {/* <button onClick={logout}>Log Out</button> */}
         <ProfileButton user={sessionUser} />
       </li>
