@@ -8,6 +8,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import "./index.css"
 import SpotImagesPage from "./components/SpotImagesPage.js";
+import CreateNewSpot from "./components/CreateNewSpot";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +33,9 @@ function App() {
           </Route>
           <Route exact path="/">
             <SpotImagesPage />
+          </Route>
+          <Route path="/create-spot">
+            <CreateNewSpot />
           </Route>
         </Switch>
       )}

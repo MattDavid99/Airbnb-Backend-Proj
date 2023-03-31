@@ -4,6 +4,7 @@ import { csrfFetch } from './csrf';
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 const RETRIVE_SPOTS = "session/getSpots"
+const CREATE_SPOT = "session/createSpot"
 
 const setUser = (user) => {
   return {
@@ -22,6 +23,13 @@ const retriveSpots = (spots) => {
   return {
     type: RETRIVE_SPOTS,
     payload: spots
+  }
+}
+
+export const createSpot = (spot) => {
+  return {
+    type: CREATE_SPOT,
+    spot
   }
 }
 
@@ -75,11 +83,23 @@ export const logout = () => async (dispatch) => {
 
 
 export const getImages = () => async (dispatch) => {
-  const response = await csrfFetch('/api/spots')
+  const response = await fetch('/api/spots')
   const data = await response.json()
   console.log(data.Spots);
   dispatch(retriveSpots(data.Spots))
   return response
+}
+
+
+export const newSpot = (payload) => async (dispatch) => {
+  const response = await fetch('/api/spots', {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+
+  const spot = await response.json()
+  dispatch(createSpot(spot))
 }
 
 
@@ -93,6 +113,7 @@ const sessionReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       newState.user = action.payload;
       return newState;
+
     case REMOVE_USER:
       newState = Object.assign({}, state);
       newState.user = null;
@@ -102,6 +123,11 @@ const sessionReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       newState.spots = action.payload;
       return newState;
+
+    case CREATE_SPOT:
+      newState = Object.assign({}, state)
+      newState.spots = [...state.spots, action.spot]
+      return newState
 
     default:
       return state;
