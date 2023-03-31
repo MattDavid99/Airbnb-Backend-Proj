@@ -59,10 +59,28 @@
 
   /* width: 200px; */
   width: 100%;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
   /* width: calc((100% - 60px) / 4); */
 }
 
 .preview-image-div {
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
+  height: 180px;
+  border-radius: 10px;
   /* width: calc((100% - 60px) / 4); */
 }
+
+.price {
+  position: relative;
+  bottom: 20px;
+  left: 10px;
+}
+
+/*
+.distance {
+  position: relative;
+  bottom: 40px;
+  left: 200px;
+} */

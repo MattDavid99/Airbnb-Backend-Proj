@@ -41,7 +41,8 @@ function SpotImagesPage() {
             <img className="preview-image-img" src={i.previewImage} alt="#" />
             <li key={i.id} className="spot-image-li">{i.city}/{i.state}</li>
             <span className='stars'>⭐{i.avgRating}</span>
-            <li>${i.price} night</li>
+            <li className="price">${i.price} night</li>
+            {/* <span className='distance'><i className="fas fa-car" /></span> */}
           </div>
         ))}
       </ul>
