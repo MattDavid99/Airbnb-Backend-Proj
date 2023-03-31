@@ -39,7 +39,7 @@
   display: block;
   width: 100%;
   background: transparent;
-  border-radius: 5px;
+  border-radius: 10px;
   border: none;
   background-color: #f97f74;
   color: #fff;
@@ -56,5 +56,32 @@
 .fas.fa-user-circle {
   font-size: 1.5em;
   cursor: pointer;
+  /* background-color: #faf8f8; */
+  background-color: #faf8f8;
+  border-radius: 50%;
   /* margin-right: 70px; */
+}
+
+.fas.fa-user-circle:hover {
+  background-color: #fbd2ce;
+  transition: all 0.4s ease-in-out;
+}
+
+.icon-button:hover {
+  background-color: #f1bdb8;
+  border-radius: 20px;
+  border: none;
+}
+
+.icon-button {
+  padding: 0px;
+  /* Add padding to create space between the icon and the border */
+  background-color: #fbc4bf;
+  /* Add a background color to make it look like a button */
+  border-radius: 50%;
+  /* Set border-radius to 50% for a circle shape */
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
