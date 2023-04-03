@@ -1,0 +1,21 @@
+.login-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* .login-modal-div {
+  background-color: white;
+  padding: 20px;
+  border-radius: 4px;
+  width: 400px;
+  max-width: 100%;
+  z-index: 1100;
+} */
