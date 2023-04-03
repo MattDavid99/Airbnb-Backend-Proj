@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { newSpot } from '../../store/session'
+import "./CreateNewSpot.css"
 
 function CreateNewSpot() {
 
   const dispatch = useDispatch()
+
+
 
 
   const handleSubmit = (e) => {
@@ -15,7 +18,7 @@ function CreateNewSpot() {
 
   return (
     <>
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit} className='create-spot-form' >
 
         <label >
           Country
@@ -37,30 +40,34 @@ function CreateNewSpot() {
 
           />
         </label>
-        <label >
-          City
-          <input
-            type="text"
-            // value={firstName}
-            // onChange={(e) => setFirstName(e.target.value)}
-            required
+        <div className='city-state-div'>
 
-          />
-        </label>
-        <label >
-          State
-          <input
-            type="text"
-            // value={lastName}
-            // onChange={(e) => setLastName(e.target.value)}
-            required
+          <label >
+            City
+            <input
+              type="text"
+              // value={firstName}
+              // onChange={(e) => setFirstName(e.target.value)}
+              required
 
-          />
-        </label>
+            />
+          </label>
+          <label >
+            State
+            <input
+              type="text"
+              // value={lastName}
+              // onChange={(e) => setLastName(e.target.value)}
+              required
+
+            />
+          </label>
+        </div>
+
         <label >
-          Password
-          <input
-            type="password"
+          Description
+          <textarea
+            type="description"
             // value={password}
             // onChange={(e) => setPassword(e.target.value)}
             required
@@ -68,16 +75,29 @@ function CreateNewSpot() {
           />
         </label>
         <label >
-          Confirm Password
+          Create a Title for your Spot
           <input
-            type="password"
+            type="title"
             // value={confirmPassword}
             // onChange={(e) => setConfirmPassword(e.target.value)}
             required
 
           />
         </label>
-        <button type="submit">Sign Up</button>
+        <label >
+          Set a price for your Spot
+          <input
+            type="price"
+            // value={confirmPassword}
+            // onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+
+          />
+        </label>
+
+
+
+        <button type="submit">Create Spot</button>
       </form>
     </>
   )
