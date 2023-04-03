@@ -6,7 +6,7 @@ import * as sessionActions from "../../store/session";
 import './SignupForm.css'
 
 
-function SignupFormPage() {
+function SignupFormPage({ onSuccess }) {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
@@ -19,11 +19,49 @@ function SignupFormPage() {
 
   if (sessionUser) return <Redirect to="/" />;
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (password === confirmPassword) {
+  //     setErrors([]);
+  //     return dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
+  //       .catch(async (res) => {
+  //         const data = await res.json();
+  //         if (data && data.errors) {
+  //           let errorMessages = [];
+
+  //           if (Array.isArray(data.errors)) {
+  //             errorMessages = data.errors;
+  //           } else {
+  //             for (const key in data.errors) {
+  //               if (data.errors.hasOwnProperty(key)) {
+  //                 const errorValue = data.errors[key];
+  //                 if (Array.isArray(errorValue)) {
+  //                   errorValue.forEach((errorMsg) => {
+  //                     errorMessages.push(`${key}: ${errorMsg}`);
+  //                   });
+  //                 } else {
+  //                   errorMessages.push(`${key}: ${errorValue}`);
+  //                 }
+  //               }
+  //             }
+  //           }
+
+  //           setErrors(errorMessages);
+  //         }
+  //       });
+  //   }
+
+  //   // --------------------------------
+  //   return setErrors(['Confirm Password field must be the same as the Password field']);
+  //   // --------------------------------
+  // };
+
+
+  const handleSubmit = async (e) => { // Make the function async
     e.preventDefault();
     if (password === confirmPassword) {
       setErrors([]);
-      return dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
+      const success = await dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
         .catch(async (res) => {
           const data = await res.json();
           if (data && data.errors) {
@@ -49,9 +87,15 @@ function SignupFormPage() {
             setErrors(errorMessages);
           }
         });
+
+      if (success) { // Call the onSuccess function if the signup is successful
+        onSuccess();
+      }
+    } else {
+      setErrors(['Confirm Password field must be the same as the Password field']);
     }
-    return setErrors(['Confirm Password field must be the same as the Password field']);
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="signup-form">

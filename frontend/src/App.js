@@ -9,6 +9,8 @@ import Navigation from "./components/Navigation";
 import "./index.css"
 import SpotImagesPage from "./components/SpotImagesPage";
 import CreateNewSpot from "./components/CreateNewSpot";
+import LogInModal from "./components/LogInModal";
+import SignupModal from "./components/SignupModal";
 
 function App() {
   const dispatch = useDispatch();
@@ -26,10 +28,10 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route path="/login">
-            <LoginFormPage />
+            <LogInModal />
           </Route>
           <Route path="/signup">
-            <SignupFormPage />
+            <SignupModal />
           </Route>
           <Route exact path="/">
             <SpotImagesPage />
