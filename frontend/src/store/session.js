@@ -141,7 +141,7 @@ export const getImages = () => async (dispatch) => {
 
 
 export const newSpot = (payload) => async (dispatch) => {
-  const response = await fetch('/api/spots', {
+  const response = await csrfFetch('/api/spots', {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
