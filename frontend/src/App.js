@@ -11,6 +11,7 @@ import SpotImagesPage from "./components/SpotImagesPage";
 import CreateNewSpot from "./components/CreateNewSpot";
 import LogInModal from "./components/LogInModal";
 import SignupModal from "./components/SignupModal";
+import SpotIdPage from "./components/SpotIdPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,6 +39,9 @@ function App() {
           </Route>
           <Route path="/create-spot">
             <CreateNewSpot />
+          </Route>
+          <Route path="/spots/:id">
+            <SpotIdPage />
           </Route>
         </Switch>
       )}

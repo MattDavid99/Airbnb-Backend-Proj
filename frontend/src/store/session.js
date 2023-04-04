@@ -5,6 +5,7 @@ const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 const RETRIVE_SPOTS = "session/getSpots"
 const CREATE_SPOT = "session/createSpot"
+const GET_SPOT_ID = 'session/getSpotId'
 
 const setUser = (user) => {
   return {
@@ -32,6 +33,14 @@ export const createSpot = (spot) => {
     spot
   }
 }
+
+export const getSpotbyId = (spot) => {
+  return {
+    type: GET_SPOT_ID,
+    spot
+  }
+}
+
 
 export const login = (user) => async (dispatch) => {
   const { credential, password } = user;
@@ -152,6 +161,13 @@ export const newSpot = (payload) => async (dispatch) => {
 
 }
 
+export const getSpotId = (spotId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}`)
+  const data = await response.json()
+  dispatch(getSpotbyId(data))
+  return response
+}
+
 
 
 const initialState = { user: null, spots: [] };
@@ -178,6 +194,17 @@ const sessionReducer = (state = initialState, action) => {
       newState = Object.assign({}, state)
       newState.spots = [...state.spots, action.spot]
       return newState
+
+    case GET_SPOT_ID:
+      newState = Object.assign({}, state);
+      const updatedSpots = state.spots.map(spot => {
+        if (spot.id === action.spot.id) {
+          return action.spot;
+        }
+        return spot;
+      });
+      newState.spots = updatedSpots;
+      return newState;
 
     default:
       return state;
