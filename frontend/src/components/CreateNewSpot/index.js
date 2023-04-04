@@ -8,7 +8,7 @@ function CreateNewSpot() {
   const dispatch = useDispatch()
 
   const [country, setCountry] = useState("")
-  const [street, setStreet] = useState("")
+  const [address, setAddress] = useState("")
   const [city, setCity] = useState("")
   const [state, setState] = useState("")
   const [description, setDescription] = useState("")
@@ -22,7 +22,7 @@ function CreateNewSpot() {
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [errors, setErrors] = useState({
     country: [],
-    street: [],
+    address: [],
     city: [],
     state: [],
     description: [],
@@ -47,10 +47,10 @@ function CreateNewSpot() {
 
     if (hasSubmitted) {
 
-      const validationErrors = { country: [], street: [], city: [], state: [], description: [], name: [], price: [], image1: [], image2: [], image3: [], image4: [], image5: [] }
+      const validationErrors = { country: [], address: [], city: [], state: [], description: [], name: [], price: [], image1: [], image2: [], image3: [], image4: [], image5: [] }
 
       if (!country.length) validationErrors.country.push("Country is required")
-      if (!street.length) validationErrors.street.push("Address is required")
+      if (!address.length) validationErrors.address.push("Address is required")
       if (!city.length) validationErrors.city.push("City is required")
       if (!state.length) validationErrors.state.push("State is required")
       if (description.length < 30) validationErrors.description.push("Description needs a minimum of 30 characters")
@@ -66,7 +66,7 @@ function CreateNewSpot() {
 
     }
 
-  }, [hasSubmitted, country, street, city, state, description, name, price, image1, image2, image3, image4, image5])
+  }, [hasSubmitted, country, address, city, state, description, name, price, image1, image2, image3, image4, image5])
 
 
 
@@ -77,7 +77,7 @@ function CreateNewSpot() {
 
     const createNewSpotForm = {
       country,
-      street,
+      address,
       city,
       state,
       description,
@@ -94,7 +94,7 @@ function CreateNewSpot() {
     dispatch(newSpot(createNewSpotForm))
 
     setCountry("")
-    setStreet("")
+    setAddress("")
     setCity("")
     setState("")
     setDescription("")
@@ -108,7 +108,7 @@ function CreateNewSpot() {
     setHasSubmitted(true)
     setErrors({
       country: [],
-      street: [],
+      address: [],
       city: [],
       state: [],
       description: [],
@@ -160,15 +160,15 @@ function CreateNewSpot() {
             Street Address
             <input
               type="text"
-              onChange={(e) => setStreet(e.target.value)}
-              value={street}
+              onChange={(e) => setAddress(e.target.value)}
+              value={address}
 
               placeholder='Street Address'
               className='create-new-spot-input'
             />
           </label>
 
-          {hasSubmitted && errors.street.length > 0 && errors.street.map((error, idx) => (
+          {hasSubmitted && errors.address.length > 0 && errors.address.map((error, idx) => (
             <ul key={idx} className='create-new-spot-error-ul'>
               <li className='create-new-spot-error-li'>* {error}</li>
             </ul>

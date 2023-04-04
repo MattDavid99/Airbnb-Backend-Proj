@@ -149,6 +149,7 @@ export const newSpot = (payload) => async (dispatch) => {
 
   const spot = await response.json()
   dispatch(createSpot(spot))
+
 }
 
 

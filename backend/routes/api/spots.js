@@ -28,26 +28,26 @@ const validateSignup = [
         .exists({ checkFalsy: true })
         // .isLength({ min: 4 })
         .withMessage('Country is required'),
-    check('lat')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .custom((lat) => {
-            if (isNaN(parseFloat(lat))) {
-                throw new Error('Latitude is not valid')
-            }
-            return true;
-        })
-        .withMessage('Latitude is not valid'),
-    check('lng')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .custom((lng) => {
-            if (isNaN(parseFloat(lng))) {
-                throw new Error('Longitude is not valid')
-            }
-            return true;
-        })
-        .withMessage('Longitude is not valid'),
+    // check('lat')
+    //     .exists({ checkFalsy: true })
+    //     // .notEmpty()
+    //     .custom((lat) => {
+    //         if (isNaN(parseFloat(lat))) {
+    //             throw new Error('Latitude is not valid')
+    //         }
+    //         return true;
+    //     })
+    //     .withMessage('Latitude is not valid'),
+    // check('lng')
+    //     .exists({ checkFalsy: true })
+    //     // .notEmpty()
+    //     .custom((lng) => {
+    //         if (isNaN(parseFloat(lng))) {
+    //             throw new Error('Longitude is not valid')
+    //         }
+    //         return true;
+    //     })
+    //     .withMessage('Longitude is not valid'),
     check('name')
         .exists({ checkFalsy: true })
         .isLength({ max: 49 })
