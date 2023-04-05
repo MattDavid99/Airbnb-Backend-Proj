@@ -14,7 +14,7 @@ function CreateNewSpot() {
   const [description, setDescription] = useState("")
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
-  const [image1, setImage1] = useState("")
+  const [previewImage, setPreviewImage] = useState("")
   const [image2, setImage2] = useState("")
   const [image3, setImage3] = useState("")
   const [image4, setImage4] = useState("")
@@ -28,7 +28,7 @@ function CreateNewSpot() {
     description: [],
     name: [],
     price: [],
-    image1: [],
+    previewImage: [],
     image2: [],
     image3: [],
     image4: [],
@@ -47,7 +47,7 @@ function CreateNewSpot() {
 
     if (hasSubmitted) {
 
-      const validationErrors = { country: [], address: [], city: [], state: [], description: [], name: [], price: [], image1: [], image2: [], image3: [], image4: [], image5: [] }
+      const validationErrors = { country: [], address: [], city: [], state: [], description: [], name: [], price: [], previewImage: [], image2: [], image3: [], image4: [], image5: [] }
 
       if (!country.length) validationErrors.country.push("Country is required")
       if (!address.length) validationErrors.address.push("Address is required")
@@ -56,7 +56,7 @@ function CreateNewSpot() {
       if (description.length < 30) validationErrors.description.push("Description needs a minimum of 30 characters")
       if (!name.length) validationErrors.name.push("Name is required")
       if (!price.length) validationErrors.price.push("Price is required")
-      if (!validateFileExtension(image1)) validationErrors.image1.push("Image URL must end in .png, .jpg, or .jpeg")
+      if (!validateFileExtension(previewImage)) validationErrors.previewImage.push("Image URL must end in .png, .jpg, or .jpeg")
       if (!validateFileExtension(image2) && image2.length > 0) validationErrors.image2.push("Image URL must end in .png, .jpg, or .jpeg")
       if (!validateFileExtension(image3) && image3.length > 0) validationErrors.image3.push("Image URL must end in .png, .jpg, or .jpeg")
       if (!validateFileExtension(image4) && image4.length > 0) validationErrors.image4.push("Image URL must end in .png, .jpg, or .jpeg")
@@ -66,7 +66,7 @@ function CreateNewSpot() {
 
     }
 
-  }, [hasSubmitted, country, address, city, state, description, name, price, image1, image2, image3, image4, image5])
+  }, [hasSubmitted, country, address, city, state, description, name, price, previewImage, image2, image3, image4, image5])
 
 
 
@@ -83,7 +83,7 @@ function CreateNewSpot() {
       description,
       name,
       price: parsedPrice,
-      image1,
+      previewImage,
       image2,
       image3,
       image4,
@@ -100,7 +100,7 @@ function CreateNewSpot() {
     setDescription("")
     setName("")
     setPrice("")
-    setImage1("")
+    setPreviewImage("")
     setImage2("")
     setImage3("")
     setImage4("")
@@ -114,7 +114,7 @@ function CreateNewSpot() {
       description: [],
       name: [],
       price: [],
-      image1: [],
+      previewImage: [],
       image2: [],
       image3: [],
       image4: [],
@@ -289,12 +289,12 @@ function CreateNewSpot() {
               type="text"
               placeholder='Preview Image URL'
               className='create-new-spot-input'
-              onChange={(e) => setImage1(e.target.value)}
-              value={image1}
+              onChange={(e) => setPreviewImage(e.target.value)}
+              value={previewImage}
             />
           </label>
 
-          {hasSubmitted && errors.image1.length > 0 && errors.image1.map((error, idx) => (
+          {hasSubmitted && errors.previewImage.length > 0 && errors.previewImage.map((error, idx) => (
             <ul key={idx} className='create-new-spot-error-ul'>
               <li className='create-new-spot-error-li'>* {error}</li>
             </ul>

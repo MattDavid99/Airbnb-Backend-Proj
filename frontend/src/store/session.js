@@ -6,6 +6,17 @@ const REMOVE_USER = 'session/removeUser';
 const RETRIVE_SPOTS = "session/getSpots"
 const CREATE_SPOT = "session/createSpot"
 const GET_SPOT_ID = 'session/getSpotId'
+const GET_REVIEWS_FOR_SPOT = 'session/setReviewsForSpot';
+
+const getReview = ({ spotId, reviews }) => {
+  return {
+    type: GET_REVIEWS_FOR_SPOT,
+    payload: {
+      spotId,
+      reviews
+    }
+  }
+}
 
 const setUser = (user) => {
   return {
@@ -62,20 +73,7 @@ export const login = (user) => async (dispatch) => {
   }
 
 };
-// export const login = (user) => async (dispatch) => {
-//   const { credential, password } = user;
-//   const response = await csrfFetch('/api/session', {
-//     method: 'POST',
-//     body: JSON.stringify({
-//       credential,
-//       password,
-//     }),
-//   });
-//   const data = await response.json();
 
-//   dispatch(setUser(data.user));
-//   return response;
-// };
 
 
 export const restoreUser = () => async dispatch => {
@@ -111,23 +109,6 @@ export const signup = (user) => async (dispatch) => {
   // return response;
 };
 
-
-// export const signup = (user) => async (dispatch) => {
-//   const { username, firstName, lastName, email, password } = user;
-//   const response = await csrfFetch("/api/users", {
-//     method: "POST",
-//     body: JSON.stringify({
-//       username,
-//       firstName,
-//       lastName,
-//       email,
-//       password,
-//     }),
-//   });
-//   const data = await response.json();
-//   dispatch(setUser(data)); // <<-- data.user broke it
-//   return response;
-// };
 
 
 
@@ -169,9 +150,15 @@ export const getSpotId = (id) => async (dispatch) => {
   // return response
 }
 
+export const getReviewForSpot = (id) => async (dispatch) => {
+  const response = await fetch(`/api/spots/${id}/reviews`);
+  const data = await response.json();
+  console.log(data);
+  dispatch(getReview({ spotId: id, reviews: data }));
+};
 
 
-const initialState = { user: null, spots: [] };
+const initialState = { user: null, spots: [], reviews: {} };
 
 const sessionReducer = (state = initialState, action) => {
   let newState;
@@ -208,6 +195,15 @@ const sessionReducer = (state = initialState, action) => {
       console.log(newState);
       return newState;
 
+
+    case GET_REVIEWS_FOR_SPOT:
+      newState = Object.assign({}, state);
+      newState.reviews = {
+        ...newState.reviews,
+        [action.payload.spotId]: action.payload.reviews
+      };
+      console.log(newState);
+      return newState;
 
 
     default:
