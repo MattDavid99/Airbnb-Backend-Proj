@@ -161,11 +161,12 @@ export const newSpot = (payload) => async (dispatch) => {
 
 }
 
-export const getSpotId = (spotId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/spots/${spotId}`)
+export const getSpotId = (id) => async (dispatch) => {
+  const response = await fetch(`/api/spots/${id}`)
   const data = await response.json()
+  console.log(data);
   dispatch(getSpotbyId(data))
-  return response
+  // return response
 }
 
 
@@ -189,6 +190,10 @@ const sessionReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       newState.spots = action.payload;
       return newState;
+    // return {
+    //   ...newState,
+    //   currentSpot: action.payload,
+    // };
 
     case CREATE_SPOT:
       newState = Object.assign({}, state)
@@ -196,15 +201,12 @@ const sessionReducer = (state = initialState, action) => {
       return newState
 
     case GET_SPOT_ID:
-      newState = Object.assign({}, state);
-      const updatedSpots = state.spots.map(spot => {
-        if (spot.id === action.spot.id) {
-          return action.spot;
-        }
-        return spot;
-      });
-      newState.spots = updatedSpots;
+      newState = Object.assign({}, state)
+      console.log(newState);
+      newState.spots = action.spot;
+      console.log(newState);
       return newState;
+
 
     default:
       return state;
