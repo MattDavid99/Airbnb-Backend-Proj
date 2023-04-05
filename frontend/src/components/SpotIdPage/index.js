@@ -10,7 +10,8 @@ function SpotIdPage() {
   const dispatch = useDispatch()
   const { id } = useParams()
 
-  const specificSpot = useSelector((state) => (state.session.spots))
+  // const specificSpot = useSelector((state) => (state.session.spots))
+  const specificSpot = useSelector((state) => state.session.spots.find(spot => spot.id === +id));
   console.log(specificSpot);
 
   // const finder = specificSpot.find((spot) => spot.id + id)
@@ -20,9 +21,6 @@ function SpotIdPage() {
   // console.log(spot);
 
 
-  useEffect(() => {
-    dispatch(getSpotId(id))
-  }, [dispatch, id])
 
   // const specificSpot = useSelector((state) => {
   //   const spot = state.session.spots.find((spot) => spot.id === +id);
@@ -31,6 +29,9 @@ function SpotIdPage() {
   //   }
   //   return null;
   // });
+  useEffect(() => {
+    dispatch(getSpotId(id))
+  }, [dispatch, id])
 
   // console.log(specificSpot.SpotImages);
 
@@ -44,7 +45,7 @@ function SpotIdPage() {
         </div>
 
         <div className='spot-id-page-image-div'>
-          {specificSpot.SpotImages.map((i) => (
+          {specificSpot.SpotImages && specificSpot.SpotImages.map((i) => (
 
             <img src={i.url} alt="#" className='spot-id-page-image' key={i.id} />
           ))}

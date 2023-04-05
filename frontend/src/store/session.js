@@ -189,23 +189,25 @@ const sessionReducer = (state = initialState, action) => {
     case RETRIVE_SPOTS:
       newState = Object.assign({}, state);
       newState.spots = action.payload;
+      console.log(newState)
       return newState;
-    // return {
-    //   ...newState,
-    //   currentSpot: action.payload,
-    // };
+
 
     case CREATE_SPOT:
       newState = Object.assign({}, state)
       newState.spots = [...state.spots, action.spot]
       return newState
 
+    // Had to change this a whole lot⬇️⬇️⬇️
     case GET_SPOT_ID:
       newState = Object.assign({}, state)
       console.log(newState);
-      newState.spots = action.spot;
+      // newState.spots = action.spot;
+      const updatedSpots = newState.spots.map(spot => (spot.id === action.spot.id ? action.spot : spot));
+      newState.spots = updatedSpots;
       console.log(newState);
       return newState;
+
 
 
     default:
