@@ -9,7 +9,7 @@
   /* margin-bottom: 5px; */
   background-color: #fafafa;
   width: 100%;
-  border-bottom: 1px solid #000;
+  /* border-bottom: 1px solid #000; */
   height: 80px;
 }
 
@@ -41,6 +41,7 @@
   z-index: 100;
   background-color: #fafafa;
   height: 80px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .create_spot_link {

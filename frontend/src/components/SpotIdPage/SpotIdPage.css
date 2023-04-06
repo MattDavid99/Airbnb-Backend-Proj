@@ -57,11 +57,13 @@
 
 .spot-id-page-host-div {
   border: 1px solid #000;
-  margin-top: 50px;
+  /* margin-top: 10px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  position: relative;
+  bottom: 50px;
 }
 
 .spot-id-page-host-h3 {
@@ -87,4 +89,44 @@
 
 .spot-id-page-reviews-info {
   margin-left: 50px;
+}
+
+.spot-id-page-reviews-span {
+  border: 1px solid #000;
+  display: flex;
+  width: 300px;
+}
+
+.spot-id-page-host-reserve-box {
+  border: 1px solid #000;
+  display: flex;
+  justify-content: space-around;
+  width: 25%;
+  height: 100px;
+  position: relative;
+  left: 60%;
+  top: 100px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  /* background-color: #f7f3f3; */
+}
+
+.spot-id-page-host-reserve-box-button {
+  position: relative;
+  left: 63%;
+  top: 60px;
+  width: 200px;
+  border-radius: 10px;
+  padding: 3px;
+  border: none;
+  color: #f5f5f5;
+  background-color: #fd8d83;
+  cursor: pointer;
+  font-size: medium;
+  font-weight: 600;
+}
+
+.spot-id-page-host-reserve-box-button:hover {
+  background-color: #ee8278;
+  color: #ffffff;
 }

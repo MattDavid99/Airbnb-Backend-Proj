@@ -45,8 +45,19 @@ function SpotIdPage() {
             ))}
           </div>
 
+
+
           {specificSpot.Owner && (
             <div className='spot-id-page-host-div'>
+
+              <div className='spot-id-page-host-reserve-box'>
+                <h4 className='spot-id-page-host-reserve-box-h4'>${specificSpot.price}/night</h4>
+                <h5 className='spot-id-page-host-reserve-box-h5'>⭐{specificSpot.avgStarRating}</h5>
+                <h5 className='spot-id-page-host-reserve-box-h5'>📝{specificSpot.numReviews}</h5>
+              </div>
+
+              <button className='spot-id-page-host-reserve-box-button'>Reserve</button>
+
               <h3 className='spot-id-page-host-h3'>
                 Hosted by: {specificSpot.Owner.firstName === null ? 'Matthew David' : specificSpot.Owner.firstName}
               </h3>
@@ -68,10 +79,11 @@ function SpotIdPage() {
 
               return (
                 <div className='spot-id-page-reviews-info' key={index}>
-                  <h5>User: {review.User.firstName || 'Anonymous'}</h5>
-                  <h6>{`${month} ${day}`}</h6>
-                  <p>Review: {review.review}</p>
-                  <p>Stars: {review.stars}</p>
+                  <span className='spot-id-page-reviews-span'></span>
+                  <h5 className='spot-id-page-reviews-h5'>User: {review.User.firstName || 'Anonymous'}</h5>
+                  <h6 className='spot-id-page-reviews-h6'>{`${month} ${day}`}</h6>
+                  <p className='spot-id-page-reviews-p'>Review: {review.review}</p>
+                  <p className='spot-id-page-reviews-p'>Stars: {review.stars}</p>
                 </div>
               );
             })}
