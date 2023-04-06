@@ -202,7 +202,7 @@ const sessionReducer = (state = initialState, action) => {
         ...newState.reviews,
         [action.payload.spotId]: action.payload.reviews
       };
-      console.log(newState);
+      console.log(newState.reviews);
       return newState;
 
 

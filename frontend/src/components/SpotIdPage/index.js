@@ -52,23 +52,29 @@ function SpotIdPage() {
               </h3>
 
               <h4 className='spot-id-page-host-h3'>Description:</h4>
-              <p className='spot-id-page-host-p'>One of the most stunning spots you can find on Airbnb is a cozy cabin nestled in the heart of the Rocky Mountains. This beautiful cabin boasts breathtaking views of snow-capped peaks, pristine lakes, and towering pine trees. The interior of the cabin is warm and inviting, with a rustic fireplace, comfortable furnishings, and charming decor. You'll feel right at home as you take in the natural beauty that surrounds you from the comfort of your own private hot tub on the deck. Whether you're looking to disconnect and unwind, or you're an adventurous traveler eager to explore the great outdoors, this Airbnb spot is the perfect destination for your next vacation.</p>
+              <p className='spot-id-page-host-p'>Discover a slice of paradise at this stunning tropical spot on Airbnb, nestled amidst swaying palm trees and glistening turquoise waters. This luxurious retreat offers you an unparalleled experience of serenity and relaxation in a lush, tropical setting. The beautifully designed beachfront villa boasts floor-to-ceiling windows that fill the space with natural light and provide breathtaking views of the ocean. The interior is tastefully decorated with a blend of modern and traditional elements.</p>
             </div>
           )}
 
+
           <div className='spot-id-page-reviews-div'>
-            {spotReviews && spotReviews.Reviews && spotReviews.Reviews.map((review, index) => (
-              <div key={index} className='review'>
-                <h4>User: {review.User.firstName || 'Anonymous'}</h4>
-                <p>Review: {review.review}</p>
-                <p>Stars: {review.stars}</p>
-                <div className='review-images'>
-                  {review.ReviewImages.map((image, i) => (
-                    <img key={i} src={image.url} alt={`Review ${index + 1} image ${i + 1}`} />
-                  ))}
+            <h4>⭐ {specificSpot.avgStarRating}</h4>
+            <h4>📝 Reviews: {specificSpot.numReviews}</h4>
+
+            {spotReviews && spotReviews.Reviews && spotReviews.Reviews.map((review, index) => {
+              const createdAtDate = new Date(review.createdAt);
+              const month = createdAtDate.toLocaleString('default', { month: 'long' });
+              const day = createdAtDate.getDate();
+
+              return (
+                <div className='spot-id-page-reviews-info' key={index}>
+                  <h5>User: {review.User.firstName || 'Anonymous'}</h5>
+                  <h6>{`${month} ${day}`}</h6>
+                  <p>Review: {review.review}</p>
+                  <p>Stars: {review.stars}</p>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
         </div>
