@@ -106,8 +106,8 @@ const validateQueryParameters = [
 
     check('size')
         .optional()
-        .isInt({ min: 1, max: 30 })
-        .withMessage('Value must be an integer from 1 to 20')
+        .isInt({ min: 1, max: 40 })
+        .withMessage('Value must be an integer from 1 to 35')
         .exists({ checkFalsy: false })
         .withMessage(''),
 
@@ -158,7 +158,7 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
 
     const page = req.query.page
     const size = req.query.size
-    let limit = size || 30
+    let limit = size || 40
     let offset = (limit * (page - 1) || 0)
 
 
@@ -312,17 +312,23 @@ router.post('/', validateSignup, requireAuth, async (req, res, next) => {
     if (req.user) {
 
 
-        const { address, city, state, country, lat, lng, name, description, price, previewImage } = req.body
-
-
+        const { address, city, state, country, lat, lng, name, description, price, previewImage, url1, url2, url3, url4 } = req.body
 
         const ownerId = req.user.id
 
         const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price, previewImage })
 
-
-
         const prevImage = await SpotImage.create({ url: previewImage, preview: true, spotId: newSpot.id })
+
+
+        const imageUrls = [url1, url2, url3, url4];
+
+        for (const url of imageUrls) {
+            if (url) {
+                await SpotImage.create({ url, preview: false, spotId: newSpot.id });
+            }
+        }
+
 
         const createdSpot = await Spot.findByPk(newSpot.id)
 

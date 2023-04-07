@@ -40,7 +40,7 @@ function App() {
           <Route path="/create-spot">
             <CreateNewSpot />
           </Route>
-          <Route path="/spots/:id">
+          <Route path="/spots/:id" component={SpotIdPage}>
             <SpotIdPage />
           </Route>
         </Switch>

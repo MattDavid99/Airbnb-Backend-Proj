@@ -137,8 +137,12 @@ export const newSpot = (payload) => async (dispatch) => {
     body: JSON.stringify(payload)
   })
 
-  const spot = await response.json()
-  dispatch(createSpot(spot))
+  if (response.ok) {
+
+    const spot = await response.json()
+    dispatch(createSpot(spot))
+    return spot.id
+  }
 
 }
 

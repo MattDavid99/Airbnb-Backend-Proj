@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { newSpot } from '../../store/session'
 import "./CreateNewSpot.css"
 
 function CreateNewSpot() {
 
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const [country, setCountry] = useState("")
   const [address, setAddress] = useState("")
@@ -15,10 +17,10 @@ function CreateNewSpot() {
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
   const [previewImage, setPreviewImage] = useState("")
-  const [image2, setImage2] = useState("")
-  const [image3, setImage3] = useState("")
-  const [image4, setImage4] = useState("")
-  const [image5, setImage5] = useState("")
+  const [url1, setUrl1] = useState("")
+  const [url2, setUrl2] = useState("")
+  const [url3, setUrl3] = useState("")
+  const [url4, setUrl4] = useState("")
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [errors, setErrors] = useState({
     country: [],
@@ -29,10 +31,10 @@ function CreateNewSpot() {
     name: [],
     price: [],
     previewImage: [],
-    image2: [],
-    image3: [],
-    image4: [],
-    image5: []
+    url1: [],
+    url2: [],
+    url3: [],
+    url4: [],
   })
 
   const validateFileExtension = (url) => {
@@ -47,7 +49,7 @@ function CreateNewSpot() {
 
     if (hasSubmitted) {
 
-      const validationErrors = { country: [], address: [], city: [], state: [], description: [], name: [], price: [], previewImage: [], image2: [], image3: [], image4: [], image5: [] }
+      const validationErrors = { country: [], address: [], city: [], state: [], description: [], name: [], price: [], previewImage: [], url1: [], url2: [], url3: [], url4: [] }
 
       if (!country.length) validationErrors.country.push("Country is required")
       if (!address.length) validationErrors.address.push("Address is required")
@@ -57,20 +59,20 @@ function CreateNewSpot() {
       if (!name.length) validationErrors.name.push("Name is required")
       if (!price.length) validationErrors.price.push("Price is required")
       if (!validateFileExtension(previewImage)) validationErrors.previewImage.push("Image URL must end in .png, .jpg, or .jpeg")
-      if (!validateFileExtension(image2) && image2.length > 0) validationErrors.image2.push("Image URL must end in .png, .jpg, or .jpeg")
-      if (!validateFileExtension(image3) && image3.length > 0) validationErrors.image3.push("Image URL must end in .png, .jpg, or .jpeg")
-      if (!validateFileExtension(image4) && image4.length > 0) validationErrors.image4.push("Image URL must end in .png, .jpg, or .jpeg")
-      if (!validateFileExtension(image5) && image5.length > 0) validationErrors.image5.push("Image URL must end in .png, .jpg, or .jpeg")
+      if (!validateFileExtension(url1) && url1.length > 0) validationErrors.url1.push("Image URL must end in .png, .jpg, or .jpeg")
+      if (!validateFileExtension(url2) && url2.length > 0) validationErrors.url2.push("Image URL must end in .png, .jpg, or .jpeg")
+      if (!validateFileExtension(url3) && url3.length > 0) validationErrors.url3.push("Image URL must end in .png, .jpg, or .jpeg")
+      if (!validateFileExtension(url4) && url4.length > 0) validationErrors.url4.push("Image URL must end in .png, .jpg, or .jpeg")
 
       setErrors(validationErrors)
 
     }
 
-  }, [hasSubmitted, country, address, city, state, description, name, price, previewImage, image2, image3, image4, image5])
+  }, [hasSubmitted, country, address, city, state, description, name, price, previewImage, url1, url2, url3, url4])
 
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     const parsedPrice = parseFloat(price)
@@ -84,15 +86,17 @@ function CreateNewSpot() {
       name,
       price: parsedPrice,
       previewImage,
-      image2,
-      image3,
-      image4,
-      image5,
+      url1,
+      url2,
+      url3,
+      url4,
     };
 
     console.log(createNewSpotForm);
     console.log(previewImage);
-    dispatch(newSpot(createNewSpotForm))
+    const newSpotId = await dispatch(newSpot(createNewSpotForm))
+    history.push(`/spots/${newSpotId}`)
+
 
     setCountry("")
     setAddress("")
@@ -102,10 +106,10 @@ function CreateNewSpot() {
     setName("")
     setPrice("")
     setPreviewImage("")
-    setImage2("")
-    setImage3("")
-    setImage4("")
-    setImage5("")
+    setUrl1("")
+    setUrl2("")
+    setUrl3("")
+    setUrl4("")
     setHasSubmitted(true)
     setErrors({
       country: [],
@@ -116,11 +120,12 @@ function CreateNewSpot() {
       name: [],
       price: [],
       previewImage: [],
-      image2: [],
-      image3: [],
-      image4: [],
-      image5: []
+      url1: [],
+      url2: [],
+      url3: [],
+      url4: [],
     })
+
 
   }
 
@@ -309,12 +314,12 @@ function CreateNewSpot() {
               type="text"
               placeholder='Image URL'
               className='create-new-spot-input'
-              onChange={(e) => setImage2(e.target.value)}
-              value={image2}
+              onChange={(e) => setUrl1(e.target.value)}
+              value={url1}
             />
           </label>
 
-          {hasSubmitted && errors.image2.length > 0 && errors.image2.map((error, idx) => (
+          {hasSubmitted && errors.url1.length > 0 && errors.url1.map((error, idx) => (
             <ul key={idx} className='create-new-spot-error-ul'>
               <li className='create-new-spot-error-li'>* {error}</li>
             </ul>
@@ -325,12 +330,12 @@ function CreateNewSpot() {
               type="text"
               placeholder='Image URL'
               className='create-new-spot-input'
-              onChange={(e) => setImage3(e.target.value)}
-              value={image3}
+              onChange={(e) => setUrl2(e.target.value)}
+              value={url2}
             />
           </label>
 
-          {hasSubmitted && errors.image3.length > 0 && errors.image3.map((error, idx) => (
+          {hasSubmitted && errors.url2.length > 0 && errors.url2.map((error, idx) => (
             <ul key={idx} className='create-new-spot-error-ul'>
               <li className='create-new-spot-error-li'>* {error}</li>
             </ul>
@@ -342,12 +347,12 @@ function CreateNewSpot() {
               type="text"
               placeholder='Image URL'
               className='create-new-spot-input'
-              onChange={(e) => setImage4(e.target.value)}
-              value={image4}
+              onChange={(e) => setUrl3(e.target.value)}
+              value={url3}
             />
           </label>
 
-          {hasSubmitted && errors.image4.length > 0 && errors.image4.map((error, idx) => (
+          {hasSubmitted && errors.url3.length > 0 && errors.url3.map((error, idx) => (
             <ul key={idx} className='create-new-spot-error-ul'>
               <li className='create-new-spot-error-li'>* {error}</li>
             </ul>
@@ -359,12 +364,12 @@ function CreateNewSpot() {
               type="text"
               placeholder='Image URL'
               className='create-new-spot-input'
-              onChange={(e) => setImage5(e.target.value)}
-              value={image5}
+              onChange={(e) => setUrl4(e.target.value)}
+              value={url4}
             />
           </label>
 
-          {hasSubmitted && errors.image5.length > 0 && errors.image5.map((error, idx) => (
+          {hasSubmitted && errors.url4.length > 0 && errors.url4.map((error, idx) => (
             <ul key={idx} className='create-new-spot-error-ul'>
               <li className='create-new-spot-error-li'>* {error}</li>
             </ul>
