@@ -106,7 +106,7 @@ const validateQueryParameters = [
 
     check('size')
         .optional()
-        .isInt({ min: 1, max: 20 })
+        .isInt({ min: 1, max: 30 })
         .withMessage('Value must be an integer from 1 to 20')
         .exists({ checkFalsy: false })
         .withMessage(''),
@@ -158,7 +158,7 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
 
     const page = req.query.page
     const size = req.query.size
-    let limit = size || 20
+    let limit = size || 30
     let offset = (limit * (page - 1) || 0)
 
 
@@ -310,21 +310,54 @@ router.get('/:spotId', async (req, res, next) => {
 router.post('/', validateSignup, requireAuth, async (req, res, next) => {
 
     if (req.user) {
-        const Spots = await Spot.findAll()
-        const { address, city, state, country, lat, lng, name, description, price } = req.body
-
-        if (Spots) {
-            //get owner id from current user
-            const ownerId = req.user.id
-
-            const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price })
 
 
-            if (newSpot) return res.status(201).json(newSpot)
-        }
+        const { address, city, state, country, lat, lng, name, description, price, previewImage } = req.body
+
+
+
+        const ownerId = req.user.id
+
+        const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price, previewImage })
+
+
+
+        const prevImage = await SpotImage.create({ url: previewImage, preview: true, spotId: newSpot.id })
+
+        const createdSpot = await Spot.findByPk(newSpot.id)
+
+        if (newSpot) return res.status(201).json(createdSpot)
+
     }
 
 });
+// -----------------------------------------
+// router.post('/', validateSignup, requireAuth, async (req, res, next) => {
+
+//     if (req.user) {
+//         const Spots = await Spot.findAll()
+//         const { address, city, state, country, lat, lng, name, description, price } = req.body
+
+//         if (Spots) {
+//             //get owner id from current user
+//             const ownerId = req.user.id
+
+//             const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price })
+
+
+//             if (newSpot) {
+//                 newImage = await SpotImage.create({
+//                     spotId: parseInt(newSpot.id),
+//                     url,
+//                     // preview
+//                 })
+
+//                 return res.status(201).json(newSpot)
+//             }
+//         }
+//     }
+
+// });
 
 
 // Add an Image to a Spot based on the Spot's id   ✅✅✅✅✅✅
@@ -353,6 +386,31 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         res.status(200).json(newImage)
     }
 })
+// router.post('/:spotId/images', requireAuth, async (req, res, next) => {
+
+//     const { url, preview } = req.body
+
+//     const spot = await Spot.findOne({
+//         where: { id: req.params.spotId }
+//     })
+
+//     if (!spot) {
+//         return res.status(404).json({
+//             message: "Spot couldn't be found",
+//             statusCode: 404
+//         })
+//     }
+
+//     newImage = await SpotImage.create({
+//         spotId: parseInt(req.params.spotId),
+//         url,
+//         preview
+//     })
+
+//     if (newImage) {
+//         res.status(200).json(newImage)
+//     }
+// })
 //----------------------------------------
 
 

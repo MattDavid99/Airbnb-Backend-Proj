@@ -91,6 +91,7 @@ function CreateNewSpot() {
     };
 
     console.log(createNewSpotForm);
+    console.log(previewImage);
     dispatch(newSpot(createNewSpotForm))
 
     setCountry("")
@@ -292,6 +293,8 @@ function CreateNewSpot() {
               onChange={(e) => setPreviewImage(e.target.value)}
               value={previewImage}
             />
+            <img src={previewImage} alt='Preview' className='create-new-spot-preview-image' />
+
           </label>
 
           {hasSubmitted && errors.previewImage.length > 0 && errors.previewImage.map((error, idx) => (

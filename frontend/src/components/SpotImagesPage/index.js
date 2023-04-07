@@ -9,6 +9,7 @@ function SpotImagesPage() {
 
   const dispatch = useDispatch()
   const spots = useSelector((state) => state.session.spots)
+
   // const spotImg = useSelector((state) => state.session.spots)
   console.log(spots);
 
@@ -19,7 +20,7 @@ function SpotImagesPage() {
 
   useEffect(() => {
     fetchImages()
-  }, [])
+  }, [dispatch])
 
   // // We are console.logging to see all of our spots
 
@@ -32,7 +33,6 @@ function SpotImagesPage() {
             <li key={i.id} className="spot-image-li">{i.city}/{i.state}</li>
             <span className='stars'>⭐{i.avgRating}</span>
             <li className="price">${i.price} night</li>
-            {/* <span className='distance'><i className="fas fa-car" /></span> */}
           </div>
         ))}
       </ul>
@@ -41,24 +41,3 @@ function SpotImagesPage() {
 }
 
 export default SpotImagesPage
-
-
-
-
-
-
-
-//--------------------------------
-{/* <div className='spot-image-container'>
-      <ul className='spot-image-ul'>
-        {spots && spots.map((i) => (
-          <div className="preview-image-div" key={i.id}>
-            <NavLink to={`spots/${i.id}`}><img className="preview-image-img" src={i.previewImage} alt="#" /></NavLink>
-            <li key={i.id} className="spot-image-li">{i.city}/{i.state}</li>
-            <span className='stars'>⭐{i.avgRating}</span>
-            <li className="price">${i.price} night</li>
-            {/* <span className='distance'><i className="fas fa-car" /></span> */}
-          // </div>
-        // ))}
-      // </ul>
-    // </div> */}
