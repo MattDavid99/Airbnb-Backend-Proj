@@ -111,8 +111,8 @@ function Navigation({ isLoaded }) {
   } else {
     sessionLinks = (
       <li className='not_logged_in'>
-        <button onClick={openLogInModal}><NavLink to="/login" className="sign-log-in-link">Log In</NavLink></button>
-        <button onClick={openSignupModal}><NavLink to="/signup" className="sign-log-in-link">Sign Up</NavLink></button>
+        <button onClick={openLogInModal} className="sign-log-in-link"><NavLink to="/login" className="sign-log-in-link">Log In</NavLink></button>
+        <button onClick={openSignupModal} className="sign-log-in-link"><NavLink to="/signup" className="sign-log-in-link">Sign Up</NavLink></button>
       </li>
     );
   }
