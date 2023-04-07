@@ -1,0 +1,49 @@
+.review-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.review-modal {
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
+  z-index: 1001;
+}
+
+.post-review-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-review-form-h3 {
+  margin-bottom: 10px;
+}
+
+.post-review-form-label {
+  margin-bottom: 10px;
+}
+
+.post-review-form-textarea {
+  margin-bottom: 10px;
+  resize: none;
+}
+
+.post-review-form-star {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.post-review-form-button {
+  cursor: pointer;
+}

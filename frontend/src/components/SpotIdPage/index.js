@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom';
 import { getSpotId, getReviewForSpot } from '../../store/session';
+import ReviewModal from '../ReviewModal';
 
 import "./SpotIdPage.css"
 
@@ -10,10 +11,27 @@ function SpotIdPage() {
   const dispatch = useDispatch()
   const { id } = useParams()
 
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
+  // const [reviews, setReviews] = useState([])🟨
+
   const specificSpot = useSelector((state) => state.session.spots.find(spot => spot.id === +id));
-  const spotReviews = useSelector((state) => state.session.reviews[id]);
+  // const spotReviews = useSelector((state) => state.session.reviews[id]);🟨
+  const reviews = useSelector((state) => state.session.reviews[id] || []);
   console.log(specificSpot);
-  console.log(spotReviews);
+  console.log(reviews);
+
+  // const handleNewReview = (newReview) => {🟨
+  //   setReviews([...reviews, newReview])
+  // }
+
+  const openReviewModal = () => {
+    setIsReviewModalOpen(true)
+  };
+
+  const closeReviewModal = () => {
+    setIsReviewModalOpen(false);
+  };
+
 
   useEffect(() => {
 
@@ -71,8 +89,18 @@ function SpotIdPage() {
           <div className='spot-id-page-reviews-div'>
             <h4>⭐ {specificSpot.avgStarRating}</h4>
             <h4>📝 Reviews: {specificSpot.numReviews}</h4>
+            <button onClick={openReviewModal} className="spot-id-page-reviews-button">Leave a Review</button>
 
-            {spotReviews && spotReviews.Reviews && spotReviews.Reviews.map((review, index) => {
+            {/* {isReviewModalOpen && <ReviewModal isOpen={isReviewModalOpen} onClose={closeReviewModal} onSubmitReview={handleNewReview} spotId={id} />} */}
+            {isReviewModalOpen && (
+              <ReviewModal
+                isOpen={isReviewModalOpen}
+                onClose={closeReviewModal}
+                spotId={id}
+              />
+            )}
+
+            {reviews && reviews.Reviews && reviews.Reviews.map((review, index) => {
               const createdAtDate = new Date(review.createdAt);
               const month = createdAtDate.toLocaleString('default', { month: 'long' });
               const day = createdAtDate.getDate();

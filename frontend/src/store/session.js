@@ -7,6 +7,16 @@ const RETRIVE_SPOTS = "session/getSpots"
 const CREATE_SPOT = "session/createSpot"
 const GET_SPOT_ID = 'session/getSpotId'
 const GET_REVIEWS_FOR_SPOT = 'session/setReviewsForSpot';
+const POST_REVIEW_FOR_SPOT = 'session/postReviewForSpot'
+
+
+const postReview = (review) => {
+  return {
+    type: POST_REVIEW_FOR_SPOT,
+    review,
+  };
+};
+
 
 const getReview = ({ spotId, reviews }) => {
   return {
@@ -106,7 +116,6 @@ export const signup = (user) => async (dispatch) => {
   else {
     return false
   }
-  // return response;
 };
 
 
@@ -162,6 +171,25 @@ export const getReviewForSpot = (id) => async (dispatch) => {
 };
 
 
+export const postReviewForSpot = (spotId, review) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(review),
+  });
+
+  if (response.ok) {
+    const newReview = await response.json();
+    dispatch(postReview({ ...newReview, spotId }));
+    return newReview;
+  } else {
+    return false;
+  }
+};
+
+
+
+
 const initialState = { user: null, spots: [], reviews: {} };
 
 const sessionReducer = (state = initialState, action) => {
@@ -207,6 +235,16 @@ const sessionReducer = (state = initialState, action) => {
         [action.payload.spotId]: action.payload.reviews
       };
       console.log(newState.reviews);
+      return newState;
+
+
+    case POST_REVIEW_FOR_SPOT:
+      newState = Object.assign({}, state);
+      const spotId = action.review.spotId;
+      if (!newState.reviews[spotId]) {
+        newState.reviews[spotId] = [];
+      }
+      newState.reviews[spotId] = [...(newState.reviews[spotId] || []), action.review];
       return newState;
 
 
