@@ -108,7 +108,7 @@ function SpotIdPage() {
               return (
                 <div className='spot-id-page-reviews-info' key={index}>
                   <span className='spot-id-page-reviews-span'></span>
-                  <h5 className='spot-id-page-reviews-h5'>User: {review.User.firstName || 'Anonymous'}</h5>
+                  <h5 className='spot-id-page-reviews-h5'>User: {review.User?.firstName || 'Anonymous'}</h5>
                   <h6 className='spot-id-page-reviews-h6'>{`${month} ${day}`}</h6>
                   <p className='spot-id-page-reviews-p'>Review: {review.review}</p>
                   <p className='spot-id-page-reviews-p'>Stars: {review.stars}</p>

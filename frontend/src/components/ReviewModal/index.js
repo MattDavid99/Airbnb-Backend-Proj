@@ -23,10 +23,12 @@ function ReviewModal({ isOpen, onClose, spotId }) {
 
     console.log(reviewData);
 
-    await dispatch(postReviewForSpot(spotId, reviewData))
+    const newReview = await dispatch(postReviewForSpot(spotId, reviewData))
 
-
-    onClose()
+    if (newReview) {
+      console.log("Closing modal-------------------->");
+      onClose()
+    }
 
   }
 

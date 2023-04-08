@@ -10,10 +10,11 @@ const GET_REVIEWS_FOR_SPOT = 'session/setReviewsForSpot';
 const POST_REVIEW_FOR_SPOT = 'session/postReviewForSpot'
 
 
-const postReview = (review) => {
+const postReview = (review, spotId) => {
   return {
     type: POST_REVIEW_FOR_SPOT,
     review,
+    spotId
   };
 };
 
@@ -180,6 +181,7 @@ export const postReviewForSpot = (spotId, review) => async (dispatch) => {
 
   if (response.ok) {
     const newReview = await response.json();
+    console.log(newReview);
     dispatch(postReview({ ...newReview, spotId }));
     return newReview;
   } else {
@@ -242,9 +244,10 @@ const sessionReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       const spotId = action.review.spotId;
       if (!newState.reviews[spotId]) {
-        newState.reviews[spotId] = [];
+        newState.reviews[spotId] = { Reviews: [] };
       }
-      newState.reviews[spotId] = [...(newState.reviews[spotId] || []), action.review];
+      newState.reviews[spotId].Reviews = [...newState.reviews[spotId].Reviews, action.review];
+      console.log(newState);
       return newState;
 
 
