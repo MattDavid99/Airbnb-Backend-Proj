@@ -40,8 +40,7 @@ function SpotIdPage() {
 
   }, [id, dispatch])
 
-  // useEffect(() => {
-  // }, [dispatch, id]);
+
 
 
 

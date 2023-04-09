@@ -12,10 +12,11 @@ const router = express.Router();
 const validateLogin = [
     check('credential')
         .exists({ checkFalsy: true })
-        .notEmpty()
+        .isLength({ min: 4 })
         .withMessage('Email or username is required'),
     check('password')
         .exists({ checkFalsy: true })
+        .isLength({ min: 6 })
         .withMessage('Password is required'),
     handleValidationErrors
 ];
@@ -38,6 +39,7 @@ router.post('/', validateLogin, async (req, res, next) => {
         })
         // err.title = 'Login failed';
         return next(err);
+
     }
 
 

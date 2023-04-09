@@ -317,6 +317,7 @@ function CreateNewSpot() {
               onChange={(e) => setUrl1(e.target.value)}
               value={url1}
             />
+            <img src={url1} alt='Preview' className='create-new-spot-preview-image' />
           </label>
 
           {hasSubmitted && errors.url1.length > 0 && errors.url1.map((error, idx) => (
@@ -333,6 +334,7 @@ function CreateNewSpot() {
               onChange={(e) => setUrl2(e.target.value)}
               value={url2}
             />
+            <img src={url2} alt='Preview' className='create-new-spot-preview-image' />
           </label>
 
           {hasSubmitted && errors.url2.length > 0 && errors.url2.map((error, idx) => (
@@ -350,6 +352,7 @@ function CreateNewSpot() {
               onChange={(e) => setUrl3(e.target.value)}
               value={url3}
             />
+            <img src={url3} alt='Preview' className='create-new-spot-preview-image' />
           </label>
 
           {hasSubmitted && errors.url3.length > 0 && errors.url3.map((error, idx) => (
@@ -367,6 +370,7 @@ function CreateNewSpot() {
               onChange={(e) => setUrl4(e.target.value)}
               value={url4}
             />
+            <img src={url4} alt='Preview' className='create-new-spot-preview-image' />
           </label>
 
           {hasSubmitted && errors.url4.length > 0 && errors.url4.map((error, idx) => (
