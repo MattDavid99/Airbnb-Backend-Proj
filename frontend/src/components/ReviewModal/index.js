@@ -20,19 +20,14 @@ function ReviewModal({ isOpen, onClose, spotId }) {
       review,
       stars
     }
-
     console.log(reviewData);
 
     const newReview = await dispatch(postReviewForSpot(spotId, reviewData))
 
     if (newReview) {
-      console.log("Closing modal-------------------->");
       onClose()
     }
-
   }
-
-
 
 
   if (!isOpen) {
@@ -74,7 +69,7 @@ function ReviewModal({ isOpen, onClose, spotId }) {
           </label>
           <div className='post-review-form-star'>{renderStars()} Stars</div>
 
-          <button className='post-review-form-button'>Submit Your Review</button>
+          <button className='post-review-form-button' disabled={stars < 1 || review.length < 10}>Submit Your Review</button>
         </form>
       </div>
     </div>

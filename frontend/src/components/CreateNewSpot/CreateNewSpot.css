@@ -55,7 +55,7 @@
 .create-new-spot-error-ul {
   list-style: none;
   position: relative;
-  right: 10%;
+  right: 7.5%;
   font-size: 10px;
   color: red;
 }
@@ -64,4 +64,11 @@
 .create-new-spot-preview-image {
   height: 50px;
   width: 80px;
+}
+
+.create-new-spot-span {
+  font-size: x-small;
+  margin-top: 5px;
+  margin-bottom: 7px;
+  color: #888;
 }

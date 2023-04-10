@@ -16,7 +16,7 @@ function SpotIdPage() {
 
   const specificSpot = useSelector((state) => state.session.spots.find(spot => spot.id === +id));
   const reviews = useSelector((state) => state.session.reviews[id] || []);
-  const currentUser = useSelector((state) => state.session.user)
+  const currentUser = useSelector((state) => state.session.user);
 
   console.log(specificSpot);
   console.log(reviews);
@@ -41,6 +41,17 @@ function SpotIdPage() {
   }, [id, dispatch])
 
 
+  const userCanPostReview = () => {
+    if (!currentUser) return false
+
+    if (currentUser.id == specificSpot.ownerId) return false
+
+    const userReview = reviews.Reviews?.find((review) => review.User?.id == currentUser?.id)
+
+    if (userReview) return false
+
+    return true
+  }
 
 
 
@@ -73,7 +84,7 @@ function SpotIdPage() {
                 <h5 className='spot-id-page-host-reserve-box-h5'>📝{specificSpot.numReviews}</h5>
               </div>
 
-              <button className='spot-id-page-host-reserve-box-button' onClick={() => window.alert("Feature coming soon")}>Reserve</button>
+              <button className='spot-id-page-host-reserve-box-button' onClick={() => window.alert("Feature coming soon!")}>Reserve</button>
 
               <h3 className='spot-id-page-host-h3'>
                 Hosted by: {specificSpot.Owner.firstName === null ? 'Matthew David' : specificSpot.Owner.firstName}
@@ -95,7 +106,12 @@ function SpotIdPage() {
                 </>
               )}
             </div>
-            <button onClick={openReviewModal} className="spot-id-page-reviews-button">Leave a Review</button>
+
+            {userCanPostReview() && (
+              <button onClick={openReviewModal} className="spot-id-page-reviews-button">
+                Post Your Review
+              </button>
+            )}
 
             {/* {isReviewModalOpen && <ReviewModal isOpen={isReviewModalOpen} onClose={closeReviewModal} onSubmitReview={handleNewReview} spotId={id} />} */}
             {isReviewModalOpen && (

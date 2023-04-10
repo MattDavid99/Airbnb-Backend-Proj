@@ -74,6 +74,7 @@ function CreateNewSpot() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setHasSubmitted(true)
 
     const parsedPrice = parseFloat(price)
 
@@ -223,13 +224,14 @@ function CreateNewSpot() {
 
 
           <label className='create-new-spot-label'>
-            Description
+            Describe your place to guests
+            <span className='create-new-spot-span'>- Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood</span>
             <textarea
               type="text"
               onChange={(e) => setDescription(e.target.value)}
               value={description}
 
-              placeholder='Tell us something about your spot...'
+              placeholder='Please write at least 30 characters'
               className='create-new-spot-input'
               rows="10"
               cols="50"
@@ -248,6 +250,7 @@ function CreateNewSpot() {
 
           <label className='create-new-spot-label'>
             Create a Title for your Spot
+            <span className='create-new-spot-span'>- Catch guests' attention with a spot title that highlights what makes your place special.</span>
             <input
               type="text"
               onChange={(e) => setName(e.target.value)}
@@ -268,6 +271,7 @@ function CreateNewSpot() {
 
           <label className='create-new-spot-label'>
             Set a price for your Spot
+            <span className='create-new-spot-span'>- Competitive pricing can help your listing stand out and rank higher in search results.</span>
             <input
               type="number"
               onChange={(e) => setPrice(e.target.value)}
@@ -288,7 +292,9 @@ function CreateNewSpot() {
           <div className='line'></div>
 
 
-          <p>Add Images</p>
+          <p>Liven up your spot with photos</p>
+
+          <span className='create-new-spot-span'>- Submit a link to at least one photo to publish your spot</span>
 
           <label className='create-new-spot-label'>
             <input
