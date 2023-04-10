@@ -1,10 +1,8 @@
-// frontend/src/components/SignupFormPage/index.js
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import './SignupForm.css'
-
 
 function SignupFormPage({ onSuccess }) {
   const dispatch = useDispatch();
@@ -19,76 +17,50 @@ function SignupFormPage({ onSuccess }) {
 
   if (sessionUser) return <Redirect to="/" />;
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (password === confirmPassword) {
-  //     setErrors([]);
-  //     return dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
-  //       .catch(async (res) => {
-  //         const data = await res.json();
-  //         if (data && data.errors) {
-  //           let errorMessages = [];
+  const isFormInvalid = () => {
+    return (
+      !email ||
+      username.length < 4 ||
+      firstName === "" ||
+      lastName === "" ||
+      password.length < 6 ||
+      confirmPassword !== password
+    );
+  };
 
-  //           if (Array.isArray(data.errors)) {
-  //             errorMessages = data.errors;
-  //           } else {
-  //             for (const key in data.errors) {
-  //               if (data.errors.hasOwnProperty(key)) {
-  //                 const errorValue = data.errors[key];
-  //                 if (Array.isArray(errorValue)) {
-  //                   errorValue.forEach((errorMsg) => {
-  //                     errorMessages.push(`${key}: ${errorMsg}`);
-  //                   });
-  //                 } else {
-  //                   errorMessages.push(`${key}: ${errorValue}`);
-  //                 }
-  //               }
-  //             }
-  //           }
-
-  //           setErrors(errorMessages);
-  //         }
-  //       });
-  //   }
-
-  //   // --------------------------------
-  //   return setErrors(['Confirm Password field must be the same as the Password field']);
-  //   // --------------------------------
-  // };
-
-
-  const handleSubmit = async (e) => { // Make the function async
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
       setErrors([]);
-      const success = await dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
-        .catch(async (res) => {
-          const data = await res.json();
-          if (data && data.errors) {
-            let errorMessages = [];
+      const success = await dispatch(
+        sessionActions.signup({ email, username, firstName, lastName, password })
+      ).catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) {
+          let errorMessages = [];
 
-            if (Array.isArray(data.errors)) {
-              errorMessages = data.errors;
-            } else {
-              for (const key in data.errors) {
-                if (data.errors.hasOwnProperty(key)) {
-                  const errorValue = data.errors[key];
-                  if (Array.isArray(errorValue)) {
-                    errorValue.forEach((errorMsg) => {
-                      errorMessages.push(`${key}: ${errorMsg}`);
-                    });
-                  } else {
-                    errorMessages.push(`${key}: ${errorValue}`);
-                  }
+          if (Array.isArray(data.errors)) {
+            errorMessages = data.errors;
+          } else {
+            for (const key in data.errors) {
+              if (data.errors.hasOwnProperty(key)) {
+                const errorValue = data.errors[key];
+                if (Array.isArray(errorValue)) {
+                  errorValue.forEach((errorMsg) => {
+                    errorMessages.push(`${key}: ${errorMsg}`);
+                  });
+                } else {
+                  errorMessages.push(`${key}: ${errorValue}`);
                 }
               }
             }
-
-            setErrors(errorMessages);
           }
-        });
 
-      if (success) { // Call the onSuccess function if the signup is successful
+          setErrors(errorMessages);
+        }
+      });
+
+      if (success) {
         onSuccess();
       }
     } else {
@@ -96,11 +68,12 @@ function SignupFormPage({ onSuccess }) {
     }
   };
 
-
   return (
     <form onSubmit={handleSubmit} className="signup-form">
       <ul className="signup-ul">
-        {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+        {errors.map((error, idx) => (
+          <li key={idx}>{error}</li>
+        ))}
       </ul>
       <label className="signup-label">
         Email
@@ -162,9 +135,156 @@ function SignupFormPage({ onSuccess }) {
           className="signup-input"
         />
       </label>
-      <button type="submit" className="signup-form__submit-btn">Sign Up</button>
+      <button
+        type="submit"
+        className="signup-form__submit-btn"
+        disabled={isFormInvalid()}
+      >
+        Sign Up
+      </button>
     </form>
   );
 }
 
 export default SignupFormPage;
+
+
+
+// ----------------------------------------
+
+// // frontend/src/components/SignupFormPage/index.js
+// import React, { useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { Redirect } from "react-router-dom";
+// import * as sessionActions from "../../store/session";
+// import './SignupForm.css'
+
+
+// function SignupFormPage({ onSuccess }) {
+//   const dispatch = useDispatch();
+//   const sessionUser = useSelector((state) => state.session.user);
+//   const [email, setEmail] = useState("");
+//   const [username, setUsername] = useState("");
+//   const [firstName, setFirstName] = useState("");
+//   const [lastName, setLastName] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [confirmPassword, setConfirmPassword] = useState("");
+//   const [errors, setErrors] = useState([]);
+
+//   if (sessionUser) return <Redirect to="/" />;
+
+
+
+//   const handleSubmit = async (e) => { // Make the function async
+//     e.preventDefault();
+//     if (password === confirmPassword) {
+//       setErrors([]);
+//       const success = await dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
+//         .catch(async (res) => {
+//           const data = await res.json();
+//           if (data && data.errors) {
+//             let errorMessages = [];
+
+//             if (Array.isArray(data.errors)) {
+//               errorMessages = data.errors;
+//             } else {
+//               for (const key in data.errors) {
+//                 if (data.errors.hasOwnProperty(key)) {
+//                   const errorValue = data.errors[key];
+//                   if (Array.isArray(errorValue)) {
+//                     errorValue.forEach((errorMsg) => {
+//                       errorMessages.push(`${key}: ${errorMsg}`);
+//                     });
+//                   } else {
+//                     errorMessages.push(`${key}: ${errorValue}`);
+//                   }
+//                 }
+//               }
+//             }
+
+//             setErrors(errorMessages);
+//           }
+//         });
+
+//       if (success) { // Call the onSuccess function if the signup is successful
+//         onSuccess();
+//       }
+//     } else {
+//       setErrors(['Confirm Password field must be the same as the Password field']);
+//     }
+//   };
+
+
+//   return (
+//     <form onSubmit={handleSubmit} className="signup-form">
+//       <ul className="signup-ul">
+//         {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+//       </ul>
+//       <label className="signup-label">
+//         Email
+//         <input
+//           type="text"
+//           value={email}
+//           onChange={(e) => setEmail(e.target.value)}
+//           required
+//           className="signup-input"
+//         />
+//       </label>
+//       <label className="signup-label">
+//         Username
+//         <input
+//           type="text"
+//           value={username}
+//           onChange={(e) => setUsername(e.target.value)}
+//           required
+//           className="signup-input"
+//         />
+//       </label>
+//       <label className="signup-label">
+//         First Name
+//         <input
+//           type="text"
+//           value={firstName}
+//           onChange={(e) => setFirstName(e.target.value)}
+//           required
+//           className="signup-input"
+//         />
+//       </label>
+//       <label className="signup-label">
+//         Last Name
+//         <input
+//           type="text"
+//           value={lastName}
+//           onChange={(e) => setLastName(e.target.value)}
+//           required
+//           className="signup-input"
+//         />
+//       </label>
+//       <label className="signup-label">
+//         Password
+//         <input
+//           type="password"
+//           value={password}
+//           onChange={(e) => setPassword(e.target.value)}
+//           required
+//           className="signup-input"
+//         />
+//       </label>
+//       <label className="signup-label">
+//         Confirm Password
+//         <input
+//           type="password"
+//           value={confirmPassword}
+//           onChange={(e) => setConfirmPassword(e.target.value)}
+//           required
+//           className="signup-input"
+//         />
+//       </label>
+//       <button type="submit" className="signup-form__submit-btn">Sign Up</button>
+//     </form>
+//   );
+// }
+
+// export default SignupFormPage;
+
+//----------------------------------------------------------

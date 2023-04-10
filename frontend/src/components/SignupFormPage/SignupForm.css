@@ -36,6 +36,11 @@
   background-color: #0056b3;
 }
 
+.signup-form__submit-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
 .signup-ul {
   color: red;
   padding-left: 0;

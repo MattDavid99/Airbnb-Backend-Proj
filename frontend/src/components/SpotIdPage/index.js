@@ -12,17 +12,17 @@ function SpotIdPage() {
   const { id } = useParams()
 
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
-  // const [reviews, setReviews] = useState([])🟨
+
 
   const specificSpot = useSelector((state) => state.session.spots.find(spot => spot.id === +id));
-  // const spotReviews = useSelector((state) => state.session.reviews[id]);🟨
   const reviews = useSelector((state) => state.session.reviews[id] || []);
+  const currentUser = useSelector((state) => state.session.user)
+
   console.log(specificSpot);
   console.log(reviews);
+  console.log(currentUser);
 
-  // const handleNewReview = (newReview) => {🟨
-  //   setReviews([...reviews, newReview])
-  // }
+
 
   const openReviewModal = () => {
     setIsReviewModalOpen(true)
@@ -69,11 +69,11 @@ function SpotIdPage() {
 
               <div className='spot-id-page-host-reserve-box'>
                 <h4 className='spot-id-page-host-reserve-box-h4'>${specificSpot.price}/night</h4>
-                <h5 className='spot-id-page-host-reserve-box-h5'>⭐{specificSpot.avgStarRating}</h5>
+                <h5 className='spot-id-page-host-reserve-box-h5'>⭐{specificSpot.avgStarRating ? parseFloat(specificSpot.avgStarRating).toFixed(1) : "New"}</h5>
                 <h5 className='spot-id-page-host-reserve-box-h5'>📝{specificSpot.numReviews}</h5>
               </div>
 
-              <button className='spot-id-page-host-reserve-box-button'>Reserve</button>
+              <button className='spot-id-page-host-reserve-box-button' onClick={() => window.alert("Feature coming soon")}>Reserve</button>
 
               <h3 className='spot-id-page-host-h3'>
                 Hosted by: {specificSpot.Owner.firstName === null ? 'Matthew David' : specificSpot.Owner.firstName}
@@ -86,8 +86,15 @@ function SpotIdPage() {
 
 
           <div className='spot-id-page-reviews-div'>
-            <h4>⭐ {specificSpot.avgStarRating}</h4>
-            <h4>📝 Reviews: {specificSpot.numReviews}</h4>
+            <div className="spot-id-page-reviews-container">
+              <h4 className='spot-id-page-reviews-h4-star'>⭐ {specificSpot.avgStarRating ? parseFloat(specificSpot.avgStarRating).toFixed(1) : "New"}</h4>
+              {specificSpot.numReviews > 0 && (
+                <>
+                  <span className='centered-dot'>·</span>
+                  <h4 className='spot-id-page-reviews-h4-num'>📝 {specificSpot.numReviews} {specificSpot.numReviews === 1 ? 'Review' : 'Reviews'}</h4>
+                </>
+              )}
+            </div>
             <button onClick={openReviewModal} className="spot-id-page-reviews-button">Leave a Review</button>
 
             {/* {isReviewModalOpen && <ReviewModal isOpen={isReviewModalOpen} onClose={closeReviewModal} onSubmitReview={handleNewReview} spotId={id} />} */}
@@ -99,21 +106,31 @@ function SpotIdPage() {
               />
             )}
 
-            {reviews && reviews.Reviews && reviews.Reviews.map((review, index) => {
-              const createdAtDate = new Date(review.createdAt);
-              const month = createdAtDate.toLocaleString('default', { month: 'long' });
-              const day = createdAtDate.getDate();
+            {
+              reviews && reviews.Reviews && reviews.Reviews.length > 0 ? (
+                reviews.Reviews
+                  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                  .map((review, index) => {
+                    const createdAtDate = new Date(review.createdAt);
+                    const month = createdAtDate.toLocaleString('default', { month: 'long' });
+                    const day = createdAtDate.getDate();
 
-              return (
-                <div className='spot-id-page-reviews-info' key={index}>
-                  <span className='spot-id-page-reviews-span'></span>
-                  <h5 className='spot-id-page-reviews-h5'>User: {review.User?.firstName || 'Anonymous'}</h5>
-                  <h6 className='spot-id-page-reviews-h6'>{`${month} ${day}`}</h6>
-                  <p className='spot-id-page-reviews-p'>Review: {review.review}</p>
-                  <p className='spot-id-page-reviews-p'>Stars: {review.stars}</p>
+                    return (
+                      <div className='spot-id-page-reviews-info' key={index}>
+                        <span className='spot-id-page-reviews-span'></span>
+                        <h5 className='spot-id-page-reviews-h5'>User: {review.User?.firstName || 'Anonymous'}</h5>
+                        <h6 className='spot-id-page-reviews-h6'>{`${month} ${day}`}</h6>
+                        <p className='spot-id-page-reviews-p'>Review: {review.review}</p>
+                        <p className='spot-id-page-reviews-p'>Stars: {review.stars}</p>
+                      </div>
+                    );
+                  })
+              ) : currentUser && currentUser.id !== specificSpot.Owner?.id ? (
+                <div className="spot-id-page-reviews-info">
+                  <p>Be the first to post a review!</p>
                 </div>
-              );
-            })}
+              ) : null
+            }
           </div>
 
         </div>

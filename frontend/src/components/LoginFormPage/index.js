@@ -38,6 +38,8 @@ function LoginFormPage({ onSuccess }) {
     } else if (onSuccess) {
       onSuccess();
     }
+
+
   }
 
   return (
