@@ -14,7 +14,11 @@ function SpotIdPage() {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
 
 
-  const specificSpot = useSelector((state) => state.session.spots.find(spot => spot.id === +id));
+  // const specificSpot = useSelector((state) => state.session.spots.find(spot => spot.id === +id));
+  const specificSpot = useSelector((state) => {
+    const spot = state.session.spots.find((spot) => spot.id === +id);
+    return spot ? { ...spot } : null;
+  });
   const reviews = useSelector((state) => state.session.reviews[id] || []);
   const currentUser = useSelector((state) => state.session.user);
 

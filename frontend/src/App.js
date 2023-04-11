@@ -11,6 +11,7 @@ import LogInModal from "./components/LogInModal";
 import SignupModal from "./components/SignupModal";
 import SpotIdPage from "./components/SpotIdPage";
 import ManageSpots from "./components/ManageSpots";
+import UpdateSpot from "./components/UpdateSpot";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +45,9 @@ function App() {
           </Route>
           <Route path="/manage-spots">
             <ManageSpots />
+          </Route>
+          <Route path="/update-spot/:spotId">
+            <UpdateSpot />
           </Route>
         </Switch>
       )}

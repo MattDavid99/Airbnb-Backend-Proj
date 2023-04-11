@@ -9,12 +9,21 @@ const GET_SPOT_ID = 'session/getSpotId'
 const GET_REVIEWS_FOR_SPOT = 'session/setReviewsForSpot';
 const POST_REVIEW_FOR_SPOT = 'session/postReviewForSpot'
 const DELETE_SPOT = 'session/deleteSpot'
+const UPDATE_SPOT = "session/updateSpot"
 
 
 const deleteSpot = (id) => {
   return {
     type: DELETE_SPOT,
     id
+  }
+}
+
+
+const updateSpot = (spot) => {
+  return {
+    type: UPDATE_SPOT,
+    spot
   }
 }
 
@@ -95,6 +104,22 @@ export const login = (user) => async (dispatch) => {
 
 };
 
+
+
+export const editSpot = (spotId, updatedSpotData) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updatedSpotData),
+  });
+
+  if (response.ok) {
+    const updatedSpot = await response.json();
+    dispatch(updateSpot(updatedSpot));
+  } else {
+    throw new Error('Failed to update the spot');
+  }
+}
 
 
 
@@ -277,6 +302,15 @@ const sessionReducer = (state = initialState, action) => {
     case DELETE_SPOT:
       newState = Object.assign({}, state);
       newState.spots = newState.spots.filter((spot) => spot.id !== action.id);
+      return newState;
+
+
+    case UPDATE_SPOT:
+      newState = Object.assign({}, state);
+      const updatedSpotsList = newState.spots.map((i) =>
+        i.id === action.spot.id ? action.spot : i
+      );
+      newState.spots = updatedSpotsList;
       return newState;
 
 
