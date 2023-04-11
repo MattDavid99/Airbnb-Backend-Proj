@@ -1,0 +1,103 @@
+.manage-spots-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1000px;
+  max-height: 80vh;
+  margin: 0 auto;
+}
+
+
+.manage-spots-image {
+  width: 300px;
+  height: 200px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.manage-spots-image-div {
+  border: 1px solid #fe8f8f;
+  height: 270px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.manage-spots-container {
+  display: flex;
+  gap: 20px;
+  max-width: 1000px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.manage-spots-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.manage-spots-price {
+  position: relative;
+  top: 20px;
+  padding-left: 5px;
+}
+
+
+.manage-spots-update_delete {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 5px;
+}
+
+.manage-spots-update-button {
+  border-radius: 10px;
+  padding: 3px 6px;
+  border: none;
+  color: #f5f5f5;
+  background-color: #2d7bf9;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 13px;
+  margin-right: 5px;
+  z-index: 50;
+}
+
+.manage-spots-delete-button {
+  border-radius: 10px;
+  padding: 3px 6px;
+  border: none;
+  color: #f5f5f5;
+  background-color: #e84785;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 13px;
+  z-index: 50;
+}
+
+.manage-spots-delete-button:hover {
+  background-color: #cf3d75;
+}
+
+.manage-spots-update-button:hover {
+  background-color: #3970ca;
+}
+
+
+.manage-spots-header {
+  margin-top: 50px;
+  border: 1px solid #000;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  position: relative;
+  right: 40px;
+}
+
+.manage-spots-header-h2 {
+  padding-left: 5px;
+  font-weight: 500;
+}

@@ -8,6 +8,15 @@ const CREATE_SPOT = "session/createSpot"
 const GET_SPOT_ID = 'session/getSpotId'
 const GET_REVIEWS_FOR_SPOT = 'session/setReviewsForSpot';
 const POST_REVIEW_FOR_SPOT = 'session/postReviewForSpot'
+const DELETE_SPOT = 'session/deleteSpot'
+
+
+const deleteSpot = (spotId) => {
+  return {
+    type: DELETE_SPOT,
+    spotId
+  }
+}
 
 
 const postReview = (review, spotId) => {
@@ -84,6 +93,17 @@ export const login = (user) => async (dispatch) => {
   }
   // ------------------------------
 
+};
+
+
+export const removeSpot = (spotId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "DELETE",
+  });
+
+  if (response.ok) {
+    dispatch(deleteSpot(spotId));
+  }
 };
 
 
@@ -250,6 +270,11 @@ const sessionReducer = (state = initialState, action) => {
       }
       newState.reviews[spotId].Reviews = [...newState.reviews[spotId].Reviews, action.review];
       console.log(newState);
+      return newState;
+
+    case DELETE_SPOT:
+      newState = Object.assign({}, state);
+      newState.spots = newState.spots.filter((spot) => spot.id !== action.spotId);
       return newState;
 
 

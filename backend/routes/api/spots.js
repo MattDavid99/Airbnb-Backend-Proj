@@ -444,7 +444,7 @@ router.put('/:spotId', requireAuth, validateSignup, async (req, res, next) => {
 })
 
 
-// Delete a Spot ✅✅✅✅
+// // Delete a Spot ✅✅✅✅
 router.delete('/:spotId', requireAuth, async (req, res, next) => {
 
     const spot = await Spot.findByPk(req.params.spotId)
@@ -475,6 +475,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 
 
 })
+
 
 
 // Create a Review for a Spot based on the Spot's id ✅✅✅✅
