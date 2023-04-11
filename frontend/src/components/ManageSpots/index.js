@@ -16,10 +16,10 @@ function ManageSpots() {
   console.log(userSpots);
 
 
-  const handleDelete = async (spotId) => {
+  const handleDelete = async (id) => {
 
-    console.log("Deleting a spot with ID", spotId);
-    return await dispatch(removeSpot(spotId))
+    console.log("Deleting a spot with ID", id);
+    await dispatch(removeSpot(id))
   }
 
 
