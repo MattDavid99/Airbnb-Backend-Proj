@@ -43,6 +43,7 @@
   flex-direction: column;
   height: 100vh;
   padding: 20px;
+  margin-top: 200px;
 }
 
 .line {
@@ -71,4 +72,19 @@
   margin-top: 5px;
   margin-bottom: 7px;
   color: #888;
+}
+
+.create-new-spot-button {
+  border-radius: 10px;
+  border: 0.5px solid #534b91;
+  padding: 2px 4px;
+  cursor: pointer;
+  color: #534b91;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.create-new-spot-button:hover {
+  background-color: #ececec;
 }

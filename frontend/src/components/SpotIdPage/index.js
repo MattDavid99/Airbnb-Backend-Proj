@@ -14,6 +14,7 @@ function SpotIdPage() {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
 
 
+
   // const specificSpot = useSelector((state) => state.session.spots.find(spot => spot.id === +id));
   const specificSpot = useSelector((state) => {
     const spot = state.session.spots.find((spot) => spot.id === +id);
@@ -43,6 +44,7 @@ function SpotIdPage() {
     dispatch(getReviewForSpot(id));
 
   }, [id, dispatch])
+
 
 
   const userCanPostReview = () => {
@@ -84,8 +86,8 @@ function SpotIdPage() {
 
               <div className='spot-id-page-host-reserve-box'>
                 <h4 className='spot-id-page-host-reserve-box-h4'>${specificSpot.price}/night</h4>
-                <h5 className='spot-id-page-host-reserve-box-h5'>⭐{specificSpot.avgStarRating ? parseFloat(specificSpot.avgStarRating).toFixed(1) : "New"}</h5>
-                <h5 className='spot-id-page-host-reserve-box-h5'>📝{specificSpot.numReviews}</h5>
+                <h5 className='spot-id-page-host-reserve-box-h5'><i class="far fa-star"></i> {specificSpot.avgStarRating ? parseFloat(specificSpot.avgStarRating).toFixed(1) : "New"}</h5>
+                <h5 className='spot-id-page-host-reserve-box-h5'><i class="fas fa-pencil-alt"></i> {specificSpot.numReviews}</h5>
               </div>
 
               <button className='spot-id-page-host-reserve-box-button' onClick={() => window.alert("Feature coming soon!")}>Reserve</button>
@@ -102,11 +104,11 @@ function SpotIdPage() {
 
           <div className='spot-id-page-reviews-div'>
             <div className="spot-id-page-reviews-container">
-              <h4 className='spot-id-page-reviews-h4-star'>⭐ {specificSpot.avgStarRating ? parseFloat(specificSpot.avgStarRating).toFixed(1) : "New"}</h4>
+              <h4 className='spot-id-page-reviews-h4-star'><i class="far fa-star"></i> {specificSpot.avgStarRating ? parseFloat(specificSpot.avgStarRating).toFixed(1) : "New"}</h4>
               {specificSpot.numReviews > 0 && (
                 <>
                   <span className='centered-dot'>·</span>
-                  <h4 className='spot-id-page-reviews-h4-num'>📝 {specificSpot.numReviews} {specificSpot.numReviews === 1 ? 'Review' : 'Reviews'}</h4>
+                  <h4 className='spot-id-page-reviews-h4-num'><i class="fas fa-pencil-alt"></i> {specificSpot.numReviews} {specificSpot.numReviews === 1 ? 'Review' : 'Reviews'}</h4>
                 </>
               )}
             </div>
@@ -138,7 +140,7 @@ function SpotIdPage() {
                     return (
                       <div className='spot-id-page-reviews-info' key={index}>
                         <span className='spot-id-page-reviews-span'></span>
-                        <h5 className='spot-id-page-reviews-h5'>User: {review.User?.firstName || 'Anonymous'}</h5>
+                        <h5 className='spot-id-page-reviews-h5'><i class="fas fa-user-edit"></i>  {review.User?.firstName || 'Anonymous'}</h5>
                         <h6 className='spot-id-page-reviews-h6'>{`${month} ${day}`}</h6>
                         <p className='spot-id-page-reviews-p'>Review: {review.review}</p>
                         <p className='spot-id-page-reviews-p'>Stars: {review.stars}</p>

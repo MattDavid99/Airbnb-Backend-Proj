@@ -53,6 +53,8 @@
   gap: 10px;
   position: relative;
   right: 30px;
+  width: 1000px;
+  border: 1px solid #000;
 }
 
 .spot-id-page-host-div {
@@ -89,10 +91,12 @@
 
 .spot-id-page-reviews-info {
   margin-left: 50px;
+  max-width: 40ch;
+  word-wrap: break-word;
 }
 
 .spot-id-page-reviews-span {
-  border: 1px solid #000;
+  border: 1px dotted #a5b7d3;
   display: flex;
   width: 300px;
 }
@@ -101,7 +105,7 @@
   border: 1px solid #000;
   display: flex;
   justify-content: space-around;
-  width: 25%;
+  width: 250px;
   height: 100px;
   position: relative;
   left: 60%;
@@ -158,4 +162,22 @@
 .spot-id-page-reviews-button:hover {
   background-color: #2e68c0;
   color: #fff;
+}
+
+
+.spot-id-page-reviews-p {
+  word-wrap: break-word;
+}
+
+.far.fa-star {
+  color: #e6ea0b;
+}
+
+
+.fas.fa-pencil-alt {
+  color: #c1586a;
+}
+
+.fas.fa-user-edit {
+  color: #fd8d83;
 }

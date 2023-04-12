@@ -43,7 +43,7 @@ function ManageSpots() {
               <Link to={`/spots/${i.id}`} key={i.previewImage}><img src={i.previewImage} alt="#" className='manage-spots-image' /></Link>
               <div className='manage-spots-info'>
                 <div>{i.city}, {i.state}</div>
-                <div>⭐ {i.avgRating ? i.avgRating : "New"}</div>
+                <div><i class="far fa-star"></i> {i.avgRating ? i.avgRating : "New"}</div>
               </div>
               <div className='manage-spots-price'>${i.price}/night</div>
 

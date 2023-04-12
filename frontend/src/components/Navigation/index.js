@@ -57,7 +57,7 @@ import { NavLink, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import * as sessionActions from '../../store/session';
-import logo from "../../images/logo.png"
+import logo from "../../images/airbnb-128.png"
 import './Navigation.css';
 import LogInModal from '../LogInModal';
 import SignupModal from '../SignupModal';

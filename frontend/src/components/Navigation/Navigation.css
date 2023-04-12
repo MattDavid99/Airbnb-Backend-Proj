@@ -24,8 +24,8 @@
 
 
 .logo {
-  height: 60px;
-  width: 50px;
+  height: 39px;
+  width: 37px;
   padding-left: 70px;
 }
 
@@ -52,10 +52,11 @@
 .create-spot-button {
   margin-right: 20px;
   /* margin-bottom: 5px; */
-  border: 1px solid #f97f74;
+  border: 1px solid #534b91;
   background-color: #fafafa;
   border-radius: 10px;
   padding: 4px 10px;
+  color: #534b91;
 }
 
 .create-spot-button:hover {
@@ -73,16 +74,21 @@
 .sign-log-in-link {
   border-radius: 10px;
   border: none;
-  background-color: #f97f74;
+  background-color: #382c8e;
   color: #f5f5f5;
-  padding: 3px 5px;
+  padding: 2px 7px;
   font-weight: bold;
   cursor: pointer;
   margin-right: 3px;
   text-decoration: none;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .sign-log-in-link:hover {
-  background-color: #e97469;
+  background-color: #4235a5;
   color: #ffffff;
+}
+
+.create_spot_link {
+  color: #534b91;
 }

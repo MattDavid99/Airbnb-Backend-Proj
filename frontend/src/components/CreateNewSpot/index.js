@@ -135,7 +135,6 @@ function CreateNewSpot() {
     <div className='create-new-spot-container'>
 
       <div className='create-new-spot-header-container'>
-        <h1 className='create-new-spot-h1'>Create a new Spot</h1>
         <h3 className='create-new-spot-h3'>Where's your place located?</h3>
         <p className='create-new-spot-p'>Guests will only get your exact address once they booked a
           reservation.
@@ -386,7 +385,7 @@ function CreateNewSpot() {
           ))}
 
 
-          <button type="submit" disabled={Object.values(errors).flat().length > 0}>Create Spot</button>
+          <button type="submit" disabled={Object.values(errors).flat().length > 0} className='create-new-spot-button'>Create Spot</button>
         </form>
       </div>
     </div >

@@ -292,6 +292,23 @@ const sessionReducer = (state = initialState, action) => {
     case POST_REVIEW_FOR_SPOT:
       newState = Object.assign({}, state);
       const spotId = action.review.spotId;
+
+      // ------------------------
+      const review = action.review
+      review.User = {}
+      review.User.firstName = newState.user.firstName
+      const spot = newState.spots.find((spot) => +spot.id === +action.review.spotId)
+      let oldAverageStarRating = spot.avgRating
+      oldAverageStarRating += action.review.stars
+      const newAverageStarRating = oldAverageStarRating / 2
+      spot.avgRating = newAverageStarRating
+
+      const newSpotList = newState.spots.map((i) =>
+        i.id === action.review.spotId ? spot : i
+      );
+      newState.spots = newSpotList
+      // -------------------------
+
       if (!newState.reviews[spotId]) {
         newState.reviews[spotId] = { Reviews: [] };
       }

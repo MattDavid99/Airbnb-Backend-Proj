@@ -9,7 +9,6 @@ function ReviewModal({ isOpen, onClose, spotId }) {
   const [stars, setStars] = useState(0)
 
 
-
   const dispatch = useDispatch()
 
 

@@ -5,6 +5,7 @@
   max-width: 1000px;
   max-height: 80vh;
   margin: 0 auto;
+  overflow-y: visible;
 }
 
 
@@ -88,13 +89,15 @@
 
 .manage-spots-header {
   margin-top: 50px;
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
   display: flex;
   justify-content: center;
-  width: 100%;
+  width: 1000px;
   align-items: center;
   position: relative;
   right: 40px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
 }
 
 .manage-spots-header-h2 {
