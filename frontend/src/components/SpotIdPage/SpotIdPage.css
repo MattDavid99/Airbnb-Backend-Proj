@@ -181,3 +181,16 @@
 .fas.fa-user-edit {
   color: #fd8d83;
 }
+
+.spot-id-page-reviews-delete-button {
+  background-color: #fcf7f7;
+  margin-bottom: 10px;
+  border: none;
+  position: relative;
+  left: -5px;
+  cursor: pointer;
+}
+
+.spot-id-page-reviews-delete-button i {
+  color: #41783b;
+}

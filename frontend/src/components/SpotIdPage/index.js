@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom';
-import { getSpotId, getReviewForSpot } from '../../store/session';
+import { getSpotId, getReviewForSpot, removeReview } from '../../store/session';
 import ReviewModal from '../ReviewModal';
 
 import "./SpotIdPage.css"
+import DeleteReviewModal from '../DeleteReviewModal';
 
 function SpotIdPage() {
 
@@ -12,6 +13,7 @@ function SpotIdPage() {
   const { id } = useParams()
 
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState({ open: false, reviewId: null });
 
 
 
@@ -37,6 +39,15 @@ function SpotIdPage() {
     setIsReviewModalOpen(false);
   };
 
+  const openConfirmDeleteModal = (reviewId) => {
+    setIsConfirmDeleteModalOpen({ open: true, reviewId });
+  };
+
+  const closeConfirmDeleteModal = () => {
+    setIsConfirmDeleteModalOpen({ open: false, reviewId: null });
+  };
+
+
 
   useEffect(() => {
 
@@ -57,6 +68,10 @@ function SpotIdPage() {
     if (userReview) return false
 
     return true
+  }
+
+  const deleteReviewForId = async (reviewId) => {
+    await dispatch(removeReview(reviewId, id))
   }
 
 
@@ -144,6 +159,18 @@ function SpotIdPage() {
                         <h6 className='spot-id-page-reviews-h6'>{`${month} ${day}`}</h6>
                         <p className='spot-id-page-reviews-p'>Review: {review.review}</p>
                         <p className='spot-id-page-reviews-p'>Stars: {review.stars}</p>
+
+                        {currentUser?.id === review.User?.id && (
+                          <button onClick={() => openConfirmDeleteModal(review.id)} className='spot-id-page-reviews-delete-button'>
+                            <i class="fas fa-trash-alt fa-lg"></i>
+                          </button>
+                        )}
+                        <DeleteReviewModal
+                          isOpen={isConfirmDeleteModalOpen.open}
+                          onClose={closeConfirmDeleteModal}
+                          onDelete={deleteReviewForId}
+                          reviewId={isConfirmDeleteModalOpen.reviewId}
+                        />
                       </div>
                     );
                   })

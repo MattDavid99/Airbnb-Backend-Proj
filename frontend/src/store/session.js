@@ -10,6 +10,15 @@ const GET_REVIEWS_FOR_SPOT = 'session/setReviewsForSpot';
 const POST_REVIEW_FOR_SPOT = 'session/postReviewForSpot'
 const DELETE_SPOT = 'session/deleteSpot'
 const UPDATE_SPOT = "session/updateSpot"
+const DELETE_REVIEW = "session/deleteReview"
+
+
+const deleteReview = (id) => {
+  return {
+    type: DELETE_REVIEW,
+    id
+  }
+}
 
 
 const deleteSpot = (id) => {
@@ -239,6 +248,17 @@ export const removeSpot = (id) => async (dispatch) => {
 };
 
 
+export const removeReview = (id) => async (dispatch) => {
+  const response = await csrfFetch(`/api/reviews/${id}`, {
+    method: "DELETE",
+  })
+
+  if (response.ok) {
+    dispatch(deleteReview(id))
+  }
+}
+
+
 
 
 const initialState = { user: null, spots: [], reviews: {} };
@@ -294,19 +314,19 @@ const sessionReducer = (state = initialState, action) => {
       const spotId = action.review.spotId;
 
       // ------------------------
-      const review = action.review
-      review.User = {}
-      review.User.firstName = newState.user.firstName
-      const spot = newState.spots.find((spot) => +spot.id === +action.review.spotId)
-      let oldAverageStarRating = spot.avgRating
-      oldAverageStarRating += action.review.stars
-      const newAverageStarRating = oldAverageStarRating / 2
-      spot.avgRating = newAverageStarRating
+      // const review = action.review
+      // review.User = {}
+      // review.User.firstName = newState.user.firstName
+      // const spot = newState.spots.find((spot) => +spot.id === +action.review.spotId)
+      // let oldAverageStarRating = spot.avgRating
+      // oldAverageStarRating += action.review.stars
+      // const newAverageStarRating = oldAverageStarRating / 2
+      // spot.avgRating = newAverageStarRating
 
-      const newSpotList = newState.spots.map((i) =>
-        i.id === action.review.spotId ? spot : i
-      );
-      newState.spots = newSpotList
+      // const newSpotList = newState.spots.map((i) =>
+      //   i.id === action.review.spotId ? spot : i
+      // );
+      // newState.spots = newSpotList
       // -------------------------
 
       if (!newState.reviews[spotId]) {
@@ -328,6 +348,15 @@ const sessionReducer = (state = initialState, action) => {
         i.id === action.spot.id ? action.spot : i
       );
       newState.spots = updatedSpotsList;
+      return newState;
+
+
+    case DELETE_REVIEW:
+      newState = Object.assign({}, state);
+      const spotIdForDelete = Object.keys(newState.reviews).find(key => newState.reviews[key].Reviews.find(review => review.id === action.id));
+      if (spotIdForDelete) {
+        newState.reviews[spotIdForDelete].Reviews = newState.reviews[spotIdForDelete].Reviews.filter((review) => review.id !== action.id);
+      }
       return newState;
 
 
