@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import './LoginForm.css';
 
 function LoginFormPage({ onSuccess }) {
@@ -38,9 +38,24 @@ function LoginFormPage({ onSuccess }) {
     } else if (onSuccess) {
       onSuccess();
     }
-
-
   }
+
+  const demoLogin = async (e) => {
+    e.preventDefault()
+    setErrors([])
+
+    const demoCrediential = 'demo@user.io'
+    const demoPassword = 'password'
+    const data = await dispatch(sessionActions.login({ credential: demoCrediential, password: demoPassword }))
+
+    if (data.errors) {
+      setErrors([...data.errors]);
+    } else if (onSuccess) {
+      onSuccess();
+    }
+  }
+
+
 
   return (
     <form onSubmit={handleSubmit} className="form">
@@ -68,6 +83,11 @@ function LoginFormPage({ onSuccess }) {
         />
       </label>
       <button type="submit" className='button' disabled={disableButton || errors.length > 0}>Log In</button>
+
+      <div className='demo-link-div'>
+        <Link to="#" onClick={demoLogin} className="demo-link">Demo User</Link>
+      </div>
+
     </form>
   );
 }

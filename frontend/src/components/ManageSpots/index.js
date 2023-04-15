@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from "react-router-dom"
-import "./ManageSpots.css"
 import { removeSpot, getImages } from '../../store/session'
+import "./ManageSpots.css"
+import DeleteSpotModal from './DeleteSpotModal'
 
 function ManageSpots() {
 
@@ -16,20 +17,40 @@ function ManageSpots() {
   const userSpots = spots.filter((spot) => currentUser.id === spot.ownerId)
   console.log(userSpots);
 
+  const [showModal, setShowModal] = useState(false);
+  const [spotToDelete, setSpotToDelete] = useState(null);
+
   useEffect(() => {
     dispatch(getImages())
   }, [dispatch])
 
 
-  const handleDelete = async (id) => {
 
-    console.log("Deleting a spot with ID", id);
-    await dispatch(removeSpot(id))
-  }
+  const handleDelete = (id) => {
+    setSpotToDelete(id);
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  const handleModalDelete = async () => {
+    console.log('Deleting a spot with ID', spotToDelete);
+    await dispatch(removeSpot(spotToDelete));
+    setShowModal(false);
+  };
 
 
   return userSpots && (
     <>
+
+      <DeleteSpotModal
+        showModal={showModal}
+        onClose={handleModalClose}
+        onDelete={handleModalDelete}
+      />
+
       <div className='manage-spots-wrapper'>
 
         <div className='manage-spots-header'>
