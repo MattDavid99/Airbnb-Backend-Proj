@@ -25,18 +25,10 @@
 }
 
 .spot-id-page-container {
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 1000px;
-  border: 1px solid #000;
-  height: 100vh;
-  margin: 0 auto; */
   display: flex;
   justify-content: center;
   align-items: flex-start;
   max-width: 1000px;
-  border: 1px solid #000;
   max-height: 90vh;
   padding: 20px;
   margin-top: 80px;
@@ -54,12 +46,9 @@
   position: relative;
   right: 30px;
   width: 1000px;
-  border: 1px solid #000;
 }
 
 .spot-id-page-host-div {
-  border: 1px solid #000;
-  /* margin-top: 10px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -80,8 +69,7 @@
 
 
 .spot-id-page-reviews-div {
-  border: 1px solid #000;
-  margin-top: 50px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -102,7 +90,7 @@
 }
 
 .spot-id-page-host-reserve-box {
-  border: 1px solid #000;
+  border: 1px dotted #32347e;
   display: flex;
   justify-content: space-around;
   width: 250px;
@@ -111,8 +99,7 @@
   left: 60%;
   top: 100px;
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  /* background-color: #f7f3f3; */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .spot-id-page-host-reserve-box-button {

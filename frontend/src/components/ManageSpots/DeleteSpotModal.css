@@ -30,7 +30,6 @@
 }
 
 .modal-cancel {
-  margin-right: 40px;
   background-color: #79bee8;
   color: #fff;
   border: none;
@@ -40,6 +39,7 @@
 }
 
 .modal-delete {
+  margin-right: 38px;
   background-color: #e87979;
   color: #fff;
   border: none;
