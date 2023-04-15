@@ -1,5 +1,4 @@
 // frontend/src/components/Navigation/ProfileButton.js
-// frontend/src/components/Navigation/ProfileButton.js
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
 import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
@@ -46,7 +45,6 @@ function ProfileButton({ user }) {
       </button>
       <ul className={ulClassName} ref={ulRef}>
         <li className="profile-li">Hello, {user.username}</li>
-        {/* <li>{user.firstName} {user.lastName}</li> */}
         <li className="profile-li">{user.email}</li>
         <Link className="profile-link" to="/manage-spots">Manage Spots</Link>
         <li className="profile-li">

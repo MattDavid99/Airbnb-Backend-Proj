@@ -1,56 +1,3 @@
-// // frontend/src/components/Navigation/index.js
-// import React from 'react';
-// import { NavLink } from 'react-router-dom';
-// import { useSelector, useDispatch } from 'react-redux';
-// import ProfileButton from './ProfileButton';
-// import * as sessionActions from '../../store/session';
-// import logo from "../../images/logo.png"
-// import './Navigation.css';
-
-// function Navigation({ isLoaded }) {
-//   const sessionUser = useSelector(state => state.session.user);
-//   const dispatch = useDispatch();
-
-//   const logout = (e) => {
-//     e.preventDefault();
-//     dispatch(sessionActions.logout());
-//   };
-
-//   let sessionLinks;
-//   if (sessionUser) {
-//     sessionLinks = (
-//       <li className='logged_in_icon'>
-//         <button className='create-spot-button'><NavLink to="/create-spot" className="create_spot_link">Create a New Spot</NavLink></button>
-//         {/* <button onClick={logout}>Log Out</button> */}
-//         <ProfileButton user={sessionUser} />
-//       </li>
-//     );
-//   } else {
-//     sessionLinks = (
-//       <li className='not_logged_in'>
-//         <NavLink to="/login" className="sign-log-in-link">Log In</NavLink>
-//         <NavLink to="/signup" className="sign-log-in-link">Sign Up</NavLink>
-//       </li>
-//     );
-//   }
-
-
-//   return (
-//     <div className='nav-container'>
-//       <ul className='nav-ul'>
-//         <li className='nav-li'>
-//           <NavLink exact to="/"><img src={logo} alt="logo" className='logo' /></NavLink>
-//         </li>
-//         {isLoaded && sessionLinks}
-//       </ul>
-
-//     </div>
-//   );
-// }
-
-// export default Navigation;
-
-//-----------------------------------------------------------------------
 // frontend/src/components/Navigation/index.js
 import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
@@ -89,8 +36,8 @@ function Navigation({ isLoaded }) {
     history.push('/');
   };
 
-  const handleLoginSuccess = () => { // Add this function
-    setIsLogInOpen(false); // Close the login modal on successful login
+  const handleLoginSuccess = () => {
+    setIsLogInOpen(false);
   };
 
   const handleSignupSuccess = () => {

@@ -6,15 +6,11 @@
   top: 60px;
   right: 120px;
   padding: 10px;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
   flex-direction: column;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   margin-top: 10px;
   max-width: 220px;
-  /* overflow: auto; */
 }
 
 .profile-dropdown.hidden {
@@ -31,9 +27,6 @@
   border-bottom: 1px solid #ccc;
 }
 
-/* .profile-dropdown .profile-link {
-  padding-bottom: 5px;
-} */
 
 .profile-dropdown .profile-button {
   display: block;
@@ -58,11 +51,9 @@
 .fas.fa-user-circle {
   font-size: 1.5em;
   cursor: pointer;
-  /* background-color: #faf8f8; */
   background-color: #faf8f8;
   border-radius: 50%;
   color: #190d71;
-  /* margin-right: 70px; */
 }
 
 .fas.fa-user-circle:hover {
@@ -78,11 +69,8 @@
 
 .icon-button {
   padding: 0px;
-  /* Add padding to create space between the icon and the border */
   background-color: #fbc4bf;
-  /* Add a background color to make it look like a button */
   border-radius: 50%;
-  /* Set border-radius to 50% for a circle shape */
   border: none;
   display: inline-flex;
   align-items: center;

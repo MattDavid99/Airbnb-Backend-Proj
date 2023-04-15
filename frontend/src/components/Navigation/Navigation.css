@@ -1,15 +1,11 @@
 .nav-ul {
   display: flex;
-  /* position: fixed;
-  top: 0; */
   justify-content: space-between;
   align-items: center;
   list-style-type: none;
   padding-right: 5px;
-  /* margin-bottom: 5px; */
   background-color: #fafafa;
   width: 100%;
-  /* border-bottom: 1px solid #000; */
   height: 80px;
 }
 
@@ -18,7 +14,6 @@
 .nav-li {
   display: flex;
   align-items: center;
-  /* justify-content: center; */
   margin-right: 10px;
 }
 
@@ -51,7 +46,6 @@
 
 .create-spot-button {
   margin-right: 20px;
-  /* margin-bottom: 5px; */
   border: 1px solid #534b91;
   background-color: #fafafa;
   border-radius: 10px;

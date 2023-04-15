@@ -22,7 +22,6 @@ function SpotImagesPage() {
     fetchImages()
   }, [dispatch])
 
-  // // We are console.logging to see all of our spots
 
   return (
     <div className='spot-image-container'>
