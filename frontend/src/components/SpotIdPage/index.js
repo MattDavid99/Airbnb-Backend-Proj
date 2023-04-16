@@ -25,9 +25,6 @@ function SpotIdPage() {
   const reviews = useSelector((state) => state.session.reviews[id] || []);
   const currentUser = useSelector((state) => state.session.user);
 
-  console.log(specificSpot);
-  console.log(reviews);
-  console.log(currentUser);
 
 
 

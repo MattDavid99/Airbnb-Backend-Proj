@@ -11,7 +11,7 @@ function SpotImagesPage() {
   const spots = useSelector((state) => state.session.spots)
 
   // const spotImg = useSelector((state) => state.session.spots)
-  console.log(spots);
+
 
 
   const fetchImages = async () => {

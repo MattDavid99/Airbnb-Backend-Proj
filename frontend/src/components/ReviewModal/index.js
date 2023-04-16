@@ -20,7 +20,6 @@ function ReviewModal({ isOpen, onClose, spotId }) {
       review,
       stars
     }
-    console.log(reviewData);
 
     const newReview = await dispatch(postReviewForSpot(spotId, reviewData))
 

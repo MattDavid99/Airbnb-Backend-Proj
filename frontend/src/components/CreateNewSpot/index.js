@@ -93,8 +93,6 @@ function CreateNewSpot() {
       url4,
     };
 
-    console.log(createNewSpotForm);
-    console.log(previewImage);
     const newSpotId = await dispatch(newSpot(createNewSpotForm))
     history.push(`/spots/${newSpotId}`)
 

@@ -182,7 +182,6 @@ export const logout = () => async (dispatch) => {
 export const getImages = () => async (dispatch) => {
   const response = await fetch('/api/spots')
   const data = await response.json()
-  console.log(data.Spots);
   dispatch(retriveSpots(data.Spots))
   return response
 }
@@ -207,7 +206,6 @@ export const newSpot = (payload) => async (dispatch) => {
 export const getSpotId = (id) => async (dispatch) => {
   const response = await fetch(`/api/spots/${id}`)
   const data = await response.json()
-  console.log(data);
   dispatch(getSpotbyId(data))
   // return response
 }
@@ -215,7 +213,6 @@ export const getSpotId = (id) => async (dispatch) => {
 export const getReviewForSpot = (id) => async (dispatch) => {
   const response = await fetch(`/api/spots/${id}/reviews`);
   const data = await response.json();
-  console.log(data);
   dispatch(getReview({ spotId: id, reviews: data }));
 };
 
@@ -229,7 +226,6 @@ export const postReviewForSpot = (spotId, review) => async (dispatch) => {
 
   if (response.ok) {
     const newReview = await response.json();
-    console.log(newReview);
     dispatch(postReview({ ...newReview, spotId }));
     return newReview;
   } else {
@@ -279,7 +275,6 @@ const sessionReducer = (state = initialState, action) => {
     case RETRIVE_SPOTS:
       newState = Object.assign({}, state);
       newState.spots = action.payload;
-      console.log(newState)
       return newState;
 
 
@@ -295,7 +290,6 @@ const sessionReducer = (state = initialState, action) => {
       // newState.spots = action.spot;
       const updatedSpots = newState.spots.map(spot => (spot.id === action.spot.id ? action.spot : spot));
       newState.spots = updatedSpots;
-      console.log(newState);
       return newState;
 
 
@@ -305,7 +299,6 @@ const sessionReducer = (state = initialState, action) => {
         ...newState.reviews,
         [action.payload.spotId]: action.payload.reviews
       };
-      console.log(newState.reviews);
       return newState;
 
 
@@ -333,7 +326,6 @@ const sessionReducer = (state = initialState, action) => {
         newState.reviews[spotId] = { Reviews: [] };
       }
       newState.reviews[spotId].Reviews = [...newState.reviews[spotId].Reviews, action.review];
-      console.log(newState);
       return newState;
 
     case DELETE_SPOT:

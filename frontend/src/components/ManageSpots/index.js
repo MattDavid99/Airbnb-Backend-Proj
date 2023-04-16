@@ -11,11 +11,8 @@ function ManageSpots() {
 
   const spots = useSelector((state) => state.session.spots)
   const currentUser = useSelector((state) => state.session.user);
-  console.log(spots);
-  console.log(currentUser);
 
   const userSpots = spots.filter((spot) => currentUser.id === spot.ownerId)
-  console.log(userSpots);
 
   const [showModal, setShowModal] = useState(false);
   const [spotToDelete, setSpotToDelete] = useState(null);
@@ -36,7 +33,7 @@ function ManageSpots() {
   };
 
   const handleModalDelete = async () => {
-    console.log('Deleting a spot with ID', spotToDelete);
+
     await dispatch(removeSpot(spotToDelete));
     setShowModal(false);
   };

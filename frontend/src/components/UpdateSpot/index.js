@@ -10,7 +10,6 @@ function UpdateSpot() {
   const currentUser = useSelector((state) => state.session.user);
   const userSpots = spots.filter((spot) => currentUser.id === spot.ownerId)
 
-  console.log(userSpots);
   const selectedSpot = userSpots.find((spot) => spot.id === parseInt(spotId));
 
 
