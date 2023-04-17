@@ -55,6 +55,11 @@
   cursor: pointer;
 }
 
+.preview-image-img:hover {
+  transform: scale(1.018);
+  transition: all ease 0.2s;
+}
+
 .preview-image-div {
   height: 215px;
   border-radius: 10px;
