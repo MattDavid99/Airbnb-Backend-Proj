@@ -28,7 +28,9 @@ function SpotImagesPage() {
       <ul className='spot-image-ul'>
         {spots && spots.map((i) => (
           <div className="preview-image-div" key={i.id}>
-            <NavLink to={`spots/${i.id}`}><img className="preview-image-img" src={i.previewImage} alt="#" /></NavLink>
+            <NavLink to={`spots/${i.id}`}>
+              <img className="preview-image-img" src={i.previewImage} alt="#" />
+            </NavLink>
             <li key={i.id} className="spot-image-li"><i class="fas fa-map-marker-alt"></i> {i.city}/{i.state}</li>
             <span className='stars'><i class="far fa-star"></i> {i.avgRating ? i.avgRating : "New"}</span>
             <li className="price">${i.price} night</li>
