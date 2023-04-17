@@ -5,7 +5,7 @@
   width: 1000px;
   align-items: center;
   height: 80vh;
-  margin: 40px auto 0;
+  margin: 98px auto 0;
   position: relative;
   right: 30px;
 }
@@ -73,6 +73,7 @@
   color: #534b91;
   /* z-index: 100; */
 }
+
 
 
 @media (max-width: 1103px) {

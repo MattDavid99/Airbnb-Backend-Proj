@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getImages } from '../../store/session'
 import { useEffect } from 'react'
+import { Tooltip } from "react-tooltip"
+import 'react-tooltip/dist/react-tooltip.css'
 import "./SpotImagesPage.css"
 
 function SpotImagesPage() {
@@ -27,9 +29,11 @@ function SpotImagesPage() {
     <div className='spot-image-container'>
       <ul className='spot-image-ul'>
         {spots && spots.map((i) => (
+
           <div className="preview-image-div" key={i.id}>
             <NavLink to={`spots/${i.id}`}>
-              <img className="preview-image-img" src={i.previewImage} alt="#" />
+              <img className="preview-image-img" src={i.previewImage} alt="#" data-tooltip-id={i.id} data-tooltip-content={i.name} />
+              <Tooltip id={i.id} className='spot-image-tooltip' />
             </NavLink>
             <li key={i.id} className="spot-image-li"><i class="fas fa-map-marker-alt"></i> {i.city}/{i.state}</li>
             <span className='stars'><i class="far fa-star"></i> {i.avgRating ? i.avgRating : "New"}</span>
