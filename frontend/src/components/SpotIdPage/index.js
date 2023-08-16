@@ -17,7 +17,6 @@ function SpotIdPage() {
 
 
 
-  // const specificSpot = useSelector((state) => state.session.spots.find(spot => spot.id === +id));
   const specificSpot = useSelector((state) => {
     const spot = state.session.spots.find((spot) => spot.id === +id);
     return spot ? { ...spot } : null;
@@ -143,7 +142,7 @@ function SpotIdPage() {
             {
               reviews && reviews.Reviews && reviews.Reviews.length > 0 ? (
                 reviews.Reviews
-                  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                  .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
                   .map((review, index) => {
                     const createdAtDate = new Date(review.createdAt);
                     const month = createdAtDate.toLocaleString('default', { month: 'long' });
@@ -152,7 +151,7 @@ function SpotIdPage() {
                     return (
                       <div className='spot-id-page-reviews-info' key={index}>
                         <span className='spot-id-page-reviews-span'></span>
-                        <h5 className='spot-id-page-reviews-h5'><i class="fas fa-user-edit"></i>  {review.User?.firstName || 'Anonymous'}</h5>
+                        <h5 className='spot-id-page-reviews-h5'><i className="fas fa-user-edit"></i> {review.User?.firstName || review.User?.email || 'Anonymous'}</h5>
                         <h6 className='spot-id-page-reviews-h6'>{`${month} ${day}`}</h6>
                         <p className='spot-id-page-reviews-p'>Review: {review.review}</p>
                         <p className='spot-id-page-reviews-p'>Stars: {review.stars}</p>

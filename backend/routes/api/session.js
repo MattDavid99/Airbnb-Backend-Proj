@@ -23,37 +23,38 @@ const validateLogin = [
 
 
 // ---------------------------------------------------------------------(POST: Log in) ✅✅✅ (errors)
-router.post('/', validateLogin, async (req, res, next) => {
+router.post(
+    '/',
+    validateLogin,
+    async (req, res, next) => {
+      const { credential, password } = req.body;
 
+      const user = await User.login({ credential, password });
 
-    const { credential, password } = req.body;
-
-    const user = await User.login({ credential, password });
-
-
-    if (!user) {
-        const err = new Error('Login failed');
-        res.status(401).json(err.errors = {
-            message: 'Invalid credentials',
-            statusCode: 401
+      if (!user) {
+        const err = new Error('Invalid credentials');
+        err.status = 401;
+        err.title = 'Login failed';
+        err.errors = ['The provided credentials were invalid.'];
+        return res.status(401).json({
+          message: err.message,
+          statusCode: err.status,
+          errors: err.errors
         })
-        // err.title = 'Login failed';
-        return next(err);
+      }
 
+      else {
+
+        await setTokenCookie(res, user);
+
+        const { id, username, email, firstName, lastName } = user
+
+        return res.json({
+          user: { id, username, email, firstName, lastName }
+        });
+      }
     }
-
-
-
-
-    await setTokenCookie(res, user);
-
-    const { id, firstName, lastName, email, username } = user
-    return res.json({
-        user: { id, firstName, lastName, email, username }
-    });
-
-}
-);
+  );
 
 
 

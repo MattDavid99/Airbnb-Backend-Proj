@@ -86,31 +86,44 @@ export const createSpot = (spot) => {
 export const getSpotbyId = (spot) => {
   return {
     type: GET_SPOT_ID,
-    spot
+    spot: spot
   }
 }
 
 
+// export const login = (user) => async (dispatch) => {
+//   const { credential, password } = user;
+//   const response = await csrfFetch('/api/session', {
+//     method: 'POST',
+//     body: JSON.stringify({
+//       credential,
+//       password,
+//     }),
+//   });
+//   const data = await response.json();
+
+//   if (response.ok) {
+//     dispatch(setUser(data.user));
+//     return true
+//   }
+//   else {
+//     return false
+//   }
+//   // ------------------------------
+
+// };
 export const login = (user) => async (dispatch) => {
   const { credential, password } = user;
   const response = await csrfFetch('/api/session', {
-    method: 'POST',
-    body: JSON.stringify({
-      credential,
-      password,
-    }),
+      method: 'POST',
+      body: JSON.stringify({
+          credential,
+          password,
+      }),
   });
   const data = await response.json();
-
-  if (response.ok) {
-    dispatch(setUser(data.user));
-    return true
-  }
-  else {
-    return false
-  }
-  // ------------------------------
-
+  dispatch(setUser(data.user));
+  return response;
 };
 
 
@@ -203,11 +216,12 @@ export const newSpot = (payload) => async (dispatch) => {
 
 }
 
+
 export const getSpotId = (id) => async (dispatch) => {
   const response = await fetch(`/api/spots/${id}`)
   const data = await response.json()
+  console.log('Received spot data:', data);
   dispatch(getSpotbyId(data))
-  // return response
 }
 
 export const getReviewForSpot = (id) => async (dispatch) => {
@@ -283,13 +297,14 @@ const sessionReducer = (state = initialState, action) => {
       newState.spots = [...state.spots, action.spot]
       return newState
 
-    // Had to change this a whole lot⬇️⬇️⬇️
     case GET_SPOT_ID:
-      newState = Object.assign({}, state)
-      console.log(newState);
-      // newState.spots = action.spot;
-      const updatedSpots = newState.spots.map(spot => (spot.id === action.spot.id ? action.spot : spot));
-      newState.spots = updatedSpots;
+      newState = Object.assign({}, state);
+      const existingSpotIndex = newState.spots.findIndex(spot => spot.id === action.spot.id);
+      if (existingSpotIndex !== -1) {
+        newState.spots[existingSpotIndex] = action.spot;
+      } else {
+        newState.spots.push(action.spot);
+      }
       return newState;
 
 
@@ -305,22 +320,6 @@ const sessionReducer = (state = initialState, action) => {
     case POST_REVIEW_FOR_SPOT:
       newState = Object.assign({}, state);
       const spotId = action.review.spotId;
-
-      // ------------------------
-      // const review = action.review
-      // review.User = {}
-      // review.User.firstName = newState.user.firstName
-      // const spot = newState.spots.find((spot) => +spot.id === +action.review.spotId)
-      // let oldAverageStarRating = spot.avgRating
-      // oldAverageStarRating += action.review.stars
-      // const newAverageStarRating = oldAverageStarRating / 2
-      // spot.avgRating = newAverageStarRating
-
-      // const newSpotList = newState.spots.map((i) =>
-      //   i.id === action.review.spotId ? spot : i
-      // );
-      // newState.spots = newSpotList
-      // -------------------------
 
       if (!newState.reviews[spotId]) {
         newState.reviews[spotId] = { Reviews: [] };

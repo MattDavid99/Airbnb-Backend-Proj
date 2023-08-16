@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { removeSpot, getImages } from '../../store/session'
 import "./ManageSpots.css"
 import DeleteSpotModal from './DeleteSpotModal'
@@ -56,6 +56,11 @@ function ManageSpots() {
         </div>
 
         <div className='manage-spots-container'>
+
+          {userSpots.length === 0 && (
+            <button className='create-spot-button'><NavLink to="/create-spot" className="create_spot_link">Create a New Spot</NavLink></button>
+          )}
+
           {userSpots.map((i) => (
             <div className='manage-spots-image-div' key={i.id}>
               <Link to={`/spots/${i.id}`} key={i.previewImage}><img src={i.previewImage} alt="#" className='manage-spots-image' /></Link>

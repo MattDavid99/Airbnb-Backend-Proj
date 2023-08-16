@@ -10,35 +10,34 @@ function LoginFormPage({ onSuccess }) {
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
-  const [disableButton, setDisableButton] = useState(true)
+  const [validationErrors, setValidationErrors] = useState({})
 
   useEffect(() => {
-    const validateInputs = () => {
-      if (credential.length >= 4 && password.length >= 6) {
-        setDisableButton(false);
-      } else {
-        setDisableButton(true);
-      }
-    };
-
-    validateInputs();
-  }, [credential, password]);
+    const errors = {};
+    if (credential.length < 4) { errors["credential"] = "Username cannot be less than 4 characters." }
+    if (password.length < 6) { errors["password"] = "Password cannot be less than 6 characters." }
+    setValidationErrors(errors);
+  }, [credential, password])
 
   if (sessionUser) return (
-    <Redirect to="/" />
+      <Redirect to="/" />
   );
 
-  const handleSubmit = async (e) => {
+
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     setErrors([]);
-    const data = await dispatch(sessionActions.login({ credential, password }))
-
-    if (data.errors) {
-      setErrors([...data.errors]);
-    } else if (onSuccess) {
-      onSuccess();
-    }
+    return dispatch(sessionActions.login({ credential, password }))
+        .then(() => onSuccess())
+        .catch(async (res) => {
+            const data = await res.json();
+            if (data && data.errors) {
+                setErrors(data.errors)
+            };
+        });
   }
+
 
   const demoLogin = async (e) => {
     e.preventDefault()
@@ -56,11 +55,13 @@ function LoginFormPage({ onSuccess }) {
   }
 
 
-
   return (
     <form onSubmit={handleSubmit} className="form">
       <ul className='ul'>
         {errors.map((error, idx) => <li key={idx} className="li">{error}</li>)}
+      </ul>
+      <ul className='li'>
+        {Object.values(validationErrors).map((error, idx) => <li className="li" key={idx}>{error}</li>)}
       </ul>
       <label className='label'>
         Username or Email
@@ -82,7 +83,7 @@ function LoginFormPage({ onSuccess }) {
 
         />
       </label>
-      <button type="submit" className='button' disabled={disableButton || errors.length > 0}>Log In</button>
+      <button type="submit" className='button'>Log In</button>
 
       <div className='demo-link-div'>
         <Link to="#" onClick={demoLogin} className="demo-link">Demo User</Link>

@@ -12,34 +12,28 @@ function SpotImagesPage() {
   const dispatch = useDispatch()
   const spots = useSelector((state) => state.session.spots)
 
-  // const spotImg = useSelector((state) => state.session.spots)
-
-
-
-  const fetchImages = async () => {
-    await dispatch(getImages());
-  };
 
   useEffect(() => {
-    fetchImages()
-  }, [dispatch])
+    dispatch(getImages());
+  }, [dispatch, getImages])
 
 
   return (
     <div className='spot-image-container'>
       <ul className='spot-image-ul'>
-        {spots && spots.map((i) => (
-
-          <div className="preview-image-div" key={i.id}>
-            <NavLink to={`spots/${i.id}`}>
-              <img className="preview-image-img" src={i.previewImage} alt="#" data-tooltip-id={i.id} data-tooltip-content={i.name} />
-              <Tooltip id={i.id} className='spot-image-tooltip' />
-            </NavLink>
-            <li key={i.id} className="spot-image-li"><i class="fas fa-map-marker-alt"></i> {i.city}/{i.state}</li>
-            <span className='stars'><i class="far fa-star"></i> {i.avgRating ? i.avgRating : "New"}</span>
-            <li className="price">${i.price} night</li>
-          </div>
-        ))}
+        {spots && spots
+          .filter(i => i.price !== 123)
+          .map((i) => (
+            <div className="preview-image-div" key={i.id}>
+              <NavLink to={`spots/${i.id}`}>
+                <img className="preview-image-img" src={i.previewImage} alt="#" data-tooltip-id={i.id} data-tooltip-content={i.name} />
+                <Tooltip id={i.id} className='spot-image-tooltip' />
+              </NavLink>
+              <li key={i.id} className="spot-image-li"><i className="fas fa-map-marker-alt"></i> {i.city}/{i.state}</li>
+              <span className='stars'><i className="far fa-star"></i> {i.avgRating ? i.avgRating : "New"}</span>
+              <li className="price">${i.price} night</li>
+            </div>
+          ))}
       </ul>
     </div>
   )

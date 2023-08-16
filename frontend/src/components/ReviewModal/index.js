@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { postReviewForSpot } from '../../store/session'
+import { postReviewForSpot, getReviewForSpot } from '../../store/session'
 import "./ReviewModal.css"
 
 function ReviewModal({ isOpen, onClose, spotId }) {
@@ -24,6 +24,7 @@ function ReviewModal({ isOpen, onClose, spotId }) {
     const newReview = await dispatch(postReviewForSpot(spotId, reviewData))
 
     if (newReview) {
+      dispatch(getReviewForSpot(spotId));
       onClose()
     }
   }
