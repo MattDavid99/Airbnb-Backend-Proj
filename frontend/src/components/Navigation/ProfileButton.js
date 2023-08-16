@@ -46,7 +46,8 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         <li className="profile-li">Hello, {user.username}</li>
         <li className="profile-li">{user.email}</li>
-        <Link className="profile-link" to="/manage-spots">Manage Spots</Link>
+        <li className="profile-li"><Link className="profile-link" to="/manage-spots">Manage Spots</Link></li>
+        <li className="profile-li"><Link className="profile-link" to="/about">About</Link></li>
         <li className="profile-li">
           <button onClick={logout} className="profile-button">Log Out</button>
         </li>

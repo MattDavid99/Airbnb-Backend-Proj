@@ -1,0 +1,54 @@
+.about-container {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-square {
+  height: 500px;
+  width: 600px;
+  border-radius: 50px;
+  border: 1px solid;
+}
+
+
+.github-img {
+  height: 90px;
+  width: 90px;
+  border-radius: 100px;
+}
+
+.linkedin-img {
+  height: 55px;
+  width: 55px;
+}
+
+.icon-container {
+  width: 200px;
+  position: relative;
+  left: 200px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  top: 50px;
+}
+
+
+.about-info {
+  height: 300px;
+  width: 500px;
+  position: relative;
+  left: 50px;
+  top: 100px;
+}
+
+.about-info-p {
+  font-size: 15px;
+  line-height: 1.8;
+  padding: 0 10px;
+  text-align: justify;
+}
