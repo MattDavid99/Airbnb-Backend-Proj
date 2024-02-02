@@ -5,9 +5,7 @@ const { User } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
-
 const router = express.Router();
-
 
 const validateLogin = [
     check('credential')
@@ -22,7 +20,6 @@ const validateLogin = [
 ];
 
 
-// ---------------------------------------------------------------------(POST: Log in) ✅✅✅ (errors)
 router.post(
     '/',
     validateLogin,
@@ -42,13 +39,9 @@ router.post(
           errors: err.errors
         })
       }
-
       else {
-
         await setTokenCookie(res, user);
-
         const { id, username, email, firstName, lastName } = user
-
         return res.json({
           user: { id, username, email, firstName, lastName }
         });
@@ -57,10 +50,6 @@ router.post(
   );
 
 
-
-
-
-// ------------------------------------------------------------------------(Log out)
 router.delete(
     '/',
     (_req, res) => {
@@ -68,7 +57,6 @@ router.delete(
         return res.json({ message: 'success' });
     }
 );
-
 
 // Restore session user
 router.get(
@@ -84,18 +72,6 @@ router.get(
         } else return res.json({});
     }
 );
-
-
-// If you want to use literals in PostGres :
-/*
-
- [Sequelize.literal((SELECT url FROM ${schema ? "${schema}"."SpotImages" : 'SpotImages'} WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)),'previewImage',],
-
-
-*/
-
-
-
 
 
 module.exports = router;
