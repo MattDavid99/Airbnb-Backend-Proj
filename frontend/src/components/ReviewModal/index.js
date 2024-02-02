@@ -7,49 +7,33 @@ function ReviewModal({ isOpen, onClose, spotId }) {
 
   const [review, setReview] = useState("")
   const [stars, setStars] = useState(0)
-
-
   const dispatch = useDispatch()
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     const reviewData = {
       review,
       stars
     }
-
     const newReview = await dispatch(postReviewForSpot(spotId, reviewData))
-
     if (newReview) {
       dispatch(getReviewForSpot(spotId));
       onClose()
     }
   }
-
-
   if (!isOpen) {
     return null
   }
-
   const handleStarClick = (i) => {
     setStars(i)
   }
-
   const renderStars = () => {
-
     const starsArr = []
-
     for (let i = 1; i <= 5; i++) {
       starsArr.push(<i key={i} className={`fa${stars >= i ? 's' : 'r'} fa-star`} onClick={() => handleStarClick(i)} />)
     }
-
     return starsArr
   }
-
-
 
   return (
     <div className='review-modal-overlay' onClick={onClose}>
