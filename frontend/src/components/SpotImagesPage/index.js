@@ -8,15 +8,12 @@ import 'react-tooltip/dist/react-tooltip.css'
 import "./SpotImagesPage.css"
 
 function SpotImagesPage() {
-
   const dispatch = useDispatch()
   const spots = useSelector((state) => state.session.spots)
-
 
   useEffect(() => {
     dispatch(getImages());
   }, [dispatch, getImages])
-
 
   return (
     <div className='spot-image-container'>
