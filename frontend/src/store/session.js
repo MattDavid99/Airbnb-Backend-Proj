@@ -20,14 +20,12 @@ const deleteReview = (id) => {
   }
 }
 
-
 const deleteSpot = (id) => {
   return {
     type: DELETE_SPOT,
     id
   }
 }
-
 
 const updateSpot = (spot) => {
   return {
@@ -36,7 +34,6 @@ const updateSpot = (spot) => {
   }
 }
 
-
 const postReview = (review, spotId) => {
   return {
     type: POST_REVIEW_FOR_SPOT,
@@ -44,7 +41,6 @@ const postReview = (review, spotId) => {
     spotId
   };
 };
-
 
 const getReview = ({ spotId, reviews }) => {
   return {
@@ -90,28 +86,6 @@ export const getSpotbyId = (spot) => {
   }
 }
 
-
-// export const login = (user) => async (dispatch) => {
-//   const { credential, password } = user;
-//   const response = await csrfFetch('/api/session', {
-//     method: 'POST',
-//     body: JSON.stringify({
-//       credential,
-//       password,
-//     }),
-//   });
-//   const data = await response.json();
-
-//   if (response.ok) {
-//     dispatch(setUser(data.user));
-//     return true
-//   }
-//   else {
-//     return false
-//   }
-//   // ------------------------------
-
-// };
 export const login = (user) => async (dispatch) => {
   const { credential, password } = user;
   const response = await csrfFetch('/api/session', {
@@ -125,8 +99,6 @@ export const login = (user) => async (dispatch) => {
   dispatch(setUser(data.user));
   return response;
 };
-
-
 
 export const editSpot = (spotId, updatedSpotData) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}`, {
@@ -143,18 +115,12 @@ export const editSpot = (spotId, updatedSpotData) => async (dispatch) => {
   }
 }
 
-
-
-
-
-
 export const restoreUser = () => async dispatch => {
   const response = await csrfFetch('/api/session');
   const data = await response.json();
   dispatch(setUser(data.user));
   return response;
 };
-
 
 export const signup = (user) => async (dispatch) => {
   const { username, firstName, lastName, email, password } = user;
@@ -171,17 +137,13 @@ export const signup = (user) => async (dispatch) => {
   const data = await response.json();
 
   if (response.ok) {
-    dispatch(setUser(data)); // <<-- data.user broke it
+    dispatch(setUser(data)); 
     return true
   }
-
   else {
     return false
   }
 };
-
-
-
 
 export const logout = () => async (dispatch) => {
   const response = await csrfFetch('/api/session', {
@@ -191,14 +153,12 @@ export const logout = () => async (dispatch) => {
   return response;
 };
 
-
 export const getImages = () => async (dispatch) => {
   const response = await fetch('/api/spots')
   const data = await response.json()
   dispatch(retriveSpots(data.Spots))
   return response
 }
-
 
 export const newSpot = (payload) => async (dispatch) => {
   const response = await csrfFetch('/api/spots', {
@@ -208,14 +168,11 @@ export const newSpot = (payload) => async (dispatch) => {
   })
 
   if (response.ok) {
-
     const spot = await response.json()
     dispatch(createSpot(spot))
     return spot.id
   }
-
 }
-
 
 export const getSpotId = (id) => async (dispatch) => {
   const response = await fetch(`/api/spots/${id}`)
@@ -229,7 +186,6 @@ export const getReviewForSpot = (id) => async (dispatch) => {
   const data = await response.json();
   dispatch(getReview({ spotId: id, reviews: data }));
 };
-
 
 export const postReviewForSpot = (spotId, review) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
@@ -251,28 +207,21 @@ export const removeSpot = (id) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${id}`, {
     method: "DELETE",
   });
-
   if (response.ok) {
     dispatch(deleteSpot(id));
   }
 };
 
-
 export const removeReview = (id) => async (dispatch) => {
   const response = await csrfFetch(`/api/reviews/${id}`, {
     method: "DELETE",
   })
-
   if (response.ok) {
     dispatch(deleteReview(id))
   }
 }
 
-
-
-
 const initialState = { user: null, spots: [], reviews: {} };
-
 const sessionReducer = (state = initialState, action) => {
   let newState;
   switch (action.type) {
@@ -291,7 +240,6 @@ const sessionReducer = (state = initialState, action) => {
       newState.spots = action.payload;
       return newState;
 
-
     case CREATE_SPOT:
       newState = Object.assign({}, state)
       newState.spots = [...state.spots, action.spot]
@@ -307,7 +255,6 @@ const sessionReducer = (state = initialState, action) => {
       }
       return newState;
 
-
     case GET_REVIEWS_FOR_SPOT:
       newState = Object.assign({}, state);
       newState.reviews = {
@@ -316,11 +263,9 @@ const sessionReducer = (state = initialState, action) => {
       };
       return newState;
 
-
     case POST_REVIEW_FOR_SPOT:
       newState = Object.assign({}, state);
       const spotId = action.review.spotId;
-
       if (!newState.reviews[spotId]) {
         newState.reviews[spotId] = { Reviews: [] };
       }
@@ -332,7 +277,6 @@ const sessionReducer = (state = initialState, action) => {
       newState.spots = newState.spots.filter((spot) => spot.id !== action.id);
       return newState;
 
-
     case UPDATE_SPOT:
       newState = Object.assign({}, state);
       const updatedSpotsList = newState.spots.map((i) =>
@@ -341,7 +285,6 @@ const sessionReducer = (state = initialState, action) => {
       newState.spots = updatedSpotsList;
       return newState;
 
-
     case DELETE_REVIEW:
       newState = Object.assign({}, state);
       const spotIdForDelete = Object.keys(newState.reviews).find(key => newState.reviews[key].Reviews.find(review => review.id === action.id));
@@ -349,7 +292,6 @@ const sessionReducer = (state = initialState, action) => {
         newState.reviews[spotIdForDelete].Reviews = newState.reviews[spotIdForDelete].Reviews.filter((review) => review.id !== action.id);
       }
       return newState;
-
 
     default:
       return state;
