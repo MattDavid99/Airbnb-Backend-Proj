@@ -9,15 +9,11 @@ function UpdateSpot() {
   const spots = useSelector((state) => state.session.spots)
   const currentUser = useSelector((state) => state.session.user);
   const userSpots = spots.filter((spot) => currentUser.id === spot.ownerId)
-
   const selectedSpot = userSpots.find((spot) => spot.id === parseInt(spotId));
-
-
-
-
+  
   const dispatch = useDispatch()
   const history = useHistory()
-
+  
   const [country, setCountry] = useState(selectedSpot?.country || "")
   const [address, setAddress] = useState(selectedSpot?.address || "")
   const [city, setCity] = useState(selectedSpot?.city || "")
@@ -47,20 +43,14 @@ function UpdateSpot() {
   })
 
   const validateFileExtension = (url) => {
-
     if (!url) return false
-
     const allowedExtensions = ['.png', '.jpeg', '.jpg'];
     const fileExtension = url.slice(url.lastIndexOf('.'));
-
     return allowedExtensions.includes(fileExtension);
   };
 
-
   useEffect(() => {
-
     if (hasSubmitted) {
-
       const validationErrors = { country: [], address: [], city: [], state: [], description: [], name: [], price: [], previewImage: [], url1: [], url2: [], url3: [], url4: [] }
 
       if (!country.length) validationErrors.country.push("Country is required")
@@ -77,19 +67,14 @@ function UpdateSpot() {
       if (!validateFileExtension(url4) && url4.length > 0) validationErrors.url4.push("Image URL must end in .png, .jpg, or .jpeg")
 
       setErrors(validationErrors)
-
     }
-
   }, [hasSubmitted, country, address, city, state, description, name, price, previewImage, url1, url2, url3, url4])
-
 
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setHasSubmitted(true)
-
     const parsedPrice = parseInt(price)
-
     const createNewSpotForm = {
       country,
       address,
@@ -104,12 +89,8 @@ function UpdateSpot() {
       url3,
       url4,
     };
-
-
     await dispatch(editSpot(spotId, createNewSpotForm))
     history.push(`/spots/${spotId}`)
-
-
     setCountry("")
     setAddress("")
     setCity("")
@@ -137,29 +118,19 @@ function UpdateSpot() {
       url3: [],
       url4: [],
     })
-
-
   }
-
-
-
 
   return (
     <div>
       <div className='create-new-spot-container'>
-
         <div className='create-new-spot-header-container'>
           <h3 className='create-new-spot-h3'>Where's your place located?</h3>
           <p className='create-new-spot-p'>Guests will only get your exact address once they booked a
             reservation.
           </p>
         </div>
-
         <div className='form-container'>
-
           <form onSubmit={handleSubmit} className='create-spot-form' >
-
-
             <label className='create-new-spot-label'>
               Country
               <input
@@ -175,14 +146,12 @@ function UpdateSpot() {
               ))}
             </label>
 
-
             <label className='create-new-spot-label'>
               Street Address
               <input
                 type="text"
                 onChange={(e) => setAddress(e.target.value)}
                 value={address}
-
                 placeholder='Street Address'
                 className='create-new-spot-input'
               />
@@ -193,8 +162,6 @@ function UpdateSpot() {
                 <li className='create-new-spot-error-li'>* {error}</li>
               </ul>
             ))}
-
-
             <label className='create-new-spot-label'>
               City
               <input
@@ -231,11 +198,7 @@ function UpdateSpot() {
               </ul>
             ))}
 
-
-
             <div className='line'></div>
-
-
             <label className='create-new-spot-label'>
               Describe your place to guests
               <span className='create-new-spot-span'>- Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood</span>
@@ -243,7 +206,6 @@ function UpdateSpot() {
                 type="text"
                 onChange={(e) => setDescription(e.target.value)}
                 value={description}
-
                 placeholder='Please write at least 30 characters'
                 className='create-new-spot-input'
                 rows="10"
@@ -257,10 +219,7 @@ function UpdateSpot() {
               </ul>
             ))}
 
-
             <div className='line'></div>
-
-
             <label className='create-new-spot-label'>
               Create a Title for your Spot
               <span className='create-new-spot-span'>- Catch guests' attention with a spot title that highlights what makes your place special.</span>
@@ -268,7 +227,6 @@ function UpdateSpot() {
                 type="text"
                 onChange={(e) => setName(e.target.value)}
                 value={name}
-
                 placeholder='Name your Spot'
                 className='create-new-spot-input'
               />
@@ -279,9 +237,6 @@ function UpdateSpot() {
                 <li className='create-new-spot-error-li'>* {error}</li>
               </ul>
             ))}
-
-
-
             <label className='create-new-spot-label'>
               Set a price for your Spot
               <span className='create-new-spot-span'>- Competitive pricing can help your listing stand out and rank higher in search results.</span>
@@ -294,21 +249,16 @@ function UpdateSpot() {
                 className='create-new-spot-input'
               />
             </label>
-
             {hasSubmitted && errors.price.length > 0 && errors.price.map((error, idx) => (
               <ul key={idx} className='create-new-spot-error-ul'>
                 <li className='create-new-spot-error-li'>* {error}</li>
               </ul>
             ))}
-
-
             <div className='line'></div>
-
 
             <p>Liven up your spot with photos</p>
 
             <span className='create-new-spot-span'>- Submit a link to at least one photo to publish your spot</span>
-
             <label className='create-new-spot-label'>
               <input
                 type="text"
@@ -318,7 +268,6 @@ function UpdateSpot() {
                 value={previewImage}
               />
               <img src={previewImage} alt='Preview' className='create-new-spot-preview-image' />
-
             </label>
 
             {hasSubmitted && errors.previewImage.length > 0 && errors.previewImage.map((error, idx) => (
@@ -326,7 +275,6 @@ function UpdateSpot() {
                 <li className='create-new-spot-error-li'>* {error}</li>
               </ul>
             ))}
-
 
             <label className='create-new-spot-label'>
               <input
@@ -362,7 +310,6 @@ function UpdateSpot() {
               </ul>
             ))}
 
-
             <label className='create-new-spot-label'>
               <input
                 type="text"
@@ -397,7 +344,6 @@ function UpdateSpot() {
                 <li className='create-new-spot-error-li'>* {error}</li>
               </ul>
             ))}
-
 
             <button type="submit" disabled={Object.values(errors).flat().length > 0} className='create-new-spot-button'>Update Spot</button>
           </form>
