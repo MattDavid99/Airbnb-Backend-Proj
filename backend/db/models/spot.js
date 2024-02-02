@@ -5,7 +5,7 @@ const {
 
 let schema;
 if (process.env.NODE_ENV === 'production') {
-  schema = process.env.SCHEMA; // define your schema in options object
+  schema = process.env.SCHEMA;
 }
 
 module.exports = (sequelize, DataTypes) => {
@@ -69,7 +69,6 @@ module.exports = (sequelize, DataTypes) => {
 
     scopes: {
       getAllSpots() {
-        // const {User,Spot,Booking,SpotImage,Review,ReviewImage,} = require('../models');
         return {
           attributes: [
             'id',
