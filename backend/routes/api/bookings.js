@@ -36,7 +36,7 @@ const validateBooking = [
 const validateSignup = [
     check('address')
         .exists({ checkFalsy: true })
-        .withMessage('Street address is required'), // <<-- changed
+        .withMessage('Street address is required'),
     check('city') // <<-- changed
         .exists({ checkFalsy: true })
         .withMessage('City is required'),
@@ -87,11 +87,9 @@ const router = express.Router(); // <<-- Don't forget this guy
 
 
 
-// -----------------------------------------------------------------------------------------------------
 // Get all of the Current User's Bookings
 router.get('/current', requireAuth, async (req, res, next) => {
 
-    // ----------------------------------
     const currentUsersBookings = await Booking.findAll({
         where: {
             userId: req.user.id
@@ -162,7 +160,6 @@ router.get('/current', requireAuth, async (req, res, next) => {
     });
 
 })
-// -----------------------------------------------------------------------------
 
 // Edit a Booking
 router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) => {
@@ -281,10 +278,6 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     })
 
 })
-
-
-
-
 
 
 module.exports = router;
