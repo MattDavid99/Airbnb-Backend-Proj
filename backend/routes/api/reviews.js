@@ -13,8 +13,7 @@ const Sequelize = require('sequelize')
 const router = express.Router();
 
 
-const validateReview = [ // <<--------------------------- MIght need to add contrants for stars
-
+const validateReview = [
     check('review')
         .exists({ checkFalsy: true })
         .withMessage('Review text is required'),
@@ -25,10 +24,6 @@ const validateReview = [ // <<--------------------------- MIght need to add cont
     handleValidationErrors
 ];
 
-
-
-
-// Add an Image to a Review based on the Review's id ✅✅✅✅ (Maybe come back to make sure everything is working)
 router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     const review = await Review.findOne({
         where: { id: req.params.reviewId },
@@ -60,7 +55,6 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
         reviewId: req.params.reviewId,
         url
     })
-
     if (newReviewImage) {
         res.status(200).json({
             id: newReviewImage.id,
@@ -70,14 +64,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 })
 
 
-
-
-// ---------------------------------------------------------------------------------------------------------------
-// // Get all Reviews of the Current User✅✅✅✅✅✅
 router.get('/current', requireAuth, async (req, res, next) => {
-
-    // ----------------------------------------------------------------------------------------------------------------
-
     const currentUsersReviews = await Review.findAll({
         where: { userId: req.user.id },
         include: [
@@ -144,75 +131,44 @@ router.get('/current', requireAuth, async (req, res, next) => {
                 ReviewImages,
             };
         });
-
         return res.status(200).json({ Reviews: reviewsData });
     }
-
     const err = new Error("Reviews couldn't be found");
     err.statusCode = 404;
     return next(err);
-
-
-
 });
 
-
-
-
-
-
-// Edit a Review✅✅✅✅
 router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
-
     const reviews = await Review.findByPk(req.params.reviewId)
-
     if (!reviews) {
-
         return res.status(404).json({
             message: "Review couldn't be found",
             statusCode: 404
 
         })
     }
-
     if (+review.userId != +req.user.id) {
         return res.status(403).json({
             message: "Forbidden, you cannot edit a review that you do not own",
             statusCode: 403
         })
     }
-
-
     const { review, stars } = req.body
-
     await reviews.update({
-
         review, stars
-
-
     })
-
     return res.status(200).json(reviews)
-
-
-
 })
 
 
-// Delete a Review ✅✅✅✅
 router.delete('/:reviewId', requireAuth, async (req, res, next) => {
-
     const review = await Review.findByPk(req.params.reviewId)
-
     if (!review) {
-
         res.status(404).json({
             message: "Review couldn't be found",
             statusCode: 404
-
         })
     }
-
     if (+review.userId != +req.user.id) {
         return res.status(403).json({
             message: "Forbidden, you cannot delete a review that you do not own",
@@ -221,23 +177,11 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
     }
 
     await review.destroy()
-
-
     res.status(200).json({
         message: "Successfully deleted",
         statusCode: 200
     })
-
-
 })
-
-
-
-
-
-
-
-
 
 
 module.exports = router;
