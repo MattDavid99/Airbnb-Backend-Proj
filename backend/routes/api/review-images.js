@@ -4,11 +4,7 @@ const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth')
 const { Review, User, Spot, SpotImage, ReviewImage, Booking } = require('../../db/models');
 const { check } = require('express-validator');
 
-
-
 const router = express.Router();
-
-
 
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
 
@@ -22,9 +18,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
             });
         }
 
-
         const review = await Review.findByPk(reviewImage.reviewId)
-
 
         if (review.userId != req.user.id) {
             return res.status(403).json({
@@ -33,16 +27,12 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
             })
         }
 
-
-
         await reviewImage.destroy();
 
         return res.status(200).json({
             message: "Successfully deleted",
             statusCode: 200
         });
-
-
 
     } catch (error) {
         return res.status(500).json({
@@ -51,11 +41,6 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
         });
     }
 })
-
-
-
-
-
 
 
 module.exports = router;
