@@ -455,7 +455,6 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
 
 })
 
-
 router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
     const spotId = req.params.spotId;
     const userId = req.user.id;
