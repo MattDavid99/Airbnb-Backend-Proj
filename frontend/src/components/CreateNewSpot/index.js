@@ -40,7 +40,6 @@ function CreateNewSpot() {
   const validateFileExtension = (url) => {
     const allowedExtensions = ['.png', '.jpeg', '.jpg'];
     const fileExtension = url.slice(url.lastIndexOf('.'));
-
     return allowedExtensions.includes(fileExtension);
   };
 
