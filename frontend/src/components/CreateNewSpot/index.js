@@ -363,7 +363,6 @@ function CreateNewSpot() {
           ))}
 
           <label className='create-new-spot-label'>
-
             <input
               type="text"
               placeholder='Image URL'
