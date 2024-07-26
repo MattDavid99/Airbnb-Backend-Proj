@@ -174,7 +174,6 @@ function CreateNewSpot() {
             </ul>
           ))}
 
-
           <label className='create-new-spot-label'>
             City
             <input
