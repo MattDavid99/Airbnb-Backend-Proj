@@ -64,7 +64,6 @@ function CreateNewSpot() {
       if (!validateFileExtension(url4) && url4.length > 0) validationErrors.url4.push("Image URL must end in .png, .jpg, or .jpeg")
 
       setErrors(validationErrors)
-
     }
 
   }, [hasSubmitted, country, address, city, state, description, name, price, previewImage, url1, url2, url3, url4])
