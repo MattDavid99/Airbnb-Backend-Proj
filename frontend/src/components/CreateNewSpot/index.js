@@ -95,7 +95,6 @@ function CreateNewSpot() {
     const newSpotId = await dispatch(newSpot(createNewSpotForm))
     history.push(`/spots/${newSpotId}`)
 
-
     setCountry("")
     setAddress("")
     setCity("")
