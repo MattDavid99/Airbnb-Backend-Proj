@@ -139,7 +139,6 @@ function CreateNewSpot() {
       </div>
 
       <div className='form-container'>
-
         <form onSubmit={handleSubmit} className='create-spot-form' >
 
           <label className='create-new-spot-label'>
